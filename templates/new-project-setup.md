@@ -1,26 +1,27 @@
-# New Project Setup — First Agent Todo
+# New Project Setup — File Structure Checklist
 
-This checklist is for the first agent joining a new project using this workflow.
+This checklist covers the file and directory setup for a new project.
+It is called from `project-init.md` (Step 5) after the user interview and GitHub repo creation are complete.
 Work through it top to bottom. Check off each item before moving to the next.
 
 ---
 
-## 1. Understand The Workflow
+## 1. Confirm Prerequisites
 
-- [ ] Read `workflow/README.md` (overview, concepts, anti-patterns)
-- [ ] Read `workflow/collaboration-format.md` (message format and rules)
-- [ ] Read `workflow/stages.md` (stage progression and gate criteria)
-- [ ] Read `workflow/decision-protocol.md` (when to escalate, how to handle conflicts)
+These must be done before this checklist begins (handled in `project-init.md`):
+
+- [ ] Workflow files fetched from `https://github.com/lukseung77/agent-workflow`
+- [ ] User interview complete (project title, purpose, primary user, core outcomes, platform, tools)
+- [ ] GitHub repo created and cloned locally
+- [ ] `openspec/explorations/product-scope.md` created from interview answers
 
 ---
 
-## 2. Understand The Project
+## 2. Confirm Project Context
 
-- [ ] Read any existing project brief, PRD, or background documents
-- [ ] Identify the current stage: Exploration / Proposal / Implementation
 - [ ] Identify who the other agents will be (names and roles)
-- [ ] Identify where the source of truth will live (spec path, exploration path, etc.)
 - [ ] Identify who the lead agent is and who the consultants are
+- [ ] Confirm source-of-truth path: `openspec/explorations/`
 
 ---
 
@@ -123,7 +124,7 @@ Before considering setup complete:
 
 ## Notes
 
-- Do not start writing to source-of-truth files until setup is complete.
-- Do not ask the user questions during setup unless a critical piece of information (like the lead agent identity) is genuinely unknown.
-- If you are both setting up the workflow and also the lead agent, you may begin Exploration work immediately after step 9.
+- Do not start writing to source-of-truth files until this checklist is complete.
+- The user interview and GitHub repo creation happen in `project-init.md` before this checklist runs — do not repeat those steps here.
+- If you are the lead agent, proceed directly to `project-init.md` Step 6 (begin exploration) after this checklist is done.
 - If you are a consultant agent doing the setup, notify the lead agent that setup is complete before beginning any review work.

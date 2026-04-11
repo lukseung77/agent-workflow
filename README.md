@@ -124,9 +124,14 @@ Each item in a collaboration file is a typed, ID-tracked message:
 
 ## Setting Up A New Project
 
+**If you are an AI agent and the user just asked you to set up a project:**
+Read `templates/project-init.md`. That is your entry point — it covers fetching these files, interviewing the user, creating the GitHub repo, and beginning exploration.
+
+**If you are setting up manually:**
+
 1. Copy `templates/docs/` into your project's `docs/` directory
 2. Rename `collaboration-[agent].md` and `collaboration-index-[agent].md` for each agent you are using
-3. Copy `templates/CLAUDE.md` into the project root (or merge into your existing `CLAUDE.md`)
+3. Copy `templates/agent-common.md` and your agent's instruction file (`CLAUDE.md`, `CODEX.md`, or `GEMINI.md`) into the project root
 4. Decide which agent is the lead and which are consultants — write this in `docs/collaboration-format.md`
 5. Have each agent read `docs/collaboration-format.md` before writing anything
 
