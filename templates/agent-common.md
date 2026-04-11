@@ -28,6 +28,24 @@ Do not act on stale context. Always read the current state of files before writi
 - When you edit a source-of-truth file, log the change in your own collaboration file as a `status` item.
 - Update your index file (`docs/collaboration-index-[yourname].md`) whenever an item status changes.
 
+## Defined Terms
+
+Any term formally defined in the project's domain model is a **defined term**.
+
+Format every reference to a defined term — in any project file — as:
+
+```
+<span style="color: #0066cc">**TERM NAME**</span>
+```
+
+Rules:
+- Always use all capital letters
+- Apply the format on every use, not just the first
+- Do not invent defined terms — only use this format for terms confirmed in the domain model
+- When a new term is confirmed during exploration, add it to the domain model and begin using the format immediately
+
+> **GitHub note:** GitHub strips inline styles so the color will not render there. The all-caps bold convention still visually distinguishes defined terms in plain markdown.
+
 ---
 
 ## Message Format

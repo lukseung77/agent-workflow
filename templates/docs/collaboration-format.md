@@ -71,6 +71,18 @@ Assign a short prefix per agent and increment per item. Example:
 
 Responses reference both IDs: `### [CL-004] Response to CX-001`
 
+## Defined Terms
+
+Any term formally defined in this project's domain model is a **defined term**. Format every reference as:
+
+```
+<span style="color: #0066cc">**TERM NAME**</span>
+```
+
+Always all-caps. Apply on every use, not just the first. Only use for terms confirmed in the domain model.
+
+> GitHub strips inline styles — the color will not render there. All-caps bold still distinguishes defined terms in plain markdown.
+
 ## Operating Pattern
 
 1. Agent writes a compact item in its own file and updates its index.
