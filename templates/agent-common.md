@@ -90,10 +90,14 @@ The review cycle automates the draft → review → consolidate loop. See `workf
 After completing any draft:
 
 1. Post a `review-request` item in your collaboration file listing the drafted file(s)
-2. Immediately generate and output the ready-to-paste prompts for:
-   - Each consultant agent (one prompt, same for all consultants)
-   - Your own consolidation step (to be pasted when consultants have responded)
-3. The user pastes each prompt into the relevant agent session — no further explanation needed
+2. Update your index — that index entry is what consultants read on session start
+3. Nothing else is needed — the files carry all context
+
+When you start your next session after consultants have responded:
+
+1. Check your own index for open `review-request` items
+2. Read consultant collaboration files for `review` items referencing that ID
+3. Consolidate: integrate accepted feedback, post a summary, mark the request done
 
 ### If you are a consultant agent
 
@@ -105,24 +109,6 @@ If one exists:
 3. Mark your item `done` and update your index
 
 If none exists, proceed with your own open items.
-
-### Prompt templates
-
-**Consultant prompt** (lead generates this after posting review-request `[XX-NNN]`):
-
-```
-Pending review request [XX-NNN] in docs/collaboration-[lead].md.
-Read the open review-request item, read the files listed in its refs, and leave your feedback
-as a review item in your own collaboration file referencing [XX-NNN].
-```
-
-**Consolidation prompt** (lead generates this for its own next session):
-
-```
-Consolidate reviews for [XX-NNN]. Read all consultant collaboration files for review items
-referencing [XX-NNN], integrate accepted feedback into the source-of-truth files, post a
-consolidation summary, and mark [XX-NNN] done.
-```
 
 ---
 

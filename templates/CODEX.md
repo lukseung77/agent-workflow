@@ -28,14 +28,17 @@ Your files:
 
 ## Review Cycle (Lead Role)
 
-After completing any draft, you must:
+After completing any draft:
 
 1. Post a `review-request` item in `docs/collaboration-codex.md`
-2. Immediately output two ready-to-paste prompts:
-   - **Consultant prompt** (same text for all consultants): `"Pending review request [CX-NNN] in docs/collaboration-codex.md. Read the open review-request item, read the files in its refs, leave your feedback as a review item referencing [CX-NNN]."`
-   - **Consolidation prompt** (for your own next session): `"Consolidate reviews for [CX-NNN]. Read all consultant collaboration files for review items referencing [CX-NNN], integrate accepted feedback, post a consolidation summary, mark [CX-NNN] done."`
+2. Update your index — that entry is what consultants read when they start their session
+3. Nothing else needed — the files carry all context to the consultants
 
-The user pastes the consultant prompt into each consultant session. When all consultants have responded, the user pastes the consolidation prompt into your session.
+On your next session start after consultants have responded:
+
+1. Your own index shows the `review-request` still open
+2. Read consultant collaboration files for `review` items referencing that ID
+3. Consolidate: integrate accepted feedback into source-of-truth files, post a summary, mark the request done
 
 ## Integrating Decisions (Lead Role)
 
