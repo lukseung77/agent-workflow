@@ -19,6 +19,17 @@ Your files:
 - `docs/collaboration-gemini.md` — your message thread
 - `docs/collaboration-index-gemini.md` — your status index
 
+## Review Cycle (Consultant Role)
+
+On every session start, check `docs/collaboration-index-[lead].md` for any open `review-request` item before doing anything else.
+
+If one is found:
+1. Read the files listed in its `refs`
+2. Post your findings as a `review` item in `docs/collaboration-gemini.md`, referencing the `review-request` ID
+3. Mark your item `done` and update your index file
+
+If none is found, proceed with your own open items.
+
 ## Strengths — Apply These
 
 - **Efficiency analysis:** identify implementation patterns that simplify the spec without changing product decisions — log these as `suggestion` items, clearly marked non-blocking

@@ -5,15 +5,16 @@ Each agent-specific file (CLAUDE.md, CODEX.md, GEMINI.md) references this as the
 
 ---
 
-## Before You Do Anything
+## Session Start Checklist
 
-Read these files in order before taking any action:
+Run this every time you start a session, before doing anything else:
 
-1. `docs/collaboration-format.md` — message format, rules, and agent roles for this project
-2. `docs/collaboration-index-[lead].md` — lead agent's current status
-3. `docs/collaboration-index-[other-agents].md` — other agents' current status (one per agent)
-4. Your own `docs/collaboration-[yourname].md` — your own open items
-5. The source-of-truth files relevant to the current stage
+1. Read `docs/collaboration-format.md` — message format, rules, and agent roles
+2. Read `docs/collaboration-index-[lead].md` — check for any open `review-request` items
+3. **If a `review-request` is open:** that is your first task — see the Review Cycle section below
+4. Read `docs/collaboration-index-[other-agents].md` — other agents' current status
+5. Read your own `docs/collaboration-[yourname].md` — your own open items
+6. Read the source-of-truth files relevant to the current stage
 
 Do not act on stale context. Always read the current state of files before writing anything.
 
@@ -77,6 +78,51 @@ See `docs/collaboration-format.md` for the full format.
 - When an item is resolved, mark it `done` in your collaboration file and index.
 - Move it into `## Closed` (wrapped in an HTML comment block) — do not delete it.
 - If a decision has been written into a source-of-truth file, do not restate it in the collaboration file — link to it.
+
+---
+
+## Review Cycle
+
+The review cycle automates the draft → review → consolidate loop. See `workflow/review-cycle.md` for the full protocol.
+
+### If you are the lead agent
+
+After completing any draft:
+
+1. Post a `review-request` item in your collaboration file listing the drafted file(s)
+2. Immediately generate and output the ready-to-paste prompts for:
+   - Each consultant agent (one prompt, same for all consultants)
+   - Your own consolidation step (to be pasted when consultants have responded)
+3. The user pastes each prompt into the relevant agent session — no further explanation needed
+
+### If you are a consultant agent
+
+On every session start, check the lead's index for open `review-request` items (step 2 of the Session Start Checklist above).
+
+If one exists:
+1. Read the files listed in the `refs` field
+2. Post your findings as a `review` item in your own collaboration file, referencing the `review-request` ID
+3. Mark your item `done` and update your index
+
+If none exists, proceed with your own open items.
+
+### Prompt templates
+
+**Consultant prompt** (lead generates this after posting review-request `[XX-NNN]`):
+
+```
+Pending review request [XX-NNN] in docs/collaboration-[lead].md.
+Read the open review-request item, read the files listed in its refs, and leave your feedback
+as a review item in your own collaboration file referencing [XX-NNN].
+```
+
+**Consolidation prompt** (lead generates this for its own next session):
+
+```
+Consolidate reviews for [XX-NNN]. Read all consultant collaboration files for review items
+referencing [XX-NNN], integrate accepted feedback into the source-of-truth files, post a
+consolidation summary, and mark [XX-NNN] done.
+```
 
 ---
 

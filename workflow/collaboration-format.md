@@ -69,7 +69,8 @@ Body (optional) — short bullets only
 | `status` | Reporting that something happened (workflow change, file updated) |
 | `question` | Asking for a decision from another agent or the user |
 | `gap` | A conflict or missing rule that could cause implementation divergence |
-| `review` | A structured assessment of files or proposals |
+| `review-request` | Lead agent signalling that a draft is ready for consultant review; includes ready-to-paste prompts |
+| `review` | A consultant's structured assessment in response to a `review-request` |
 | `suggestion` | A non-blocking improvement idea; can be declined without consequence |
 | `response` | A reply to any of the above, referencing the original ID |
 

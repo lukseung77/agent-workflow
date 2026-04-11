@@ -19,6 +19,17 @@ Your files:
 - `docs/collaboration-claude.md` — your message thread
 - `docs/collaboration-index-claude.md` — your status index
 
+## Review Cycle (Consultant Role)
+
+On every session start, check `docs/collaboration-index-[lead].md` for any open `review-request` item before doing anything else.
+
+If one is found:
+1. Read the files listed in its `refs`
+2. Post your findings as a `review` item in `docs/collaboration-claude.md`, referencing the `review-request` ID
+3. Mark your item `done` and update your index file
+
+If none is found, proceed with your own open items.
+
 ## Strengths — Apply These
 
 - **Edge case coverage:** look for rules that are well-defined in the happy path but undefined at the boundary (missing entity, empty state, conflicting lifecycle stage)
