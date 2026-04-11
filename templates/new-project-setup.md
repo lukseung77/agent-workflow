@@ -49,16 +49,21 @@ For each agent (including yourself):
 
 ---
 
-## 5. Set Up CLAUDE.md
+## 5. Set Up Agent Instruction Files
 
-- [ ] Copy `templates/CLAUDE.md` → project root `CLAUDE.md` (or merge into existing)
-- [ ] Fill in `[Project Name]`
-- [ ] Fill in your role (lead or consultant)
-- [ ] Fill in the read-order file list (adjust paths for this project)
-- [ ] Fill in your ID prefix
-- [ ] Fill in the current stage and a one-sentence description of the current focus
-- [ ] Fill in the source-of-truth path
-- [ ] Add any project-specific constraints or guardrails
+- [ ] Copy `templates/agent-common.md` → project root `agent-common.md`
+  - This is the shared rules file all agents read first — no edits needed
+- [ ] Copy the instruction file for each agent in the project:
+  - Claude: copy `templates/CLAUDE.md` → project root `CLAUDE.md`
+  - Codex: copy `templates/CODEX.md` → project root `CODEX.md`
+  - Gemini: copy `templates/GEMINI.md` → project root `GEMINI.md`
+- [ ] In each agent instruction file, fill in:
+  - `[Project Name]`
+  - Role (`lead` or `consultant`) — delete the inapplicable definition
+  - `[spec/exploration path]` — the source-of-truth location for this project
+  - Current stage and one-sentence focus description
+  - Any project-specific constraints or guardrails
+- [ ] Confirm each file opens with: `Read agent-common.md first.`
 
 ---
 
