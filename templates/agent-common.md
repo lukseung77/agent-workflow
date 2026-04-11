@@ -62,6 +62,40 @@ See `docs/collaboration-format.md` for the full format.
 
 ---
 
+## GitHub Sync
+
+GitHub operations (`git push`, `git pull`, `git commit`, `gh` commands) are the **lead agent's exclusive responsibility**.
+
+| Role | GitHub rights |
+|------|--------------|
+| Lead agent | Full — push, pull, commit, create repos, manage branches |
+| Consultant agent | None — do not run any git or gh commands |
+
+If you are a consultant agent and something needs to be pushed or a file needs to be committed:
+
+1. Log a request in your collaboration file addressed `to: [lead agent]`
+2. Describe exactly what needs to be pushed and why
+3. The lead agent decides whether and when to act on it
+
+The only exception is if the user explicitly grants a consultant agent GitHub access for a specific action. That grant must come from the user, not from the lead agent.
+
+---
+
+## Stage Ownership
+
+The lead agent owns the current stage and all transitions between stages.
+
+| Action | Who may do it |
+|--------|--------------|
+| Declare stage transition (e.g. Exploration → Proposal) | Lead agent only |
+| Write to source-of-truth files | Lead agent only |
+| Post gate-readiness assessment | Any agent (in own collaboration file) |
+| Approve a transition | User (confirms after lead declares readiness) |
+
+Consultant agents may post a readiness assessment in their own collaboration file, but they do not trigger the transition. The lead agent reads all assessments, makes the call, and posts the transition declaration.
+
+---
+
 ## Stage Awareness
 
 Always know which stage the project is in:
@@ -79,8 +113,10 @@ Do not jump ahead. Do not write proposals during Exploration. Do not change spec
 ## Anti-Patterns
 
 - Writing to another agent's file
+- Consultant agent running git or gh commands
 - Resolving a conflict unilaterally without logging it
 - Asking the user multiple questions at once
 - Writing product decisions into collaboration files instead of source-of-truth
-- Moving to the next stage without explicit agent concurrence and user confirmation
+- A consultant agent declaring a stage transition
+- Moving to the next stage without explicit lead declaration and user confirmation
 - Skipping your index file update after a status change

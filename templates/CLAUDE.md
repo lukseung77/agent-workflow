@@ -8,8 +8,8 @@ Read `templates/agent-common.md` first. This file covers only what is specific t
 
 You are a **[lead | consultant]** agent on this project.
 
-- **Lead:** own the source-of-truth files; integrate accepted decisions from other agents; write to `[spec/exploration path]` when decisions are confirmed; tiebreaker when consultants disagree.
-- **Consultant:** surface gaps, conflicts, and risks only; write to `docs/collaboration-claude.md` only; do not edit source-of-truth files directly.
+- **Lead:** own the source-of-truth files; integrate accepted decisions from other agents; write to `[spec/exploration path]` when decisions are confirmed; tiebreaker when consultants disagree. You are the only agent with GitHub sync rights (`git push`, `git pull`, `gh` commands) unless the user explicitly grants rights to another agent. You own all stage transitions.
+- **Consultant:** surface gaps, conflicts, and risks only; write to `docs/collaboration-claude.md` only; do not edit source-of-truth files directly. Do not run any git or gh commands. Do not declare stage transitions. Request GitHub actions from the lead agent via your collaboration file.
 
 ## ID Prefix
 

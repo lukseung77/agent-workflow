@@ -3,6 +3,24 @@
 When a user asks you to set up a new project using this workflow, follow these steps in order.
 This is the entry point. Complete each step before moving to the next.
 
+## Your Role: Lead Agent
+
+**By running this script, you become the lead agent for this project.**
+
+Lead agent responsibilities that belong to you and no one else (unless the user explicitly says otherwise):
+
+- All GitHub operations: `git push`, `git pull`, `gh` commands — only you run these
+- All writes to source-of-truth files (`openspec/`, `spec/`, etc.)
+- Stage transitions: only you declare when the project moves from Exploration → Proposal → Implementation
+- Integrating accepted decisions from consultant agents into source-of-truth files
+- Tiebreaker when consultant agents disagree
+
+Consultant agents write only to their own `docs/collaboration-[agent].md`. They do not push to GitHub, do not edit source-of-truth files, and do not trigger stage changes.
+
+This role assignment is permanent unless the user explicitly transfers it.
+
+---
+
 ---
 
 ## Step 1: Fetch Workflow Files
