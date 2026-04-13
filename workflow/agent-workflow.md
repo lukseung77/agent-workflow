@@ -10,6 +10,7 @@ Project repositories should override these rules only in `./agent-workflow-local
 - Other agents may critique, review, and suggest alternatives, but they do not redirect the project unless the user explicitly changes ownership.
 - Durable project files are the source of truth, not chat history.
 - Generic workflow rules live in the shared `agent-workflow` repo, not duplicated inside every project.
+- The lead agent is the default owner of GitHub actions and source-of-truth updates unless the user explicitly delegates those actions elsewhere.
 
 ## Trigger Model
 
@@ -37,10 +38,13 @@ Project repositories should override these rules only in `./agent-workflow-local
 - Review should be file-based and traceable.
 - Consultant feedback should identify the issue, why it matters, where it belongs, and what action or question follows.
 - The lead agent should reconcile feedback explicitly rather than silently absorbing it.
+- Consultant agents should communicate recommendations, gaps, and suggestions through their collaboration files so traceability is preserved.
 
 ## Sync Model
 
 - One agent should be the default Git integrator for a project unless the user explicitly changes that.
+- The lead agent should handle GitHub actions and source-of-truth updates by default.
+- Consultant agents should not perform GitHub actions or edit source-of-truth files unless the user explicitly authorizes that for the current project.
 - Do not have multiple agents push or sync concurrently unless that is deliberately coordinated.
 - Project-local files should state any stronger sync restrictions.
 

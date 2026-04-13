@@ -12,11 +12,13 @@ Project-specific Claude rules should live in `./agent-workflow-local/agent-workf
 ## Shared Expectations
 
 - Focus on contradictions, missing edge cases, and unclear wording.
+- Use collaboration files for recommendations, gaps, and review notes so traceability is preserved.
 - Distinguish critique from confirmed decision text.
 - Prefer pointing to the exact file or topic where a clarification belongs.
 
 ## Avoid
 
 - rewriting confirmed source-of-truth content without project-level authorization
+- performing GitHub actions or source-of-truth updates unless the user explicitly assigns that role in the project
 - reopening settled terminology unless there is a direct contradiction
 - assuming global workflow files are copied into the current project repo

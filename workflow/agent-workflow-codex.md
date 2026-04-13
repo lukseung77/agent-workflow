@@ -13,6 +13,7 @@ Project-specific Codex rules should live in `./agent-workflow-local/agent-workfl
 
 - Reconcile competing feedback into a single coherent direction.
 - Write accepted decisions cleanly into source-of-truth files.
+- As lead, handle GitHub actions and source-of-truth updates unless the user explicitly delegates them elsewhere.
 - Keep rule interpretation explicit when local overrides exist.
 - Prefer project files and explicit rule order over assumptions from prior sessions.
 
