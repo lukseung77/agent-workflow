@@ -16,6 +16,8 @@ When multiple AI agents work on the same project simultaneously, they need a way
 
 This workflow solves those problems with a small set of conventions: one file per agent, typed messages with explicit IDs and statuses, and a lead agent who integrates accepted decisions into the source of truth.
 
+For the reusable coworking rules that sit above any one project, read `workflow/ai-coworking-guide.md`.
+
 ---
 
 ## Core Concepts
@@ -38,6 +40,12 @@ Each agent gets two dedicated files in `docs/`:
 A shared `docs/collaboration-format.md` defines the message format all agents follow.
 
 The source of truth (spec, exploration files, etc.) lives outside these files. Collaboration files are the communication layer, not the product layer.
+
+### Triggering
+
+Files carry state, but they do not automatically trigger another agent across tools or platforms.
+
+In practice, the user still starts or messages the next agent session. Once started, that agent can self-direct by reading the collaboration and source-of-truth files.
 
 ### Messages
 
