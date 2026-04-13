@@ -25,28 +25,46 @@ This role assignment is permanent unless the user explicitly transfers it.
 
 ## Step 1: Fetch Workflow Files
 
-Fetch the template files from the workflow repository:
+Fetch the shared workflow repository:
 
 ```
 https://github.com/lukseung77/agent-workflow
 ```
 
-You can clone it into a temporary location or download the files directly. You need:
+Preferred local layout:
 
 ```
-workflow/README.md
+../agent-workflow
+```
+
+Do not copy the shared global workflow rules into the new project by default.
+
+The shared rules should stay in `../agent-workflow/workflow/`.
+The new project should keep only project-local overrides in `./agent-workflow-local/`.
+
+Read these shared workflow files before continuing:
+
+```
+workflow/rule-precedence.md
+workflow/agent-workflow.md
+workflow/agent-workflow-[agent].md
 workflow/stages.md
-workflow/collaboration-format.md
-workflow/decision-protocol.md
-templates/agent-common.md
-templates/CLAUDE.md              ← or CODEX.md / GEMINI.md for your agent type
+workflow/review-cycle.md
+```
+
+Read these setup-oriented files as needed:
+
+```
+README.md
+workflow/ai-coworking-guide.md
+templates/project-init.md
 templates/new-project-setup.md
 templates/docs/collaboration-format.md
 templates/docs/collaboration-agent.md
 templates/docs/collaboration-index-agent.md
 ```
 
-Read `workflow/README.md`, `workflow/stages.md`, and `workflow/decision-protocol.md` before continuing. Do not start the user interview until you understand the workflow.
+Do not start the user interview until you understand the workflow.
 
 ---
 
@@ -100,7 +118,7 @@ Record the answers. These go into the initial `product-scope.md` under a `Tools 
 Follow `templates/new-project-setup.md` to complete the full project structure:
 
 - Create `docs/` and all collaboration files
-- Copy and fill in `agent-common.md` and your agent's instruction file
+- Create `agent-workflow-local/` for project-local shared rules, per-agent rules, and current state
 - Create `openspec/explorations/` as the source-of-truth directory
 - Create `openspec/explorations/product-scope.md` using the Q1–Q6 answers:
 

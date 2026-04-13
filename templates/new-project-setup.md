@@ -10,7 +10,7 @@ Work through it top to bottom. Check off each item before moving to the next.
 
 These must be done before this checklist begins (handled in `project-init.md`):
 
-- [ ] Workflow files fetched from `https://github.com/lukseung77/agent-workflow`
+- [ ] Shared workflow repo fetched from `https://github.com/lukseung77/agent-workflow`
 - [ ] User interview complete (project title, purpose, primary user, core outcomes, platform, tools)
 - [ ] GitHub repo created and cloned locally
 - [ ] `openspec/explorations/product-scope.md` created from interview answers
@@ -28,6 +28,10 @@ These must be done before this checklist begins (handled in `project-init.md`):
 ## 3. Create The Docs Directory
 
 - [ ] Create `docs/` in the project root if it does not exist
+- [ ] Create `agent-workflow-local/` in the project root if it does not exist
+- [ ] Create a short `docs/collaboration.md` bootstrap file that points agents to:
+  - `../agent-workflow/workflow/`
+  - `./agent-workflow-local/`
 - [ ] Copy `templates/docs/collaboration-format.md` → `docs/collaboration-format.md`
 - [ ] Fill in the agent roles table in `docs/collaboration-format.md`:
   - Agent name
@@ -37,7 +41,19 @@ These must be done before this checklist begins (handled in `project-init.md`):
 
 ---
 
-## 4. Create Per-Agent Collaboration Files
+## 4. Create Project-Local Workflow Files
+
+- [ ] Create `agent-workflow-local/agent-workflow.md`
+  - project-wide workflow overrides only
+- [ ] Create `agent-workflow-local/agent-workflow-[agent].md` for each participating agent
+  - project-specific agent role and restrictions only
+- [ ] Create `agent-workflow-local/current-state.md`
+  - current stage, environment facts, source-of-truth order, and pending questions
+- [ ] Do not copy the shared global workflow files into the project repo unless self-contained packaging is explicitly needed
+
+---
+
+## 5. Create Per-Agent Collaboration Files
 
 For each agent (including yourself):
 
@@ -47,24 +63,6 @@ For each agent (including yourself):
 - [ ] Copy `templates/docs/collaboration-index-agent.md` → `docs/collaboration-index-[agentname].md`
 - [ ] Replace `[Agent Name]` and `[agent]` with the actual agent name
 - [ ] Replace `[source-of-truth path]` with the actual path
-
----
-
-## 5. Set Up Agent Instruction Files
-
-- [ ] Copy `templates/agent-common.md` → project root `agent-common.md`
-  - This is the shared rules file all agents read first — no edits needed
-- [ ] Copy the instruction file for each agent in the project:
-  - Claude: copy `templates/CLAUDE.md` → project root `CLAUDE.md`
-  - Codex: copy `templates/CODEX.md` → project root `CODEX.md`
-  - Gemini: copy `templates/GEMINI.md` → project root `GEMINI.md`
-- [ ] In each agent instruction file, fill in:
-  - `[Project Name]`
-  - Role (`lead` or `consultant`) — delete the inapplicable definition
-  - `[spec/exploration path]` — the source-of-truth location for this project
-  - Current stage and one-sentence focus description
-  - Any project-specific constraints or guardrails
-- [ ] Confirm each file opens with: `Read agent-common.md first.`
 
 ---
 
@@ -114,8 +112,9 @@ Write a short onboarding note in your collaboration file addressed `to: all` tha
 Before considering setup complete:
 
 - [ ] All collaboration files exist and are named correctly
+- [ ] `agent-workflow-local/` exists with shared, per-agent, and current-state files
 - [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth path filled in
-- [ ] `CLAUDE.md` is complete and correct for this project
+- [ ] `docs/collaboration.md` correctly points to the shared workflow repo and local overrides
 - [ ] Your own collaboration file has at least one `status` item logged
 - [ ] Your index file is up to date
 - [ ] Any immediate gaps or conflicts spotted during setup are logged (not silently fixed)

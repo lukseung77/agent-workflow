@@ -16,7 +16,11 @@ When multiple AI agents work on the same project simultaneously, they need a way
 
 This workflow solves those problems with a small set of conventions: one file per agent, typed messages with explicit IDs and statuses, and a lead agent who integrates accepted decisions into the source of truth.
 
-For the reusable coworking rules that sit above any one project, read `workflow/ai-coworking-guide.md`.
+For the reusable coworking rules that sit above any one project, read:
+
+- `workflow/rule-precedence.md`
+- `workflow/agent-workflow.md`
+- `workflow/ai-coworking-guide.md`
 
 ---
 
@@ -32,7 +36,33 @@ Each agent has a **role**:
 
 ### Files
 
-Each agent gets two dedicated files in `docs/`:
+The recommended layout is now split between one shared workflow repo and project-local overrides:
+
+```text
+shared-workspace/
+├── agent-workflow/
+│   └── workflow/
+│       ├── rule-precedence.md
+│       ├── agent-workflow.md
+│       ├── agent-workflow-codex.md
+│       ├── agent-workflow-claude.md
+│       ├── agent-workflow-gemini.md
+│       ├── ai-coworking-guide.md
+│       ├── stages.md
+│       └── review-cycle.md
+└── some-project/
+    └── agent-workflow-local/
+        ├── agent-workflow.md
+        ├── agent-workflow-codex.md
+        ├── agent-workflow-claude.md
+        ├── agent-workflow-gemini.md
+        └── current-state.md
+```
+
+Projects should keep only local overrides and current-state material in their own repository.
+
+The shared workflow repo should remain the default home for generic rules.
+Each agent still gets two dedicated collaboration files in `docs/`:
 
 - `collaboration-[agent].md` — full message thread for that agent
 - `collaboration-index-[agent].md` — one-row-per-item index for fast scanning
