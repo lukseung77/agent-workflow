@@ -1,23 +1,21 @@
 # Agent Workflow
 
-This file contains the shared workflow defaults for all projects using the `agent-workflow` repository.
+Shared defaults for all projects using `agent-workflow`.
 
-Project repositories should override these rules only in `./agent-workflow-local/`.
+Project-specific overrides belong in `./agent-workflow-local/`.
 
 ## Default Model
 
 - One agent leads each phase.
 - Other agents may critique, review, and suggest alternatives, but they do not redirect the project unless the user explicitly changes ownership.
 - Durable project files are the source of truth, not chat history.
-- Generic workflow rules live in the shared `agent-workflow` repo, not duplicated inside every project.
 - The lead agent is the default owner of GitHub actions and source-of-truth updates unless the user explicitly delegates those actions elsewhere.
 
 ## Trigger Model
 
 - Shared files carry state but do not automatically trigger another agent across tools, terminals, or platforms.
 - The practical trigger is still the user explicitly starting or messaging the next agent.
-- Default minimal handoff:
-  - `Files updated. Re-read docs/collaboration.md and continue from the next unresolved question.`
+- Default minimal handoff: `Files updated. Re-read docs/collaboration.md and continue from the next unresolved question.`
 
 ## Source-Of-Truth Model
 
@@ -25,6 +23,13 @@ Project repositories should override these rules only in `./agent-workflow-local
 - Separate stable rules from current project state.
 - Prefer focused files by topic instead of one monolithic document.
 - Keep confirmed, deferred, and still-open items distinguishable.
+
+## Active State Model
+
+- `current-state.md` is the canonical current-project queue unless a project-local rule explicitly says otherwise.
+- Collaboration files are not the canonical open-question queue by default.
+- Collaboration files hold recommendations, gaps, review findings, and reconciliation history.
+- The lead agent updates `current-state.md` after reconciling relevant collaboration input.
 
 ## Question Model
 
@@ -38,13 +43,15 @@ Project repositories should override these rules only in `./agent-workflow-local
 - Review should be file-based and traceable.
 - Consultant feedback should identify the issue, why it matters, where it belongs, and what action or question follows.
 - The lead agent should reconcile feedback explicitly rather than silently absorbing it.
-- Consultant agents should communicate recommendations, gaps, and suggestions through their collaboration files so traceability is preserved.
+- Consultant agents should communicate recommendations, gaps, and suggestions through collaboration files.
 
 ## Sync Model
 
 - One agent should be the default Git integrator for a project unless the user explicitly changes that.
 - The lead agent should handle GitHub actions and source-of-truth updates by default.
 - Consultant agents should not perform GitHub actions or edit source-of-truth files unless the user explicitly authorizes that for the current project.
+- If the relevant repositories are already available locally, prefer local files and local repository state over additional Git operations.
+- Withhold Git operations by default unless the user explicitly asks for them or there is no reasonable local-only way to complete the task.
 - Do not have multiple agents push or sync concurrently unless that is deliberately coordinated.
 - Project-local files should state any stronger sync restrictions.
 

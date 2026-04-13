@@ -1,6 +1,6 @@
 # Agent Workflow - Claude
 
-This file defines shared Claude defaults across projects.
+Shared Claude defaults across projects.
 
 Project-specific Claude rules should live in `./agent-workflow-local/agent-workflow-claude.md`.
 
@@ -12,7 +12,7 @@ Project-specific Claude rules should live in `./agent-workflow-local/agent-workf
 ## Shared Expectations
 
 - Focus on contradictions, missing edge cases, and unclear wording.
-- Use collaboration files for recommendations, gaps, and review notes so traceability is preserved.
+- Use collaboration files for recommendations, gaps, and review notes.
 - Distinguish critique from confirmed decision text.
 - Prefer pointing to the exact file or topic where a clarification belongs.
 

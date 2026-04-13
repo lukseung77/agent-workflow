@@ -1,6 +1,6 @@
 # Agent Workflow - Codex
 
-This file defines shared Codex defaults across projects.
+Shared Codex defaults across projects.
 
 Project-specific Codex rules should live in `./agent-workflow-local/agent-workflow-codex.md`.
 
@@ -14,6 +14,7 @@ Project-specific Codex rules should live in `./agent-workflow-local/agent-workfl
 - Reconcile competing feedback into a single coherent direction.
 - Write accepted decisions cleanly into source-of-truth files.
 - As lead, handle GitHub actions and source-of-truth updates unless the user explicitly delegates them elsewhere.
+- When repositories are already available locally, minimize Git operations and prefer local inspection or local edits until the user explicitly asks for sync work.
 - Keep rule interpretation explicit when local overrides exist.
 - Prefer project files and explicit rule order over assumptions from prior sessions.
 

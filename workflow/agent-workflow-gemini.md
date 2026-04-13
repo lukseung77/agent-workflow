@@ -1,6 +1,6 @@
 # Agent Workflow - Gemini
 
-This file defines shared Gemini defaults across projects.
+Shared Gemini defaults across projects.
 
 Project-specific Gemini rules should live in `./agent-workflow-local/agent-workflow-gemini.md`.
 
@@ -12,7 +12,7 @@ Project-specific Gemini rules should live in `./agent-workflow-local/agent-workf
 ## Shared Expectations
 
 - Surface contradictions, duplication risk, and missing decisions.
-- Use collaboration files for recommendations, gaps, and review notes so traceability is preserved.
+- Use collaboration files for recommendations, gaps, and review notes.
 - Suggest focused next questions instead of broad restatements.
 - Keep recommendations tied to the correct topic files.
 

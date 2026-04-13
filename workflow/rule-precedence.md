@@ -1,23 +1,16 @@
 # Rule Precedence
 
-This file defines where workflow rules live and what order agents should read them in.
+This file defines where workflow rules live, what order to read them in, and how conflicts are resolved.
 
-## Shared-Path Model
+## Layout
 
-The global workflow rules live in the shared `agent-workflow` repository.
-
-Projects should not copy those global rules into every project repo by default.
-
-Instead:
-
-- shared global rules live in `../agent-workflow/workflow/`
-- project-specific overrides live in `./agent-workflow-local/`
-
-This keeps global workflow changes centralized and avoids repeated Git changes across project repositories.
+- Shared workflow rules live in `../agent-workflow/workflow/`
+- Project-specific overrides live in `./agent-workflow-local/`
+- Projects should not copy the shared global rules into each repository by default
 
 ## Read Order
 
-Agents should read rules in this order:
+Read these files in order:
 
 1. `../agent-workflow/workflow/rule-precedence.md`
 2. `../agent-workflow/workflow/agent-workflow.md`
@@ -26,13 +19,15 @@ Agents should read rules in this order:
 5. `./agent-workflow-local/agent-workflow-{agent}.md`
 6. `./agent-workflow-local/current-state.md`
 
-Read additional topic files such as `stages.md`, `review-cycle.md`, or other references only when relevant to the current task.
+Read topic files such as `stages.md` or `review-cycle.md` only when relevant to the current task.
+
+If the project uses collaboration files, read those after the startup path above and only as needed for agent-specific recommendations, gaps, review notes, or reconciliation history.
 
 ## Conflict Resolution
 
 If two files disagree, the more specific and more local file wins.
 
-Precedence from highest to lowest:
+Highest to lowest:
 
 1. `./agent-workflow-local/agent-workflow-{agent}.md`
 2. `./agent-workflow-local/agent-workflow.md`
@@ -81,6 +76,15 @@ Current-state file:
 - pending questions
 - active constraints
 - environment facts that matter right now
+- the canonical open-question queue for the project
+
+Collaboration files:
+
+- agent-specific recommendations
+- gaps
+- review findings
+- reconciliation history
+- traceable cross-agent communication
 
 ## Missing Shared Repo
 
