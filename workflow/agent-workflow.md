@@ -31,6 +31,13 @@ Project-specific overrides belong in `./agent-workflow-local/`.
 - Collaboration files hold recommendations, gaps, review findings, and reconciliation history.
 - The lead agent updates `current-state.md` after reconciling relevant collaboration input.
 
+## Cross-Session Lead Resume
+
+- A lead agent starting from another session should rebuild context from files, not from assumptions about prior chat history.
+- On resume, the lead agent should re-read the startup path first, then `current-state.md`, then any relevant collaboration files before making new decisions.
+- If consultant feedback was posted while the lead agent was away, the lead agent should reconcile that feedback explicitly into source-of-truth files or the current-state queue rather than leaving it implicit in collaboration threads.
+- A resumed lead agent should leave a traceable status note when it has finished reconciling cross-session feedback.
+
 ## Question Model
 
 - Ask one focused question at a time while requirements are still emerging.

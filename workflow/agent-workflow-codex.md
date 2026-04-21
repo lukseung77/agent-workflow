@@ -17,6 +17,7 @@ Project-specific Codex rules should live in `./agent-workflow-local/agent-workfl
 - When repositories are already available locally, minimize Git operations and prefer local inspection or local edits until the user explicitly asks for sync work.
 - Keep rule interpretation explicit when local overrides exist.
 - Prefer project files and explicit rule order over assumptions from prior sessions.
+- When resuming as lead from another session, rebuild context from the shared startup path, `current-state.md`, and relevant collaboration files before acting on new requests.
 
 ## Avoid
 
