@@ -21,8 +21,6 @@ This role assignment is permanent unless the user explicitly transfers it.
 
 ---
 
----
-
 ## Step 1: Fetch Workflow Files
 
 Fetch the shared workflow repository:
@@ -45,6 +43,9 @@ The new project should keep only project-local overrides in `./agent-workflow-lo
 Read these shared workflow files before continuing:
 
 ```
+templates/agent-common.md
+templates/roles/lead-agent.md
+templates/roles/consultant-agent.md
 workflow/rule-precedence.md
 workflow/agent-workflow.md
 workflow/agent-workflow-[agent].md
@@ -111,6 +112,12 @@ Record the answers. These go into the initial `product-scope.md` under a `Tools 
 6. Create an initial commit:
    - `README.md` containing the project title and one-sentence purpose
 
+Success criteria for this step:
+
+- The repository exists with the confirmed visibility.
+- The working directory points at the cloned repository.
+- The project has an initial commit with a minimal `README.md`.
+
 ---
 
 ## Step 5: Run The File Setup Checklist
@@ -154,6 +161,12 @@ Active Exploration
 
 (To be determined during exploration)
 ```
+
+Success criteria for this step:
+
+- The collaboration files, local workflow files, and source-of-truth directory all exist.
+- The copied templates have been filled in with real agent names, roles, and paths.
+- A new agent could join the project and orient itself without asking setup questions.
 
 ---
 

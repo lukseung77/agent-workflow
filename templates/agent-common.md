@@ -1,7 +1,36 @@
 # Agent Common Rules
 
 This file applies to every agent on the project, regardless of role or tool.
-Each agent-specific file (CLAUDE.md, CODEX.md, GEMINI.md) references this as the shared foundation.
+Each agent-specific file references this as the shared foundation.
+
+---
+
+## Core Operating Rules
+
+These rules apply to every agent, on every task:
+
+1. Do not assume. Do not hide confusion. Surface uncertainties and tradeoffs clearly.
+2. Write the minimum code that solves the problem. Do not add speculative work.
+3. Touch only what is necessary. Clean up only the changes you introduced.
+4. Define success criteria before acting. Continue until the result is verified.
+5. If information is missing or you would need to make an assumption, verify with the user before proceeding.
+
+---
+
+## How To Read These Templates
+
+At the start of a session, read in this order:
+
+1. `templates/agent-common.md`
+2. Your agent-specific file (`templates/CLAUDE.md`, `templates/CODEX.md`, or `templates/GEMINI.md`)
+3. Your role file:
+   - `templates/roles/lead-agent.md`
+   - `templates/roles/consultant-agent.md`
+4. `docs/collaboration-format.md`
+5. Your collaboration index and collaboration file
+6. The source-of-truth files for the current stage
+
+Use the most specific applicable file when two instructions overlap.
 
 ---
 
@@ -9,12 +38,12 @@ Each agent-specific file (CLAUDE.md, CODEX.md, GEMINI.md) references this as the
 
 Run this every time you start a session, before doing anything else:
 
-1. Read `docs/collaboration-format.md` — message format, rules, and agent roles
-2. Read `docs/collaboration-index-[lead].md` — check for any open `review-request` items
-3. **If a `review-request` is open:** that is your first task — see the Review Cycle section below
-4. Read `docs/collaboration-index-[other-agents].md` — other agents' current status
-5. Read your own `docs/collaboration-[yourname].md` — your own open items
-6. Read the source-of-truth files relevant to the current stage
+1. Read `docs/collaboration-format.md` for the collaboration format and local agent roster.
+2. Read `docs/collaboration-index-[lead].md` to check for any open `review-request` items.
+3. If a `review-request` is open, handle that first.
+4. Read `docs/collaboration-index-[other-agents].md` to see current status across the team.
+5. Read your own `docs/collaboration-[yourname].md` for open items and prior decisions.
+6. Read the source-of-truth files relevant to the current stage.
 
 Do not act on stale context. Always read the current state of files before writing anything.
 
@@ -83,32 +112,12 @@ See `docs/collaboration-format.md` for the full format.
 
 ## Review Cycle
 
-The review cycle automates the draft → review → consolidate loop. See `workflow/review-cycle.md` for the full protocol.
+The review cycle automates the draft -> review -> consolidate loop.
+See `workflow/review-cycle.md` for the full protocol.
+Role-specific review duties live in:
 
-### If you are the lead agent
-
-After completing any draft:
-
-1. Post a `review-request` item in your collaboration file listing the drafted file(s)
-2. Update your index — that index entry is what consultants read on session start
-3. Nothing else is needed — the files carry all context
-
-When you start your next session after consultants have responded:
-
-1. Check your own index for open `review-request` items
-2. Read consultant collaboration files for `review` items referencing that ID
-3. Consolidate: integrate accepted feedback, post a summary, mark the request done
-
-### If you are a consultant agent
-
-On every session start, check the lead's index for open `review-request` items (step 2 of the Session Start Checklist above).
-
-If one exists:
-1. Read the files listed in the `refs` field
-2. Post your findings as a `review` item in your own collaboration file, referencing the `review-request` ID
-3. Mark your item `done` and update your index
-
-If none exists, proceed with your own open items.
+- `templates/roles/lead-agent.md`
+- `templates/roles/consultant-agent.md`
 
 ---
 

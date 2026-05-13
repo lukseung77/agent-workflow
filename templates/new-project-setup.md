@@ -1,7 +1,7 @@
 # New Project Setup — File Structure Checklist
 
 This checklist covers the file and directory setup for a new project.
-It is called from `project-init.md` (Step 5) after the user interview and GitHub repo creation are complete.
+It is called from `project-init.md` after the user interview and repository setup are complete.
 Work through it top to bottom. Check off each item before moving to the next.
 
 ---
@@ -12,7 +12,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 
 - [ ] Shared workflow repo fetched from `https://github.com/lukseung77/agent-workflow`
 - [ ] User interview complete (project title, purpose, primary user, core outcomes, platform, tools)
-- [ ] GitHub repo created and cloned locally
+- [ ] Repository created and cloned locally
 - [ ] `openspec/explorations/product-scope.md` created from interview answers
 
 ---
@@ -119,11 +119,17 @@ Before considering setup complete:
 - [ ] Your index file is up to date
 - [ ] Any immediate gaps or conflicts spotted during setup are logged (not silently fixed)
 
+Success criteria:
+
+- Any agent can join the project, read the bootstrap files, and know where to write.
+- The lead agent can begin Exploration without guessing file locations, roles, or source-of-truth ownership.
+- No setup rule is duplicated across local project files unless the duplication is intentional and clearly scoped.
+
 ---
 
 ## Notes
 
 - Do not start writing to source-of-truth files until this checklist is complete.
-- The user interview and GitHub repo creation happen in `project-init.md` before this checklist runs — do not repeat those steps here.
+- The user interview and repository creation happen in `project-init.md` before this checklist runs. Do not repeat those steps here.
 - If you are the lead agent, proceed directly to `project-init.md` Step 6 (begin exploration) after this checklist is done.
 - If you are a consultant agent doing the setup, notify the lead agent that setup is complete before beginning any review work.

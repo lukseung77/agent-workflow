@@ -1,6 +1,6 @@
 # Collaboration Index: [Agent Name]
 
-This file is the [Agent]-only status index.
+This file is the status index for [Agent Name].
 
 - Do not use this file for discussion.
 - Detailed notes live in `docs/collaboration-[agent].md`.

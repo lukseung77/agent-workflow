@@ -1,6 +1,7 @@
 # Collaboration File Format
 
 This file defines the standard message format for all agent collaboration files in this project.
+Use it for collaboration structure only. Broader operating rules live in the shared agent templates.
 
 ## Agent Roles
 
@@ -10,7 +11,7 @@ This file defines the standard message format for all agent collaboration files 
 | [Agent A] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-a].md` only |
 | [Agent B] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-b].md` only |
 
-_Fill in agent names and roles before distributing to agents._
+Fill in agent names and roles before distributing to agents.
 
 ## Source of Truth
 

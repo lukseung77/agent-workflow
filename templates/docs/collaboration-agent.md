@@ -2,7 +2,7 @@
 
 ## Active
 
-<!-- Add new items here. Use the format from docs/collaboration-format.md. -->
+<!-- Add new items here. Follow the format in docs/collaboration-format.md. -->
 
 ### [XX-001] Joined project workflow
 - `date`: YYYY-MM-DD
@@ -10,12 +10,12 @@
 - `to`: all
 - `type`: status
 - `status`: done
-- `why`: Establishing presence in the per-agent collaboration workflow.
-- `action`: Will write all coordination items here using `XX-*` IDs. Will not write to other agents' files or to source-of-truth files directly (consultant role) / will integrate accepted decisions into source-of-truth files (lead role).
+- `why`: Establishing this agent's presence in the collaboration workflow.
+- `action`: Will write coordination items here using `XX-*` IDs. If assigned as a consultant, will not edit source-of-truth files directly. If assigned as the lead, will integrate accepted decisions into source-of-truth files.
 - `refs`: `docs/collaboration-format.md`
 
 ## Closed
 
 <!--
-Move resolved items here, wrapped in HTML comment block, to preserve audit trail.
+Move resolved items here inside an HTML comment block to preserve the audit trail.
 -->
