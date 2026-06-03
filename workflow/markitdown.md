@@ -1,6 +1,6 @@
 # MarkItDown For Agent Context
 
-Use MarkItDown when source material is in a bulky or agent-unfriendly format and the goal is to extract readable Markdown for review, summarization, or source-of-truth updates.
+Use MarkItDown when source material is bulky or agent-unfriendly and the goal is to extract readable Markdown for review, summarization, or source-of-truth updates with lower token consumption.
 
 Reference: https://github.com/microsoft/markitdown
 
@@ -9,6 +9,7 @@ Reference: https://github.com/microsoft/markitdown
 - PDFs, DOCX, PPTX, XLSX, HTML, email, ZIP, EPUB, audio transcripts, and other large external inputs
 - product briefs, contracts, reports, exported tickets, design notes, or planning documents
 - one-time conversion before asking agents to inspect or summarize content
+- preprocessing even when an agent can read the binary directly, if the converted Markdown will reduce repeated context loading
 
 ## Basic Use
 
@@ -46,4 +47,4 @@ pip install 'markitdown[pdf,docx,pptx,xlsx]'
 - Ask agents to read sections by heading or line range when possible.
 - Summarize large conversions into a short extraction note.
 - Treat converted Markdown as source material, not automatically accepted requirements.
-- Use OCR or cloud extraction only when local conversion misses decision-relevant content.
+- Use direct binary reads, OCR, or cloud extraction only for spot checks or when local conversion misses decision-relevant content.
