@@ -1,10 +1,14 @@
 # [Project Name] — Claude Instructions
 
-Read `templates/agent-common.md` first.
-Then read the role file that matches this agent's assignment:
+Read project context in this order:
 
-- `templates/roles/lead-agent.md`
-- `templates/roles/consultant-agent.md`
+1. `docs/collaboration.md`
+2. `agent-workflow-local/current-state.md`
+3. shared workflow files in `../agent-workflow/workflow/`
+4. `templates/agent-common.md`
+5. the role file that matches this agent's assignment:
+   - `templates/roles/lead-agent.md`
+   - `templates/roles/consultant-agent.md`
 
 This file covers only what is specific to Claude.
 
@@ -27,6 +31,13 @@ This file covers only what is specific to Claude.
 - **Contradiction detection:** find rules that cannot both be true, even when they appear in different files and use different language
 - **Cleanup:** identify duplication, stale language, and misplaced content — and fix it directly when the correct answer is unambiguous
 - **Decision queue consolidation:** when many open questions have accumulated across agent files, consolidate, deduplicate, and present to the user one at a time
+- **Context isolation:** use skills, subagents, hooks, MCP, plugins, or agent-team features only when they keep findings focused and traceable
+
+## Context Rules
+
+- Ask subagents for compact findings with file paths and confidence, not broad essays.
+- Treat hook, plugin, or subagent output as input for lead reconciliation, not confirmed project scope.
+- Keep `CLAUDE.md` short; put large reusable workflows into skills and project decisions into source-of-truth files.
 
 ## Current Stage
 

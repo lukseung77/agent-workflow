@@ -21,6 +21,9 @@ For the reusable coworking rules that sit above any one project, read:
 - `workflow/rule-precedence.md`
 - `workflow/agent-workflow.md`
 - `workflow/ai-coworking-guide.md`
+- `workflow/context-management.md`
+- `workflow/markitdown.md`
+- `skills/multi-agent-coworking/SKILL.md`
 
 ---
 
@@ -31,7 +34,7 @@ For the reusable coworking rules that sit above any one project, read:
 Each agent has a **role**:
 
 - **Lead agent** — owns the source of truth files (spec, openspec, etc.); integrates accepted decisions from other agents; has final say on synthesis
-- **Consultant agents** — read everything; write only to their own collaboration file; surface gaps, conflicts, and risks; do not write directly to the source of truth
+- **Consultant agents** — read the relevant state, indexes, and focused source files; write only to their own collaboration file; surface gaps, conflicts, and risks; do not write directly to the source of truth
 - **User** — makes product/scope decisions that agents cannot resolve; is asked one question at a time, not a batch
 
 ### Files
@@ -48,8 +51,12 @@ shared-workspace/
 │       ├── agent-workflow-claude.md
 │       ├── agent-workflow-gemini.md
 │       ├── ai-coworking-guide.md
+│       ├── context-management.md
+│       ├── markitdown.md
 │       ├── stages.md
 │       └── review-cycle.md
+│   └── skills/
+│       └── multi-agent-coworking/
 └── some-project/
     └── agent-workflow-local/
         ├── agent-workflow.md
@@ -70,6 +77,18 @@ Each agent still gets two dedicated collaboration files in `docs/`:
 A shared `docs/collaboration-format.md` defines the message format all agents follow.
 
 The source of truth (spec, exploration files, etc.) lives outside these files. Collaboration files are the communication layer, not the product layer.
+
+### Context Budget
+
+Agents should scan before they deep-read:
+
+1. `docs/collaboration.md`
+2. `agent-workflow-local/current-state.md`
+3. collaboration indexes
+4. focused source-of-truth files
+5. full collaboration threads only when referenced
+
+Use `workflow/context-management.md` for the detailed policy. Use `workflow/markitdown.md` when bulky PDFs, office documents, exported tickets, or other non-Markdown inputs need conversion before agent review.
 
 ### Triggering
 
@@ -163,7 +182,7 @@ Each item in a collaboration file is a typed, ID-tracked message:
 ## Setting Up A New Project
 
 **If you are an AI agent and the user just asked you to set up a project:**
-Read `templates/project-init.md`. That is your entry point — it covers fetching these files, interviewing the user, creating the GitHub repo, and beginning exploration.
+Read `templates/project-init.md`. That is your entry point; it covers fetching these files, interviewing the user, creating the GitHub repo, and beginning exploration.
 
 **If you are setting up manually:**
 
@@ -202,6 +221,7 @@ your-project/
 5. User decisions are recorded immediately; the lead agent writes them into spec
 6. Move to the next stage only after agents concur and user has answered all blocking questions
 7. Cleanup passes are most effective when done independently by different agents
+8. Large external documents should be converted or summarized before being loaded into an agent conversation
 
 ---
 
@@ -213,3 +233,4 @@ your-project/
 - **Moving to proposal before exploration conflicts are resolved** — the proposal will inherit the ambiguity
 - **Skipping the index file** — the index is how other agents scan efficiently without reading the full thread
 - **Resolving conflicts unilaterally** — surface them; let the lead or user decide
+- **Pasting bulky raw documents into chat** — convert to Markdown, summarize, and link to source material

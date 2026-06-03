@@ -18,9 +18,13 @@ Project-specific Codex rules should live in `./agent-workflow-local/agent-workfl
 - Keep rule interpretation explicit when local overrides exist.
 - Prefer project files and explicit rule order over assumptions from prior sessions.
 - When resuming as lead from another session, rebuild context from the shared startup path, `current-state.md`, and relevant collaboration files before acting on new requests.
+- Use Codex subagents, review agents, web search, MCP tools, skills, and Cloud tasks only when they reduce context pressure or improve verification for the current task.
+- Keep `AGENTS.md`, Codex rules, hooks, and skills short; move project-specific detail into source-of-truth files or focused references.
+- Treat approval mode, sandboxing, and network access as operational facts to report clearly before relying on external tools.
 
 ## Avoid
 
 - silently overriding project-local rules with generic defaults
 - treating consultant suggestions as accepted decisions without reconciliation
 - expanding scope during implementation without a project-level decision path
+- sending broad exploratory work through the main session when a bounded subagent or local review pass can return a compact summary

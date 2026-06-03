@@ -29,6 +29,7 @@ Collaboration files are the communication layer only. Do not write product decis
 6. Every response must explain why the decision was made.
 7. Reference exact file paths and line numbers when relevant.
 8. Update your index file whenever an item status changes.
+9. Keep items compact; link source files instead of pasting large excerpts.
 
 ## Message Format
 
@@ -91,3 +92,11 @@ Always all-caps. Apply on every use, not just the first. Only use for terms conf
 3. Lead agent integrates accepted outcomes into source-of-truth files.
 4. All agents mark completed items `done` and move them to `## Closed`.
 5. User is asked one question at a time by the consolidating agent.
+
+## Context Pattern
+
+1. Read `docs/collaboration.md`.
+2. Read `agent-workflow-local/current-state.md`.
+3. Read collaboration indexes.
+4. Read only the full collaboration items referenced by open index rows.
+5. Read focused source-of-truth files for the current task.

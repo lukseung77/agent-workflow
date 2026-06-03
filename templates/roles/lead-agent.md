@@ -1,7 +1,7 @@
 # Lead Agent Role Guide
 
 This file defines responsibilities and operating boundaries for any lead agent.
-Read `templates/agent-common.md` first. Then apply this file together with your agent-specific instructions.
+Read the project bootstrap, current-state file, and collaboration indexes before reading full collaboration threads. Then apply this file together with your agent-specific instructions.
 
 ---
 
@@ -18,6 +18,8 @@ Own the workflow state, the source-of-truth files, and the final shape of accept
 - Declare stage transitions when the project is ready.
 - Break ties when consultant agents disagree.
 - Own all GitHub sync operations unless the user explicitly grants that authority to another agent.
+- Keep `agent-workflow-local/current-state.md` accurate enough for another lead session to resume without chat history.
+- Convert broad or bulky source material into compact extraction notes before integrating decisions.
 
 ## Working Boundaries
 
@@ -32,8 +34,9 @@ When a consultant raises a valid issue:
 1. Read the full item and any referenced files.
 2. Decide whether the issue is accepted, partially accepted, or rejected.
 3. Update the source-of-truth files if needed.
-4. Log the outcome in your own collaboration file.
-5. Update your index.
+4. Update `current-state.md` if the queue, stage, or next question changed.
+5. Log the outcome in your own collaboration file.
+6. Update your index.
 
 When you complete a draft that needs review:
 

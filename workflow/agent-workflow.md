@@ -23,6 +23,7 @@ Project-specific overrides belong in `./agent-workflow-local/`.
 - Separate stable rules from current project state.
 - Prefer focused files by topic instead of one monolithic document.
 - Keep confirmed, deferred, and still-open items distinguishable.
+- Treat converted external documents as source material until the lead records confirmed decisions into source-of-truth files.
 
 ## Active State Model
 
@@ -68,3 +69,19 @@ Project-specific overrides belong in `./agent-workflow-local/`.
 - Split stable rules from current-state files.
 - Split large topic areas into reference files and load them only when relevant.
 - If a rule file becomes too large for reliable startup reading, move detail into topic-specific references and keep only summary rules in the bootstrap files.
+
+## Context Budget Model
+
+- Default to scan-first orientation: bootstrap, current-state, indexes, then focused source files.
+- Do not load full collaboration history unless the index or current-state queue points to it.
+- Use concise handoff summaries after long reviews, broad searches, or multi-agent reconciliation.
+- Put reusable lessons into `docs/lessons-learned.md`, then promote stable rules into workflow files or skills.
+- See `workflow/context-management.md` for split criteria and restart discipline.
+
+## External Document Model
+
+- Use Markdown as the default agent-readable import format.
+- Use MarkItDown for bulky PDFs, office files, HTML exports, emails, archives, and similar inputs when local conversion is appropriate.
+- Keep original documents and converted Markdown separate from confirmed source-of-truth files.
+- Summarize decision-relevant content before asking another agent to review it.
+- See `workflow/markitdown.md` for install, conversion, and token-discipline guidance.

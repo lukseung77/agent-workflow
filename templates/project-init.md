@@ -49,6 +49,7 @@ templates/roles/consultant-agent.md
 workflow/rule-precedence.md
 workflow/agent-workflow.md
 workflow/agent-workflow-[agent].md
+workflow/context-management.md
 workflow/stages.md
 workflow/review-cycle.md
 ```
@@ -58,11 +59,13 @@ Read these setup-oriented files as needed:
 ```
 README.md
 workflow/ai-coworking-guide.md
+workflow/markitdown.md
 templates/project-init.md
 templates/new-project-setup.md
 templates/docs/collaboration-format.md
 templates/docs/collaboration-agent.md
 templates/docs/collaboration-index-agent.md
+skills/multi-agent-coworking/SKILL.md
 ```
 
 Do not start the user interview until you understand the workflow.
@@ -189,6 +192,7 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 ## Notes
 
 - Never ask more than one question per message throughout this entire flow
+- If the user provides existing PDFs, office files, web exports, or archives, convert them with MarkItDown or another reliable extractor before summarizing them into source-of-truth files
 - If the user says "I'll handle the GitHub repo myself," skip Step 4 and ask for the repo URL to clone
 - If the user already has a brief or existing documents, read them before Step 2 and skip any questions already answered
 - If another agent will also be joining the project, complete setup fully before briefing them — they should join a working structure, not a half-initialized one

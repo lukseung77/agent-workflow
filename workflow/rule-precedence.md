@@ -14,12 +14,12 @@ Read these files in order:
 
 1. `../agent-workflow/workflow/rule-precedence.md`
 2. `../agent-workflow/workflow/agent-workflow.md`
-3. `../agent-workflow/workflow/agent-workflow-{agent}.md`
-4. `./agent-workflow-local/agent-workflow.md`
-5. `./agent-workflow-local/agent-workflow-{agent}.md`
-6. `./agent-workflow-local/current-state.md`
+3. `./agent-workflow-local/current-state.md`
+4. `../agent-workflow/workflow/agent-workflow-{agent}.md`
+5. `./agent-workflow-local/agent-workflow.md`
+6. `./agent-workflow-local/agent-workflow-{agent}.md`
 
-Read topic files such as `stages.md` or `review-cycle.md` only when relevant to the current task.
+Read topic files such as `context-management.md`, `markitdown.md`, `stages.md`, or `review-cycle.md` only when relevant to the current task.
 
 If the project uses collaboration files, read those after the startup path above and only as needed for agent-specific recommendations, gaps, review notes, or reconciliation history.
 

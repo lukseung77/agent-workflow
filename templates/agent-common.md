@@ -21,16 +21,20 @@ These rules apply to every agent, on every task:
 
 At the start of a session, read in this order:
 
-1. `templates/agent-common.md`
-2. Your agent-specific file (`templates/CLAUDE.md`, `templates/CODEX.md`, or `templates/GEMINI.md`)
-3. Your role file:
+1. Project bootstrap: `docs/collaboration.md`
+2. Project current state: `agent-workflow-local/current-state.md`
+3. This file
+4. Your agent-specific file (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, or equivalent)
+5. Your role file:
    - `templates/roles/lead-agent.md`
    - `templates/roles/consultant-agent.md`
-4. `docs/collaboration-format.md`
-5. Your collaboration index and collaboration file
-6. The source-of-truth files for the current stage
+6. `docs/collaboration-format.md`
+7. Your collaboration index and collaboration file
+8. The focused source-of-truth files for the current task
 
 Use the most specific applicable file when two instructions overlap.
+
+For large projects, follow `workflow/context-management.md`: read indexes before full threads and focused files before broad historical material.
 
 ---
 
@@ -39,11 +43,12 @@ Use the most specific applicable file when two instructions overlap.
 Run this every time you start a session, before doing anything else:
 
 1. Read `docs/collaboration-format.md` for the collaboration format and local agent roster.
-2. Read `docs/collaboration-index-[lead].md` to check for any open `review-request` items.
-3. If a `review-request` is open, handle that first.
-4. Read `docs/collaboration-index-[other-agents].md` to see current status across the team.
-5. Read your own `docs/collaboration-[yourname].md` for open items and prior decisions.
-6. Read the source-of-truth files relevant to the current stage.
+2. Read `agent-workflow-local/current-state.md` for stage, queue, and next action.
+3. Read `docs/collaboration-index-[lead].md` to check for any open `review-request` items.
+4. If a `review-request` is open, handle that first.
+5. Read `docs/collaboration-index-[other-agents].md` to see current status across the team.
+6. Read your own `docs/collaboration-[yourname].md` for open items and prior decisions.
+7. Read only the source-of-truth files relevant to the current stage and next task.
 
 Do not act on stale context. Always read the current state of files before writing anything.
 
@@ -99,6 +104,14 @@ See `docs/collaboration-format.md` for the full format.
 - Before asking, consolidate all open user questions across all agent files — deduplicate first, then order by impact (highest-blocking first).
 - Record the user's answer immediately in your collaboration file with the exact wording of the decision.
 - After recording, the lead agent writes the decision into source-of-truth files.
+
+## Context Budget
+
+- Prefer summaries, indexes, and focused files over full historical threads.
+- If an external document is large or non-Markdown, convert it first and summarize decision-relevant sections.
+- Do not paste full converted documents into collaboration files.
+- Link source paths so another agent can reopen the material when needed.
+- If context is getting crowded, update `current-state.md` before continuing.
 
 ---
 
@@ -179,3 +192,4 @@ Do not jump ahead. Do not write proposals during Exploration. Do not change spec
 - A consultant agent declaring a stage transition
 - Moving to the next stage without explicit lead declaration and user confirmation
 - Skipping your index file update after a status change
+- Pasting large raw documents or terminal logs instead of summarizing and linking focused source material

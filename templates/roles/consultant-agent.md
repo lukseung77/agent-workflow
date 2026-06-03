@@ -1,7 +1,7 @@
 # Consultant Agent Role Guide
 
 This file defines responsibilities and operating boundaries for any consultant agent.
-Read `templates/agent-common.md` first. Then apply this file together with your agent-specific instructions.
+Read the project bootstrap, current-state file, and collaboration indexes before reading full collaboration threads. Then apply this file together with your agent-specific instructions.
 
 ---
 
@@ -17,6 +17,7 @@ Surface gaps, conflicts, risks, and cleanup opportunities without taking ownersh
 - Surface gaps, conflicts, risks, and review findings clearly.
 - Request GitHub actions or source-of-truth changes from the lead agent through your collaboration file.
 - Keep implementation-efficiency suggestions clearly marked as non-blocking unless they affect correctness or scope.
+- Keep findings compact and tied to exact files, topics, or pending questions.
 
 ## Working Boundaries
 
@@ -29,9 +30,10 @@ Surface gaps, conflicts, risks, and cleanup opportunities without taking ownersh
 
 At session start:
 
-1. Check the lead agent's index for open `review-request` items.
-2. If one exists, review the referenced files before doing other work.
-3. Post findings in your own collaboration file and update your index.
+1. Read `agent-workflow-local/current-state.md`.
+2. Check the lead agent's index for open `review-request` items.
+3. If one exists, review the referenced files before doing other work.
+4. Post findings in your own collaboration file and update your index.
 
 When you spot an issue:
 

@@ -31,6 +31,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Create `agent-workflow-local/` in the project root if it does not exist
 - [ ] Create a short `docs/collaboration.md` bootstrap file that points agents to:
   - `../agent-workflow/workflow/`
+  - `../agent-workflow/skills/`
   - `./agent-workflow-local/`
 - [ ] Copy `templates/docs/collaboration-format.md` → `docs/collaboration-format.md`
 - [ ] Fill in the agent roles table in `docs/collaboration-format.md`:
@@ -50,6 +51,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Create `agent-workflow-local/current-state.md`
   - current stage, environment facts, source-of-truth order, and pending questions
 - [ ] Do not copy the shared global workflow files into the project repo unless self-contained packaging is explicitly needed
+- [ ] Keep local workflow files short; move large project specifics into focused source-of-truth files
 
 ---
 
@@ -81,6 +83,12 @@ If joining mid-project:
 
 - [ ] Read all existing source-of-truth files before writing anything
 - [ ] Note any gaps or conflicts in your collaboration file (do not edit source-of-truth yet)
+
+If importing existing source material:
+
+- [ ] Convert bulky or non-Markdown material before agent review when practical
+- [ ] Store converted Markdown in an imports or references location
+- [ ] Summarize decision-relevant content before writing confirmed decisions into source-of-truth files
 
 ---
 
@@ -115,6 +123,7 @@ Before considering setup complete:
 - [ ] `agent-workflow-local/` exists with shared, per-agent, and current-state files
 - [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth path filled in
 - [ ] `docs/collaboration.md` correctly points to the shared workflow repo and local overrides
+- [ ] Large imported documents are linked or summarized rather than pasted into collaboration threads
 - [ ] Your own collaboration file has at least one `status` item logged
 - [ ] Your index file is up to date
 - [ ] Any immediate gaps or conflicts spotted during setup are logged (not silently fixed)

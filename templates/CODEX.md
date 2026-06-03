@@ -1,10 +1,14 @@
 # [Project Name] — Codex Instructions
 
-Read `templates/agent-common.md` first.
-Then read the role file that matches this agent's assignment:
+Read project context in this order:
 
-- `templates/roles/lead-agent.md`
-- `templates/roles/consultant-agent.md`
+1. `docs/collaboration.md`
+2. `agent-workflow-local/current-state.md`
+3. shared workflow files in `../agent-workflow/workflow/`
+4. `templates/agent-common.md`
+5. the role file that matches this agent's assignment:
+   - `templates/roles/lead-agent.md`
+   - `templates/roles/consultant-agent.md`
 
 This file covers only what is specific to Codex.
 
@@ -27,6 +31,14 @@ This file covers only what is specific to Codex.
 - **Integration:** once a decision is accepted, write it cleanly into the source-of-truth files without carrying over the ambiguity that surrounded it
 - **Reconciliation:** when Claude and Gemini disagree, read both positions fully, check against source-of-truth files, and log a reasoned tiebreaker decision
 - **Proposal authoring:** draft proposals from settled exploration; scope proposals tightly to what is confirmed
+- **Tool orchestration:** use review agents, subagents, MCP, skills, web search, or cloud tasks when they reduce context load or improve verification
+
+## Context Rules
+
+- Prefer local files, indexes, and focused searches before broad reads.
+- Delegate bounded research or review when the main session would otherwise absorb too much context.
+- Return compact findings with file paths, status, and next action.
+- Do not rely on network, sandbox, or approval capabilities without stating the operating constraint.
 
 ## Current Stage
 

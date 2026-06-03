@@ -88,17 +88,19 @@ Recommended structure:
 ## Exploration Workflow
 
 1. Read the project collaboration file.
-2. Read the top-level exploration synthesis.
-3. Read only the focused exploration files relevant to the next question.
-4. Summarize the minimum current context.
-5. Ask one focused question.
-6. Record the user's answer into the relevant exploration file.
-7. If consultant feedback exists, reconcile it explicitly:
+2. Read `agent-workflow-local/current-state.md`.
+3. Read collaboration indexes before full collaboration threads.
+4. Read the top-level exploration synthesis.
+5. Read only the focused exploration files relevant to the next question.
+6. Summarize the minimum current context.
+7. Ask one focused question.
+8. Record the user's answer into the relevant exploration file.
+9. If consultant feedback exists, reconcile it explicitly:
    - adopted
    - partially adopted
    - not adopted
    - reason
-8. Keep a pending-question list for later questions.
+10. Keep a pending-question list for later questions.
 
 ## Consultant Feedback Workflow
 
@@ -137,11 +139,13 @@ Recommended policy:
 After a context reset or when a new agent joins:
 
 1. Read the project collaboration file.
-2. Read the top-level exploration synthesis.
-3. Read the focused files related to the next pending question.
-4. Do not ask the user to restate the whole project.
-5. Summarize only the minimum useful context.
-6. Continue from the latest unresolved question.
+2. Read `agent-workflow-local/current-state.md`.
+3. Read collaboration indexes.
+4. Read the top-level exploration synthesis.
+5. Read the focused files related to the next pending question.
+6. Do not ask the user to restate the whole project.
+7. Summarize only the minimum useful context.
+8. Continue from the latest unresolved question.
 
 If the next question is unclear, infer it from the pending-question list and the latest confirmed exploration files.
 
@@ -171,3 +175,5 @@ Examples:
 - maintenance or history behavior in a maintenance/history file
 
 Avoid putting every decision into one monolithic product-scope document. The top-level scope file should be an index and synthesis, not the only source of detail.
+
+For large source material, use `workflow/context-management.md` and `workflow/markitdown.md` before asking agents to read or summarize the material.
