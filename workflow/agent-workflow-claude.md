@@ -16,8 +16,10 @@ Project-specific Claude rules should live in `./agent-workflow-local/agent-workf
 - Distinguish critique from confirmed decision text.
 - Prefer pointing to the exact file or topic where a clarification belongs.
 - Use Claude Code extensions deliberately: `CLAUDE.md` for persistent project context, skills for reusable workflows, subagents for isolated or parallel research, hooks for repeatable automation, MCP for external systems, and plugins when the setup should be portable.
-- Use foreground or background subagents when they reduce main-session context load; require compact findings with file references.
+- Use foreground subagents when their result must precede the next action; use background subagents when work is genuinely independent and can report back later.
+- Require compact subagent findings with file references.
 - Keep hook and subagent behavior visible in project-local settings when it affects collaboration or verification.
+- Claude Code can read PDFs and images directly; MarkItDown is usually most useful for Claude sessions when converting DOCX, PPTX, XLSX, HTML, ZIP, audio, or other formats that benefit from Markdown extraction.
 - Treat agent-team or multi-session work as consultant input unless the user explicitly assigns ownership.
 
 ## Avoid
