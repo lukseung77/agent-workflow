@@ -12,16 +12,38 @@ This file defines where workflow rules live, what order to read them in, and how
 
 Read these files in order:
 
-1. `../agent-workflow/workflow/rule-precedence.md`
-2. `../agent-workflow/workflow/agent-workflow.md`
-3. `./agent-workflow-local/current-state.md`
-4. `../agent-workflow/workflow/agent-workflow-{agent}.md`
-5. `./agent-workflow-local/agent-workflow.md`
-6. `./agent-workflow-local/agent-workflow-{agent}.md`
+1. `./docs/collaboration.md`
+2. `../agent-workflow/workflow/rule-precedence.md`
+3. `../agent-workflow/workflow/agent-workflow.md`
+4. `./agent-workflow-local/current-state.md`
+5. `../agent-workflow/workflow/agent-workflow-{agent}.md`
+6. `./agent-workflow-local/agent-workflow.md`
+7. `./agent-workflow-local/agent-workflow-{agent}.md`
 
 Read topic files such as `context-management.md`, `markitdown.md`, `stages.md`, or `review-cycle.md` only when relevant to the current task.
 
-If the project uses collaboration files, read those after the startup path above and only as needed for agent-specific recommendations, gaps, review notes, or reconciliation history.
+After the startup path, generate the current agent queue when the shared scripts are available:
+
+```sh
+python3 ../agent-workflow/scripts/collab_queue.py <agent>
+```
+
+Read the selected collaboration item and focused source files only. Use persistent collaboration indexes only as a compatibility fallback.
+
+## Canonical Rule Map
+
+| Topic | Canonical file |
+|-------|----------------|
+| Rule location and precedence | `workflow/rule-precedence.md` |
+| Shared operating model | `workflow/agent-workflow.md` |
+| Collaboration schema and recipient semantics | `workflow/collaboration-format.md` |
+| Review and finding consolidation | `workflow/review-cycle.md` |
+| Decision classification and escalation | `workflow/decision-protocol.md` |
+| Stage gates | `workflow/stages.md` |
+| Startup context, restart state, and archives | `workflow/context-management.md` |
+| External reference conversion | `workflow/markitdown.md` |
+
+Other files should link to these canonical rules instead of restating detailed schemas or procedures.
 
 ## Conflict Resolution
 
@@ -72,11 +94,10 @@ Project-local per-agent rules:
 Current-state file:
 
 - current stage
-- current source-of-truth files
-- pending questions
-- active constraints
-- environment facts that matter right now
-- the canonical open-question queue for the project
+- current artifact
+- next lead action
+- active blockers
+- last updated date
 
 Collaboration files:
 

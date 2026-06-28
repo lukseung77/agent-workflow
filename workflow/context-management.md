@@ -4,14 +4,29 @@ Use this file when a project, document set, or agent session is getting large en
 
 ## Default Read Order
 
-1. Project bootstrap: `docs/collaboration.md`
-2. Project queue: `agent-workflow-local/current-state.md`
-3. Shared rule summary: `workflow/agent-workflow.md`
-4. Agent-specific summary: `workflow/agent-workflow-[agent].md`
-5. Collaboration indexes before full collaboration threads
-6. Focused source-of-truth files for the current task only
+Follow `workflow/rule-precedence.md`. Do not maintain another startup order here.
 
-Read full historical collaboration threads only when an index item, current-state entry, or source file points to them.
+When available, use `scripts/collab_queue.py` for a compact active queue, then load one selected item with `--id`. Read full historical collaboration threads only when a selected item or source file points to them.
+
+## Restart Snapshot
+
+Keep `agent-workflow-local/current-state.md` limited to:
+
+- `updated`
+- `current_stage`
+- `current_artifact`
+- `next_lead_action`
+- `active_blockers`
+
+Tasks belong in collaboration items and generated queues. Confirmed decisions belong in source-of-truth files. Historical activity belongs in collaboration files and archives.
+
+Validate the snapshot with:
+
+```sh
+python3 ../agent-workflow/scripts/collab_lint.py --root . --strict-state
+```
+
+Projects with additional stage names may pass repeatable `--allowed-stage NAME` options.
 
 ## File Shape
 
@@ -37,11 +52,20 @@ Avoid restating entire specs. Link to the relevant source files instead.
 
 ## Collaboration Thread Hygiene
 
-- Use index files for scan-first orientation.
+- Use generated queues for scan-first orientation when available.
+- Treat persistent indexes as optional compatibility files and do not require parallel updates when generated queues are in use.
 - Keep open items near the top.
-- Move resolved items to closed sections instead of deleting them.
 - Summarize long review threads before asking another agent to act on them.
 - Reconcile consultant feedback in one place so later agents do not repeat the same review.
+
+## Archives
+
+- Keep unresolved items in the live collaboration file regardless of age.
+- Archive resolved items by size, not by calendar period.
+- The default archive threshold is 50 KB of resolved content per live collaboration file.
+- Use numbered per-agent files under `docs/collaboration-archives/`.
+- Archive files remain readable when referenced but are excluded from normal startup reads.
+- Use `scripts/collab_archive.py --dry-run` before writing archives.
 
 ## When To Split Files
 

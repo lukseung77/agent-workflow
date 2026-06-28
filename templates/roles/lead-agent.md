@@ -1,7 +1,7 @@
 # Lead Agent Role Guide
 
 This file defines responsibilities and operating boundaries for any lead agent.
-Read the project bootstrap, current-state file, and collaboration indexes before reading full collaboration threads. Then apply this file together with your agent-specific instructions.
+Follow `workflow/rule-precedence.md`, generate the active queue when available, and load selected items before full collaboration threads.
 
 ---
 
@@ -32,14 +32,15 @@ Own the workflow state, the source-of-truth files, and the final shape of accept
 When a consultant raises a valid issue:
 
 1. Read the full item and any referenced files.
-2. Decide whether the issue is accepted, partially accepted, or rejected.
+2. Decide whether the finding is adopted, partially adopted, or not adopted.
 3. Update the source-of-truth files if needed.
-4. Update `current-state.md` if the queue, stage, or next question changed.
+4. Update `current-state.md` only if a restart field changed.
 5. Log the outcome in your own collaboration file.
-6. Update your index.
 
 When you complete a draft that needs review:
 
 1. Post a `review-request` item in your collaboration file with the drafted file list.
-2. Update your index so consultant agents can discover it.
-3. On your next session, review consultant feedback, integrate accepted changes, and close the loop.
+2. Mark it formal only when the formal completion gate is justified.
+3. On your next session, review consultant feedback, integrate adopted changes, and close the loop.
+
+For formal reviews, only the lead may deduplicate findings, assign canonical IDs and priorities, and record finding dispositions. Preserve all source finding IDs.

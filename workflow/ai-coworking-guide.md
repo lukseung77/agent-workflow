@@ -4,6 +4,8 @@ This guide is a reusable working agreement for projects where multiple AI agents
 
 It is intentionally generic. Project-specific details should live in the project's collaboration file, not here.
 
+This is an explanatory guide, not a canonical schema. Follow `workflow/rule-precedence.md` for canonical rule ownership.
+
 ## Core Principle
 
 One agent should lead each phase.
@@ -89,7 +91,7 @@ Recommended structure:
 
 1. Read the project collaboration file.
 2. Read `agent-workflow-local/current-state.md`.
-3. Read collaboration indexes before full collaboration threads.
+3. Generate the active recipient queue before reading full collaboration threads.
 4. Read the top-level exploration synthesis.
 5. Read only the focused exploration files relevant to the next question.
 6. Summarize the minimum current context.
@@ -140,7 +142,7 @@ After a context reset or when a new agent joins:
 
 1. Read the project collaboration file.
 2. Read `agent-workflow-local/current-state.md`.
-3. Read collaboration indexes.
+3. Generate the active recipient queue.
 4. Read the top-level exploration synthesis.
 5. Read the focused files related to the next pending question.
 6. Do not ask the user to restate the whole project.

@@ -15,7 +15,7 @@ Lead agent responsibilities that belong to you and no one else (unless the user 
 - Integrating accepted decisions from consultant agents into source-of-truth files
 - Tiebreaker when consultant agents disagree
 
-Consultant agents write only to their own `docs/collaboration-[agent].md`. They do not push to GitHub, do not edit source-of-truth files, and do not trigger stage changes.
+Consultant agents write only to their own `docs/collaboration-[agent].md`, except for allowed updates to `agent-workflow-local/references/reference.md` for files they inspect or convert. They do not push to GitHub, do not edit source-of-truth files, and do not trigger stage changes.
 
 This role assignment is permanent unless the user explicitly transfers it.
 
@@ -43,16 +43,12 @@ The new project should keep only project-local overrides in `./agent-workflow-lo
 Read these shared workflow files before continuing:
 
 ```
-templates/agent-common.md
-templates/roles/lead-agent.md
-templates/roles/consultant-agent.md
 workflow/rule-precedence.md
 workflow/agent-workflow.md
-workflow/agent-workflow-[agent].md
-workflow/context-management.md
-workflow/stages.md
-workflow/review-cycle.md
+templates/new-project-setup.md
 ```
+
+Follow the canonical read order after the project bootstrap exists. Read topic files only when the current setup step requires them.
 
 Read these setup-oriented files as needed:
 
@@ -61,7 +57,8 @@ README.md
 workflow/ai-coworking-guide.md
 workflow/markitdown.md
 templates/project-init.md
-templates/new-project-setup.md
+templates/current-state.md
+templates/reference.md
 templates/docs/collaboration-format.md
 templates/docs/collaboration-agent.md
 templates/docs/collaboration-index-agent.md
@@ -129,6 +126,8 @@ Follow `templates/new-project-setup.md` to complete the full project structure:
 
 - Create `docs/` and all collaboration files
 - Create `agent-workflow-local/` for project-local shared rules, per-agent rules, and current state
+- Create `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/`
+- Verify generated collaboration queues, or create active-only compatibility indexes when scripts cannot run
 - Create `openspec/explorations/` as the source-of-truth directory
 - Create `openspec/explorations/product-scope.md` using the Q1–Q6 answers:
 
@@ -192,7 +191,7 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 ## Notes
 
 - Never ask more than one question per message throughout this entire flow
-- If the user provides existing PDFs, office files, web exports, or archives, convert them with MarkItDown or another reliable extractor before summarizing them into source-of-truth files
+- If the user provides existing PDFs, office files, web exports, or archives, track them in `agent-workflow-local/references/reference.md`, convert them with MarkItDown or another reliable extractor, and summarize them before writing source-of-truth files
 - If the user says "I'll handle the GitHub repo myself," skip Step 4 and ask for the repo URL to clone
 - If the user already has a brief or existing documents, read them before Step 2 and skip any questions already answered
 - If another agent will also be joining the project, complete setup fully before briefing them — they should join a working structure, not a half-initialized one

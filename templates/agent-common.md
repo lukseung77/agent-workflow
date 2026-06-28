@@ -19,22 +19,7 @@ These rules apply to every agent, on every task:
 
 ## How To Read These Templates
 
-At the start of a session, read in this order:
-
-1. Project bootstrap: `docs/collaboration.md`
-2. Project current state: `agent-workflow-local/current-state.md`
-3. This file
-4. Your agent-specific file (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, or equivalent)
-5. Your role file:
-   - `templates/roles/lead-agent.md`
-   - `templates/roles/consultant-agent.md`
-6. `docs/collaboration-format.md`
-7. Your collaboration index and collaboration file
-8. The focused source-of-truth files for the current task
-
-Use the most specific applicable file when two instructions overlap.
-
-For large projects, follow `workflow/context-management.md`: read indexes before full threads and focused files before broad historical material.
+Follow `workflow/rule-precedence.md` for the canonical startup order and conflict resolution. Apply this file together with the matching agent-specific and role files; load topic rules only when relevant.
 
 ---
 
@@ -42,13 +27,12 @@ For large projects, follow `workflow/context-management.md`: read indexes before
 
 Run this every time you start a session, before doing anything else:
 
-1. Read `docs/collaboration-format.md` for the collaboration format and local agent roster.
-2. Read `agent-workflow-local/current-state.md` for stage, queue, and next action.
-3. Read `docs/collaboration-index-[lead].md` to check for any open `review-request` items.
-4. If a `review-request` is open, handle that first.
-5. Read `docs/collaboration-index-[other-agents].md` to see current status across the team.
-6. Read your own `docs/collaboration-[yourname].md` for open items and prior decisions.
-7. Read only the source-of-truth files relevant to the current stage and next task.
+1. Follow the canonical startup order in `workflow/rule-precedence.md`.
+2. Read `agent-workflow-local/current-state.md` as a restart snapshot, not as a task queue.
+3. Generate your active recipient queue when `scripts/collab_queue.py` is available.
+4. Select one active item and load its details.
+5. If the selected item involves external references, check `agent-workflow-local/references/reference.md`.
+6. Read only the source-of-truth files referenced by that item or needed for the next action.
 
 Do not act on stale context. Always read the current state of files before writing anything.
 
@@ -61,7 +45,8 @@ Do not act on stale context. Always read the current state of files before writi
 - Never write to another agent's collaboration file.
 - Never write product decisions into a collaboration file — those belong in source-of-truth files.
 - When you edit a source-of-truth file, log the change in your own collaboration file as a `status` item.
-- Update your index file (`docs/collaboration-index-[yourname].md`) whenever an item status changes.
+- Collaboration files are authoritative. Do not maintain a persistent index when generated queues are enabled.
+- `agent-workflow-local/references/reference.md` is operational reference metadata. Any agent may update the row for a reference file it just inspected or converted; the lead agent owns cleanup and conflict resolution.
 
 ## Defined Terms
 
@@ -89,7 +74,7 @@ Every item in your collaboration file needs:
 
 - A unique ID using your assigned prefix (e.g. `CL-001`, `CX-001`, `GM-001`)
 - `type`: `status` | `question` | `gap` | `review` | `suggestion` | `response`
-- `status`: `open` | `accepted` | `partially_accepted` | `rejected` | `superseded` | `done`
+- `status`: `open` | `active` | `done` | `superseded`
 - `to`: the target agent name, `all`, or `user`
 - A short `why` and `request` (or `decision` and `action` for responses)
 
@@ -108,17 +93,20 @@ See `docs/collaboration-format.md` for the full format.
 ## Context Budget
 
 - Prefer summaries, indexes, and focused files over full historical threads.
-- If an external document is large or non-Markdown, convert it first and summarize decision-relevant sections.
+- If an external document is large or non-Markdown, check the reference registry first. Use an existing current Markdown conversion when one exists.
+- If no current conversion exists and local conversion is appropriate, use MarkItDown and record the source and Markdown hashes in `agent-workflow-local/references/reference.md`.
 - Do not paste full converted documents into collaboration files.
 - Link source paths so another agent can reopen the material when needed.
+- Do not rely on filenames alone for external references; use registry paths and hashes. If a user's file request has multiple plausible matches, list the candidates and ask which file they meant.
+- Treat files in `_OLD` as obsolete unless the user explicitly asks for old material. Track them in the registry when practical, but do not read or convert them during normal lookup.
 - If context is getting crowded, update `current-state.md` before continuing.
 
 ---
 
 ## Resolving Items
 
-- When an item is resolved, mark it `done` in your collaboration file and index.
-- Move it into `## Closed` (wrapped in an HTML comment block) — do not delete it.
+- When an item is resolved, mark it `done` in your collaboration file.
+- Leave history in the authoritative collaboration file until size-based archival.
 - If a decision has been written into a source-of-truth file, do not restate it in the collaboration file — link to it.
 
 ---
@@ -136,7 +124,7 @@ Role-specific review duties live in:
 
 ## GitHub Sync
 
-GitHub operations (`git push`, `git pull`, `git commit`, `gh` commands) are the **lead agent's exclusive responsibility**.
+GitHub operations (`git push`, `git pull`, `git commit`, `gh` commands) are the lead agent's default responsibility.
 
 | Role | GitHub rights |
 |------|--------------|
@@ -191,5 +179,5 @@ Do not jump ahead. Do not write proposals during Exploration. Do not change spec
 - Writing product decisions into collaboration files instead of source-of-truth
 - A consultant agent declaring a stage transition
 - Moving to the next stage without explicit lead declaration and user confirmation
-- Skipping your index file update after a status change
+- Treating a persistent index as authoritative when generated queues are enabled
 - Pasting large raw documents or terminal logs instead of summarizing and linking focused source material

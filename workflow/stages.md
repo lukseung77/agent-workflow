@@ -10,7 +10,7 @@ The workflow has three stages. Each stage has a clear goal, a set of activities,
 
 ### Activities
 
-- Agents read all available materials (briefs, prior docs, existing code)
+- Agents discover and read relevant indexed materials, using focused files and converted references before broad historical reads
 - Each agent logs findings, gaps, and questions in its collaboration file
 - The lead agent or a designated consolidator gathers all open questions and presents them to the user one at a time
 - User answers are recorded and propagated into source-of-truth files by the lead agent
@@ -53,7 +53,7 @@ Before closing Exploration, the lead agent should publish a named list of known 
 
 - Lead agent drafts the proposal into spec files
 - Consultant agents review the draft and log feedback in their collaboration files
-- Lead agent integrates accepted feedback
+- Lead agent integrates adopted feedback
 - User approves or adjusts the proposal scope
 - Proposal is merged into the accepted spec
 

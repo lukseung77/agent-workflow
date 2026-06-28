@@ -12,21 +12,20 @@ This file defines the standard message format for per-agent collaboration files.
 
 ## Rules
 
-1. Each agent writes only to its own collaboration file.
+1. Each agent writes only to its own collaboration file, except for allowed operational updates to `agent-workflow-local/references/reference.md`.
 2. Cross-agent messages must name the target agent explicitly.
 3. Durable decisions do not belong here — put them in the source-of-truth files.
-4. Every item must carry one of these statuses:
-   - `open` — awaiting action or response
-   - `accepted` — decision accepted, action taken or pending
-   - `partially_accepted` — some parts accepted, others not
-   - `rejected` — declined with rationale
-   - `superseded` — made irrelevant by a later decision
-   - `done` — fully resolved and closed
-5. Resolved items should be commented out into `## Closed`, not deleted, to preserve audit trail.
-6. Every response must explain why the decision was made.
-7. Prefer one-line bullets and short rationale over long prose.
-8. Reference exact file paths and line numbers when relevant.
-9. Whenever an item status changes, update that agent's index file in the same turn.
+4. Work discovery uses `status: open|active` plus `to: <agent>|all`. Message `type` controls handling, not visibility.
+5. `to: all` means every agent except the sender. Name the sender explicitly when self-addressing is intentional.
+6. Lifecycle status and finding disposition are separate:
+   - `open` — awaiting work
+   - `active` — work started but incomplete
+   - `done` — work completed
+   - `superseded` — replaced by a later item
+7. Only the lead records formal finding disposition: `adopted`, `partially_adopted`, or `not_adopted`.
+8. Every response must explain why the decision was made.
+9. Prefer one-line bullets and short rationale over long prose.
+10. Reference exact file paths and line numbers when relevant.
 
 ## Message Format
 
@@ -35,9 +34,10 @@ This file defines the standard message format for per-agent collaboration files.
 ```md
 ### [ID] Title
 - `date`: YYYY-MM-DD
+- `created_at`: YYYY-MM-DDTHH:MM:SS+HH:MM (optional)
 - `from`: <agent>
 - `to`: <agent | all | user>
-- `type`: status | question | gap | review | suggestion
+- `type`: status | question | gap | review-request | review | suggestion
 - `status`: open
 - `scope`: file(s) or topic
 - `why`: one short sentence — why this matters
@@ -52,10 +52,11 @@ Body (optional) — short bullets only
 ```md
 ### [ID] Response to [original-ID]
 - `date`: YYYY-MM-DD
+- `created_at`: YYYY-MM-DDTHH:MM:SS+HH:MM (optional)
 - `from`: <agent>
 - `to`: <agent | all | user>
 - `type`: response
-- `status`: accepted | partially_accepted | rejected | superseded | done
+- `status`: done
 - `decision`: short answer
 - `why`: short rationale
 - `action`: what changed or what happens next
@@ -74,6 +75,30 @@ Body (optional) — short bullets only
 | `suggestion` | A non-blocking improvement idea; can be declined without consequence |
 | `response` | A reply to any of the above, referencing the original ID |
 
+`date` must be exact `YYYY-MM-DD`. When `created_at` is present, it must be ISO 8601 with `Z` or a UTC offset and its calendar date must match `date`.
+
+## Formal Review Findings
+
+Informal reviews may use short bullets. A review request marked `formal: true` uses stable finding rows:
+
+```md
+| finding_id | location | category | what | why | correction |
+|------------|----------|----------|------|-----|------------|
+| GM-004-F01 | spec.md:42 | contradiction | ... | ... | ... |
+```
+
+- Use one issue per row.
+- `correction` is optional.
+- Consultants describe impact in `why`; they do not assign canonical priority.
+- During consolidation, only the lead may merge equivalent findings into a `canonical_id`.
+- Preserve every `source_finding_id`.
+- Similar but distinct findings remain separate.
+- After deduplication, the lead may assign:
+  - `P0`: correctness, compliance, security, or delivery blocker
+  - `P1`: required before submission, acceptance, or implementation
+  - `P2`: optional improvement
+- The lead records disposition for each canonical finding.
+
 ## ID Convention
 
 Assign a short prefix per agent and increment per item:
@@ -89,24 +114,18 @@ Responses reference both the response ID and the original:
 ### [CL-004] Response to CX-001
 ```
 
-## Index Format
+## Active Queue
 
-Each agent maintains a separate index file (`collaboration-index-[agent].md`):
+Collaboration files are authoritative. Generate an active queue with:
 
-```md
-# Collaboration Index: [Agent]
-
-This file is the [Agent]-only status index.
-
-- Do not use this file for discussion.
-- Detailed notes live in `docs/collaboration-[agent].md`.
-- Durable truth lives in [source-of-truth path].
-
-| ID | To | Status | Summary |
-|----|----|--------|---------|
-| XX-001 | all | done | ... |
-| XX-002 | lead | open | ... |
+```sh
+python3 ../agent-workflow/scripts/collab_queue.py <agent>
+python3 ../agent-workflow/scripts/collab_queue.py <agent> --id ITEM-ID
 ```
+
+The default output is compact. Use `--full` for all active item details or `--json` for automation. Queues sort newest first for presentation but never expire or hide older unresolved work.
+
+Projects that cannot run the script may retain persistent index files as a compatibility fallback. Such indexes should contain active items only.
 
 ## Defined Terms
 
@@ -144,8 +163,8 @@ Example — after:
 
 ## Operating Pattern
 
-1. Agent writes a compact item in its own file and updates its index.
-2. Target agent reads it and replies in its own file, referencing the original ID.
+1. Agent writes a compact item in its own collaboration file.
+2. Target agent discovers it by recipient and lifecycle status, then replies in its own file referencing the original ID.
 3. Lead agent integrates accepted outcomes into source-of-truth files.
-4. All agents mark completed items as `done` and move to `## Closed`.
+4. Agents mark completed items `done`; archival is size-based and separate.
 5. User is asked one question at a time by whichever agent is consolidating the decision queue.

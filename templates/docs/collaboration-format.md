@@ -8,8 +8,8 @@ Use it for collaboration structure only. Broader operating rules live in the sha
 | Agent | Role | Writes To |
 |-------|------|-----------|
 | [Lead] | Lead — integrates accepted decisions into source-of-truth files | `collaboration-[lead].md`, all source-of-truth files |
-| [Agent A] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-a].md` only |
-| [Agent B] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-b].md` only |
+| [Agent A] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-a].md`; allowed reference-registry rows |
+| [Agent B] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-b].md`; allowed reference-registry rows |
 
 Fill in agent names and roles before distributing to agents.
 
@@ -21,15 +21,9 @@ Collaboration files are the communication layer only. Do not write product decis
 
 ## Rules
 
-1. Each agent writes only to its own collaboration file.
-2. Cross-agent messages must name the target agent explicitly.
-3. Durable decisions belong in source-of-truth files, not here.
-4. Every item must carry a status: `open` | `accepted` | `partially_accepted` | `rejected` | `superseded` | `done`
-5. Resolved items are commented out into `## Closed`, not deleted.
-6. Every response must explain why the decision was made.
-7. Reference exact file paths and line numbers when relevant.
-8. Update your index file whenever an item status changes.
-9. Keep items compact; link source files instead of pasting large excerpts.
+Follow `../agent-workflow/workflow/collaboration-format.md` for the canonical schema, recipient semantics, lifecycle statuses, formal finding rows, and queue commands.
+
+Project-specific facts in this file are limited to the agent roster and source-of-truth path.
 
 ## Message Format
 
@@ -40,7 +34,7 @@ Collaboration files are the communication layer only. Do not write product decis
 - `date`: YYYY-MM-DD
 - `from`: <agent>
 - `to`: <agent | all | user>
-- `type`: status | question | gap | review | suggestion
+- `type`: status | question | gap | review-request | review | suggestion
 - `status`: open
 - `scope`: file(s) or topic
 - `why`: one short sentence
@@ -56,7 +50,7 @@ Collaboration files are the communication layer only. Do not write product decis
 - `from`: <agent>
 - `to`: <agent | all | user>
 - `type`: response
-- `status`: accepted | partially_accepted | rejected | superseded | done
+- `status`: done
 - `decision`: short answer
 - `why`: short rationale
 - `action`: what changed or what happens next
@@ -85,18 +79,6 @@ Always all-caps. Apply on every use, not just the first. Only use for terms conf
 
 > GitHub strips inline styles — the color will not render there. All-caps bold still distinguishes defined terms in plain markdown.
 
-## Operating Pattern
+## Startup
 
-1. Agent writes a compact item in its own file and updates its index.
-2. Target agent replies in its own file, referencing the original ID.
-3. Lead agent integrates accepted outcomes into source-of-truth files.
-4. All agents mark completed items `done` and move them to `## Closed`.
-5. User is asked one question at a time by the consolidating agent.
-
-## Context Pattern
-
-1. Read `docs/collaboration.md`.
-2. Read `agent-workflow-local/current-state.md`.
-3. Read collaboration indexes.
-4. Read only the full collaboration items referenced by open index rows.
-5. Read focused source-of-truth files for the current task.
+Follow `../agent-workflow/workflow/rule-precedence.md`. Generate the current agent queue when scripts are available; use persistent indexes only as a compatibility fallback.

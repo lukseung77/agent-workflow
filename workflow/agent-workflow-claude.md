@@ -19,7 +19,7 @@ Project-specific Claude rules should live in `./agent-workflow-local/agent-workf
 - Use foreground subagents when their result must precede the next action; use background subagents when work is genuinely independent and can report back later.
 - Require compact subagent findings with file references.
 - Keep hook and subagent behavior visible in project-local settings when it affects collaboration or verification.
-- Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading; Claude Code's direct PDF/image reading is useful for spot checks or when conversion misses decision-relevant content.
+- Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading; check `agent-workflow-local/references/reference.md` first and use Claude Code's direct PDF/image reading for spot checks or when conversion misses decision-relevant content.
 - Treat agent-team or multi-session work as consultant input unless the user explicitly assigns ownership.
 
 ## Avoid

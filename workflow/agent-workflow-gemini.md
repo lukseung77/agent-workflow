@@ -19,7 +19,7 @@ Project-specific Gemini rules should live in `./agent-workflow-local/agent-workf
 - Structure review feedback with: issue, why it matters, affected file or topic, finding type, and proposed next question when useful.
 - Use Gemini CLI MCP servers and agent skills when they provide focused external context or reusable workflow guidance.
 - Use the `multi-agent-coworking` skill when a project needs structured cross-agent collaboration, handoff, or feedback reconciliation.
-- Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading, even if Gemini can inspect the original file directly.
+- Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading, even if Gemini can inspect the original file directly; check `agent-workflow-local/references/reference.md` first.
 - Link local skill directories when iterating on shared coworking skills instead of copying large prompt blocks into project files.
 - Keep `GEMINI.md` as a short bootstrap with project-specific overrides; leave generic workflow in `../agent-workflow`.
 - Prefer summarizing comparison findings over pasting full alternative analyses into collaboration files.

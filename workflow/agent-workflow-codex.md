@@ -20,6 +20,7 @@ Project-specific Codex rules should live in `./agent-workflow-local/agent-workfl
 - When resuming as lead from another session, rebuild context from the shared startup path, `current-state.md`, and relevant collaboration files before acting on new requests.
 - Use Codex subagents, review agents, web search, MCP tools, skills, and Cloud tasks only when they reduce context pressure or improve verification for the current task.
 - Keep `AGENTS.md`, Codex rules, hooks, and skills short; move project-specific detail into source-of-truth files or focused references.
+- For bulky external reference files, check `agent-workflow-local/references/reference.md` first and prefer current MarkItDown outputs before direct binary inspection.
 - Treat approval mode, sandboxing, and network access as operational facts to report clearly before relying on external tools.
 
 ## Avoid

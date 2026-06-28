@@ -1,14 +1,6 @@
 # [Project Name] — Claude Instructions
 
-Read project context in this order:
-
-1. `docs/collaboration.md`
-2. `agent-workflow-local/current-state.md`
-3. shared workflow files in `../agent-workflow/workflow/`
-4. `templates/agent-common.md`
-5. the role file that matches this agent's assignment:
-   - `templates/roles/lead-agent.md`
-   - `templates/roles/consultant-agent.md`
+Follow the canonical startup order in `../agent-workflow/workflow/rule-precedence.md`.
 
 This file covers only what is specific to Claude.
 
@@ -18,7 +10,7 @@ This file covers only what is specific to Claude.
 
 - Role: **[lead | consultant]**
 - Collaboration file: `docs/collaboration-claude.md`
-- Index file: `docs/collaboration-index-claude.md`
+- Queue command: `python3 ../agent-workflow/scripts/collab_queue.py claude`
 - Source-of-truth path: `[path]`
 
 ## ID Prefix

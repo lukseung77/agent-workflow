@@ -15,7 +15,7 @@ Agents can resolve these without user input:
 - Stale language that no longer matches the domain model
 - Minor structural cleanup (empty sections, misplaced content)
 
-**Rule:** agents fix these directly. They log what they did in their collaboration file as a `status` item. They do not ask the user.
+**Rule:** these do not require user input. The agent authorized to write the affected file fixes them directly and logs the change. A consultant without write authority records the issue for the lead instead of editing source-of-truth files.
 
 ### Lead-agent-resolvable
 
@@ -44,7 +44,7 @@ Only the user can resolve these:
 
 When multiple open user questions accumulate (e.g., end of Exploration stage), use this protocol:
 
-1. One agent (usually the consolidator for that session) gathers all open questions from all collaboration files
+1. One agent (usually the consolidator for that session) generates or scans active recipient queues, then checks collaboration files for any unpromoted open questions
 2. Deduplicate — many questions from different agents are the same question in different words
 3. Classify each remaining question: agent-resolvable, lead-resolvable, or user-escalated
 4. Resolve agent-resolvable and lead-resolvable items first, without involving the user

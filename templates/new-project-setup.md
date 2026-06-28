@@ -48,8 +48,12 @@ These must be done before this checklist begins (handled in `project-init.md`):
   - project-wide workflow overrides only
 - [ ] Create `agent-workflow-local/agent-workflow-[agent].md` for each participating agent
   - project-specific agent role and restrictions only
-- [ ] Create `agent-workflow-local/current-state.md`
-  - current stage, environment facts, source-of-truth order, and pending questions
+- [ ] Copy `templates/current-state.md` -> `agent-workflow-local/current-state.md`
+  - five-field restart snapshot only
+- [ ] Create `agent-workflow-local/references/`
+- [ ] Create `agent-workflow-local/references/markitdown/`
+- [ ] Copy `templates/reference.md` -> `agent-workflow-local/references/reference.md`
+  - reference registry for original files, content hashes, conversion status, and converted Markdown paths
 - [ ] Do not copy the shared global workflow files into the project repo unless self-contained packaging is explicitly needed
 - [ ] Keep local workflow files short; move large project specifics into focused source-of-truth files
 
@@ -62,9 +66,9 @@ For each agent (including yourself):
 - [ ] Copy `templates/docs/collaboration-agent.md` → `docs/collaboration-[agentname].md`
 - [ ] Replace `[Agent Name]` with the actual agent name
 - [ ] Replace `[XX]` ID prefix with the agent's assigned prefix (e.g. `CL`, `CX`, `GM`)
-- [ ] Copy `templates/docs/collaboration-index-agent.md` → `docs/collaboration-index-[agentname].md`
-- [ ] Replace `[Agent Name]` and `[agent]` with the actual agent name
-- [ ] Replace `[source-of-truth path]` with the actual path
+- [ ] Confirm `python3 ../agent-workflow/scripts/collab_queue.py [agentname]` can generate the active queue
+- [ ] If scripts cannot run in the project environment, copy `templates/docs/collaboration-index-agent.md` as a compatibility fallback and keep only active rows
+- [ ] Run `python3 ../agent-workflow/scripts/collab_lint.py --root . --strict-state`
 
 ---
 
@@ -87,7 +91,10 @@ If joining mid-project:
 If importing existing source material:
 
 - [ ] Convert bulky or non-Markdown material before agent review when practical
-- [ ] Store converted Markdown in an imports or references location
+- [ ] Check `agent-workflow-local/references/reference.md` before reading or converting reference files
+- [ ] Store converted Markdown in `agent-workflow-local/references/markitdown/`
+- [ ] Record source path, source SHA-256, conversion status, converted Markdown path, and converted Markdown SHA-256 in `agent-workflow-local/references/reference.md`
+- [ ] Mark `_OLD` files as `obsolete` in the registry when discovered, but do not read or convert them unless the user explicitly asks for old material
 - [ ] Summarize decision-relevant content before writing confirmed decisions into source-of-truth files
 
 ---
@@ -100,7 +107,6 @@ In your own collaboration file (`docs/collaboration-[yourname].md`):
 - [ ] List the agents, their roles, and their file paths
 - [ ] Note the current stage
 - [ ] Note any immediate open questions you spotted during setup
-- [ ] Update your index file with this first item
 
 ---
 
@@ -121,11 +127,13 @@ Before considering setup complete:
 
 - [ ] All collaboration files exist and are named correctly
 - [ ] `agent-workflow-local/` exists with shared, per-agent, and current-state files
+- [ ] `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/` exist
 - [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth path filled in
 - [ ] `docs/collaboration.md` correctly points to the shared workflow repo and local overrides
 - [ ] Large imported documents are linked or summarized rather than pasted into collaboration threads
 - [ ] Your own collaboration file has at least one `status` item logged
-- [ ] Your index file is up to date
+- [ ] Generated queues work, or active-only compatibility indexes exist
+- [ ] Collaboration lint reports zero errors
 - [ ] Any immediate gaps or conflicts spotted during setup are logged (not silently fixed)
 
 Success criteria:

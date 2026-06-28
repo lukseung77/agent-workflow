@@ -15,9 +15,9 @@ One agent leads each phase. Other agents consult unless the user explicitly reas
 
 1. Read the project collaboration bootstrap.
 2. Read the current-state file.
-3. Read only the focused source-of-truth files needed for the next action.
-4. Check collaboration indexes before reading full collaboration threads.
-5. Continue from the next unresolved question, review request, or implementation blocker.
+3. Generate the active recipient queue when the shared script is available.
+4. Load one selected collaboration item.
+5. Read only the focused source-of-truth files needed for that action.
 
 Do not ask the user to restate the whole project by default.
 
@@ -58,7 +58,7 @@ Prefer durable repo files over chat history.
 Use the project's existing structure. If none exists, recommend:
 
 - `docs/collaboration.md` for project-specific agent coordination
-- `agent-workflow-local/current-state.md` for current queue and stage
+- `agent-workflow-local/current-state.md` for the five-field restart snapshot
 - `openspec/explorations/` for active exploration
 - `openspec/changes/` for formal proposals
 - GitHub issues or PRs once the project is ready for tracked work
@@ -85,10 +85,10 @@ Include a short reason so later agents do not repeat the same review.
 
 ## Token And Context Discipline
 
-- Load indexes, state files, and focused source files before full historical threads.
+- Load the restart snapshot, generated queue, selected item, and focused source files before full historical threads.
 - Summarize large consultant findings before merging them into source-of-truth files.
 - Move durable guidance into short bootstrap files plus focused references.
-- Use MarkItDown for bulky non-Markdown inputs before pasting or asking another agent to read them.
+- Use MarkItDown for bulky non-Markdown inputs before pasting or asking another agent to read them; check `agent-workflow-local/references/reference.md` first and reuse current converted Markdown when available.
 - Preserve enough links and file paths that a future agent can reopen the original material when needed.
 
 ## Boundaries
