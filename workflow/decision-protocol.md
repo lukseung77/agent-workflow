@@ -42,25 +42,7 @@ Only the user can resolve these:
 
 ## Decision Queue Protocol
 
-When multiple open user questions accumulate (e.g., end of Exploration stage), use this protocol:
-
-1. One agent (usually the consolidator for that session) generates or scans active recipient queues, then checks collaboration files for any unpromoted open questions
-2. Deduplicate — many questions from different agents are the same question in different words
-3. Classify each remaining question: agent-resolvable, lead-resolvable, or user-escalated
-4. Resolve agent-resolvable and lead-resolvable items first, without involving the user
-5. For user-escalated items: order them by impact (highest-blocking first)
-6. Ask the user **one question at a time**, waiting for a response before asking the next
-7. Record each answer in the collaboration file immediately, with the exact wording of the decision
-8. After all questions are answered, the lead agent updates source-of-truth files
-
-### Question format (for user questions)
-
-Keep it short. State:
-- What the question is about (one sentence)
-- The options (A, B, or a short list)
-- Which option the agent recommends and why (optional, one sentence)
-
-Do not dump context. Do not include all the background reasoning. If the user wants more context, they will ask.
+Use `workflow/question-model.md` for queue consolidation, one-question-at-a-time flow, remaining-question estimates, and user-facing question format. Use this file only to classify whether each question is agent-resolvable, lead-agent-resolvable, or user-escalated.
 
 ---
 
@@ -112,8 +94,4 @@ After recording, the lead agent writes the decision into the source-of-truth fil
 
 ## Preventing Decision Fatigue
 
-- Never ask the user more than one question per message
-- Never ask about something agents can resolve themselves
-- Never re-ask a question that has already been answered (check collaboration files first)
-- Never ask for implementation preferences during Exploration (defer to Proposal/Implementation stage)
-- Batch related cleanup into one agent action, not one question per line
+Use `workflow/question-model.md` for user-question guardrails. The decision-specific rule is: resolve agent-resolvable and lead-agent-resolvable items before escalating anything to the user.

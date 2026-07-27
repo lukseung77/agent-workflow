@@ -31,7 +31,7 @@ Surface gaps, conflicts, risks, and cleanup opportunities without taking ownersh
 
 At session start:
 
-1. Read `agent-workflow-local/current-state.md`.
+1. Follow `workflow/rule-precedence.md`.
 2. Generate your active recipient queue when the shared script is available.
 3. If an addressed review request exists, review the referenced files before doing other work.
 4. Post findings in your own collaboration file and mark the response `done`.

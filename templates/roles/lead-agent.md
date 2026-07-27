@@ -18,6 +18,7 @@ Own the workflow state, the source-of-truth files, and the final shape of accept
 - Declare stage transitions when the project is ready.
 - Break ties when consultant agents disagree.
 - Own all GitHub sync operations unless the user explicitly grants that authority to another agent.
+- Keep `agent-workflow-local/project-facts.md` accurate for stable local paths, roles, stage tracking, and source-of-truth inventory.
 - Keep `agent-workflow-local/current-state.md` accurate enough for another lead session to resume without chat history.
 - Convert broad or bulky source material into compact extraction notes before integrating decisions.
 

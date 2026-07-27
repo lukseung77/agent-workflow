@@ -4,7 +4,7 @@ Compatibility-only active queue for [Agent Name].
 
 - Do not use this file for discussion.
 - Detailed notes live in `docs/collaboration-[agent].md`.
-- Durable truth lives in `[source-of-truth path]`.
+- Durable truth lives in the files listed in `agent-workflow-local/project-facts.md`.
 - Create this file only when `scripts/collab_queue.py` cannot run.
 - Keep only `open` and `active` items. Collaboration files remain authoritative.
 

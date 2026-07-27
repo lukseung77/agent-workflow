@@ -15,12 +15,14 @@ Read these files in order:
 1. `./docs/collaboration.md`
 2. `../agent-workflow/workflow/rule-precedence.md`
 3. `../agent-workflow/workflow/agent-workflow.md`
-4. `./agent-workflow-local/current-state.md`
-5. `../agent-workflow/workflow/agent-workflow-{agent}.md`
-6. `./agent-workflow-local/agent-workflow.md`
-7. `./agent-workflow-local/agent-workflow-{agent}.md`
+4. `./agent-workflow-local/project-facts.md` when present
+5. `./agent-workflow-local/rules.md` when present
+6. `./agent-workflow-local/current-state.md`
+7. `../agent-workflow/workflow/agent-workflow-{agent}.md`
+8. `./agent-workflow-local/agent-workflow.md`
+9. `./agent-workflow-local/agent-workflow-{agent}.md`
 
-Read topic files such as `context-management.md`, `markitdown.md`, `stages.md`, or `review-cycle.md` only when relevant to the current task.
+Read topic files such as `local-project-files.md`, `question-model.md`, `role-boundaries.md`, `diagrams.md`, `context-management.md`, `markitdown.md`, `stages.md`, or `review-cycle.md` only when relevant to the current task.
 
 After the startup path, generate the current agent queue when the shared scripts are available:
 
@@ -36,6 +38,10 @@ Read the selected collaboration item and focused source files only. Use persiste
 |-------|----------------|
 | Rule location and precedence | `workflow/rule-precedence.md` |
 | Shared operating model | `workflow/agent-workflow.md` |
+| Project-local file map and placement rules | `workflow/local-project-files.md` |
+| Lead, consultant, and user boundaries | `workflow/role-boundaries.md` |
+| User question flow and decision queues | `workflow/question-model.md` |
+| Optional diagram defaults | `workflow/diagrams.md` |
 | Collaboration schema and recipient semantics | `workflow/collaboration-format.md` |
 | Review and finding consolidation | `workflow/review-cycle.md` |
 | Decision classification and escalation | `workflow/decision-protocol.md` |
@@ -52,9 +58,10 @@ If two files disagree, the more specific and more local file wins.
 Highest to lowest:
 
 1. `./agent-workflow-local/agent-workflow-{agent}.md`
-2. `./agent-workflow-local/agent-workflow.md`
-3. `../agent-workflow/workflow/agent-workflow-{agent}.md`
-4. `../agent-workflow/workflow/agent-workflow.md`
+2. `./agent-workflow-local/rules.md`
+3. `./agent-workflow-local/agent-workflow.md`
+4. `../agent-workflow/workflow/agent-workflow-{agent}.md`
+5. `../agent-workflow/workflow/agent-workflow.md`
 
 If two files at the same level appear to conflict, do not guess. Treat that as a workflow gap and ask the user or the designated lead agent to resolve it.
 
@@ -69,6 +76,8 @@ Global shared rules:
 - generic sync policy
 - generic anti-patterns
 
+See the canonical rule map before adding new shared rules. Prefer updating a focused topic file over expanding bootstrap files.
+
 Global per-agent rules:
 
 - role strengths
@@ -78,11 +87,16 @@ Global per-agent rules:
 
 Project-local shared rules:
 
-- repo paths
-- project-wide role assignments
-- source-of-truth file order for this project
 - project-specific overrides
 - project-specific guardrails
+
+Project-local facts:
+
+- repo paths
+- project-wide role assignments
+- stage tracking location
+- source-of-truth file order for this project
+- external reference registry location
 
 Project-local per-agent rules:
 
@@ -117,10 +131,4 @@ If `../agent-workflow` is missing:
 
 ## Override Style
 
-When a project-local rule overrides a global rule, state it explicitly:
-
-- `Overrides global rule: [short name]`
-- `Reason: [project-specific need]`
-- `Replacement: [the rule to follow here]`
-
-Do not silently restate global rules in slightly different wording.
+Use `workflow/local-project-files.md` for local override style. Do not silently restate global rules in slightly different wording.

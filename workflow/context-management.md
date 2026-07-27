@@ -32,6 +32,7 @@ Projects with additional stage names may pass repeatable `--allowed-stage NAME` 
 
 - Keep bootstrap files short enough to read every session.
 - Put durable policy in shared workflow files.
+- Put project-local facts, rules, and overrides according to `workflow/local-project-files.md`.
 - Put current project state in `current-state.md`.
 - Put stable project decisions in source-of-truth files.
 - Put large examples, lessons, and source notes in references.
@@ -43,7 +44,7 @@ A useful handoff summary includes:
 
 - current stage
 - lead agent and consultants
-- source-of-truth path
+- source-of-truth root or inventory pointer
 - next unresolved question or blocker
 - recently reconciled feedback
 - exact files changed since the last handoff

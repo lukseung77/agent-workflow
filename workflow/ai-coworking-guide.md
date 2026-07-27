@@ -54,19 +54,7 @@ This may be the same agent as the exploration lead, or a different agent if the 
 
 ## Question-At-A-Time Policy
 
-When requirements are still emerging, ask one focused question at a time.
-
-Each question should:
-
-- target one decision
-- avoid mixing multiple unrelated choices
-- include only enough context for the user to answer confidently
-- avoid reopening already-settled decisions
-- be recorded back into the project documents after the user answers
-
-If there are many possible questions, keep a pending-question list and ask the highest-value one next.
-
-For long-running exploration, it is useful to include a rough remaining-question estimate in parentheses, for example:
+Follow `workflow/question-model.md`. In practice, ask the highest-value unresolved question next and include a rough remaining-question estimate:
 
 - `Should this appear on Dashboard or only in detail view? (roughly 3 questions left)`
 
@@ -74,14 +62,12 @@ For long-running exploration, it is useful to include a rough remaining-question
 
 Use durable project files as the source of truth, not chat history.
 
-Recommended structure:
+Recommended structure is defined in `workflow/local-project-files.md`. Typical source-of-truth areas include:
 
 - `openspec/explorations/`
   Active discovery and requirement exploration
 - `openspec/changes/`
   Formal proposals after exploration has converged
-- `docs/collaboration.md`
-  Project-specific agent coordination and handoff rules
 - GitHub issues
   Track work items, investigation threads, and proposal tasks when the project is ready
 - Pull requests
@@ -90,19 +76,18 @@ Recommended structure:
 ## Exploration Workflow
 
 1. Read the project collaboration file.
-2. Read `agent-workflow-local/current-state.md`.
-3. Generate the active recipient queue before reading full collaboration threads.
-4. Read the top-level exploration synthesis.
-5. Read only the focused exploration files relevant to the next question.
-6. Summarize the minimum current context.
-7. Ask one focused question.
-8. Record the user's answer into the relevant exploration file.
-9. If consultant feedback exists, reconcile it explicitly:
+2. Follow the startup path in `workflow/rule-precedence.md`.
+3. Read the top-level exploration synthesis.
+4. Read only the focused exploration files relevant to the next question.
+5. Summarize the minimum current context.
+6. Ask one focused question under `workflow/question-model.md`.
+7. Record the user's answer into the relevant exploration file.
+8. If consultant feedback exists, reconcile it explicitly:
    - adopted
    - partially adopted
    - not adopted
    - reason
-10. Keep a pending-question list for later questions.
+9. Keep a pending-question list for later questions.
 
 ## Consultant Feedback Workflow
 
@@ -141,13 +126,12 @@ Recommended policy:
 After a context reset or when a new agent joins:
 
 1. Read the project collaboration file.
-2. Read `agent-workflow-local/current-state.md`.
-3. Generate the active recipient queue.
-4. Read the top-level exploration synthesis.
-5. Read the focused files related to the next pending question.
-6. Do not ask the user to restate the whole project.
-7. Summarize only the minimum useful context.
-8. Continue from the latest unresolved question.
+2. Follow the startup path in `workflow/rule-precedence.md`.
+3. Read the top-level exploration synthesis.
+4. Read the focused files related to the next pending question.
+5. Do not ask the user to restate the whole project.
+6. Summarize only the minimum useful context.
+7. Continue from the latest unresolved question.
 
 If the next question is unclear, infer it from the pending-question list and the latest confirmed exploration files.
 

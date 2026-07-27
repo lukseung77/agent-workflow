@@ -15,7 +15,7 @@ Fill in agent names and roles before distributing to agents.
 
 ## Source of Truth
 
-Durable product decisions live in: `[path to spec/exploration files]`
+Durable product decisions live in the files listed in `agent-workflow-local/project-facts.md`.
 
 Collaboration files are the communication layer only. Do not write product decisions here.
 
@@ -23,7 +23,7 @@ Collaboration files are the communication layer only. Do not write product decis
 
 Follow `../agent-workflow/workflow/collaboration-format.md` for the canonical schema, recipient semantics, lifecycle statuses, formal finding rows, and queue commands.
 
-Project-specific facts in this file are limited to the agent roster and source-of-truth path.
+Project-specific facts in this file are limited to the agent roster and source-of-truth root or inventory pointer.
 
 ## Message Format
 

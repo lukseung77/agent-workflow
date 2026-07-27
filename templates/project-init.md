@@ -5,9 +5,9 @@ This is the entry point. Complete each step before moving to the next.
 
 ## Your Role: Lead Agent
 
-**By running this script, you become the lead agent for this project.**
+**By running this script, you become the setup lead and default project lead unless the user explicitly assigns that role elsewhere.**
 
-Lead agent responsibilities that belong to you and no one else (unless the user explicitly says otherwise):
+Follow `workflow/role-boundaries.md` for generic lead, consultant, and user authority. During setup, the lead agent owns:
 
 - All GitHub operations: `git push`, `git pull`, `gh` commands — only you run these
 - All writes to source-of-truth files (`openspec/`, `spec/`, etc.)
@@ -15,9 +15,7 @@ Lead agent responsibilities that belong to you and no one else (unless the user 
 - Integrating accepted decisions from consultant agents into source-of-truth files
 - Tiebreaker when consultant agents disagree
 
-Consultant agents write only to their own `docs/collaboration-[agent].md`, except for allowed updates to `agent-workflow-local/references/reference.md` for files they inspect or convert. They do not push to GitHub, do not edit source-of-truth files, and do not trigger stage changes.
-
-This role assignment is permanent unless the user explicitly transfers it.
+Record the lead and consultant assignments in `agent-workflow-local/project-facts.md`. Role assignments remain active until the user explicitly changes them.
 
 ---
 
@@ -71,14 +69,14 @@ Do not start the user interview until you understand the workflow.
 
 ## Step 2: Interview The User — Project Purpose
 
-Ask these questions **one at a time**. Wait for each answer before asking the next. Do not ask multiple questions in one message.
+Ask these questions **one at a time**. Wait for each answer before asking the next. Do not ask multiple questions in one message. End each question with the estimated questions left for the setup interview.
 
-| # | Question |
-|---|----------|
-| Q1 | What is the project title or name? |
-| Q2 | What problem does this project solve, or what is its main goal? |
-| Q3 | Who is the primary user? |
-| Q4 | What are the 2–3 core outcomes you want from this project? |
+| # | Question | Questions left after asking |
+|---|----------|----------------------------|
+| Q1 | What is the project title or name? | 5 |
+| Q2 | What problem does this project solve, or what is its main goal? | 4 |
+| Q3 | Who is the primary user? | 3 |
+| Q4 | What are the 2–3 core outcomes you want from this project? | 2 |
 
 Record each answer. These go directly into the initial `openspec/explorations/product-scope.md` after setup.
 
@@ -86,12 +84,12 @@ Record each answer. These go directly into the initial `openspec/explorations/pr
 
 ## Step 3: Interview The User — Tools And Platform
 
-Continue one at a time:
+Continue one at a time and keep ending each question with the estimated questions left for the setup interview:
 
-| # | Question |
-|---|----------|
-| Q5 | What platform or environment is this for? (e.g. Android, iOS, web app, desktop, API, CLI) |
-| Q6 | Are there any tools, languages, or frameworks already decided? ("None yet" is a valid answer.) |
+| # | Question | Questions left after asking |
+|---|----------|----------------------------|
+| Q5 | What platform or environment is this for? (e.g. Android, iOS, web app, desktop, API, CLI) | 1 |
+| Q6 | Are there any tools, languages, or frameworks already decided? ("None yet" is a valid answer.) | 0 |
 
 **Scope boundary:** only ask about platform and already-decided tools. Do not ask about architecture, libraries, database choices, or implementation approach — those are deferred to the proposal stage.
 
@@ -125,10 +123,12 @@ Success criteria for this step:
 Follow `templates/new-project-setup.md` to complete the full project structure:
 
 - Create `docs/` and all collaboration files
-- Create `agent-workflow-local/` for project-local shared rules, per-agent rules, and current state
+- Create `agent-workflow-local/` for project facts, local rules, project-local shared overrides, per-agent rules, and current state
 - Create `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/`
 - Verify generated collaboration queues, or create active-only compatibility indexes when scripts cannot run
 - Create `openspec/explorations/` as the source-of-truth directory
+- Record stable paths, roles, stage tracking, and active source-of-truth inventory in `agent-workflow-local/project-facts.md`
+- Record only project-specific workflow rules in `agent-workflow-local/rules.md`
 - Create `openspec/explorations/product-scope.md` using the Q1–Q6 answers:
 
 ```md
@@ -179,7 +179,7 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 1. Log the transition in your collaboration file as a `status` item: "Setup complete — entering Exploration stage"
 2. Begin the domain model exploration with the first question:
 
-   > "Let's start mapping out the domain. What are the main things this project works with — the core objects or concepts a user creates, manages, or interacts with? (For example, in a ride-planning app the core objects are routes, ride plans, and recorded rides.)"
+   > "Let's start mapping out the domain. What are the main things this project works with — the core objects or concepts a user creates, manages, or interacts with? (For example, in a ride-planning app the core objects are routes, ride plans, and recorded rides.) Estimated questions left for this exploration session: 4."
 
 3. Ask follow-up questions **one at a time**, recording confirmed answers directly into `openspec/explorations/domain-model.md` as you go
 4. After the domain model is started, move to the next exploration file — ask the user which area to explore next, or suggest the most logical next area based on the answers so far
@@ -191,6 +191,7 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 ## Notes
 
 - Never ask more than one question per message throughout this entire flow
+- End each one-question-at-a-time interview question with the estimated number of questions left for the current stage or session. If uncertain, label the count as an estimate.
 - If the user provides existing PDFs, office files, web exports, or archives, track them in `agent-workflow-local/references/reference.md`, convert them with MarkItDown or another reliable extractor, and summarize them before writing source-of-truth files
 - If the user says "I'll handle the GitHub repo myself," skip Step 4 and ask for the repo URL to clone
 - If the user already has a brief or existing documents, read them before Step 2 and skip any questions already answered

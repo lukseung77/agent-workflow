@@ -13,55 +13,23 @@ One agent leads each phase. Other agents consult unless the user explicitly reas
 
 ## Startup
 
-1. Read the project collaboration bootstrap.
-2. Read the current-state file.
-3. Generate the active recipient queue when the shared script is available.
-4. Load one selected collaboration item.
-5. Read only the focused source-of-truth files needed for that action.
+Follow `workflow/rule-precedence.md`. Load the project collaboration bootstrap, local facts/rules/current-state when present, generated queue, one selected item, and focused source-of-truth files.
 
 Do not ask the user to restate the whole project by default.
 
 ## Phase Roles
 
-- Exploration lead:
-  - synthesizes user decisions
-  - asks the next focused question
-  - records confirmed requirements
-  - reconciles consultant feedback
-- Consultant agents:
-  - find contradictions
-  - identify missed edge cases
-  - suggest better wording or structure
-  - propose focused follow-up questions
-- Implementation lead:
-  - integrates code and docs
-  - verifies changes
-  - prevents conflicting edits
+Use `workflow/role-boundaries.md` for lead, consultant, and user responsibilities. Use `workflow/stages.md` for stage-specific duties.
 
 ## Question-At-A-Time Exploration
 
-When requirements are still emerging:
-
-- ask one focused question at a time
-- avoid combining unrelated decisions
-- include only the context needed to answer
-- do not reopen settled decisions unless there is a contradiction
-- update the project source of truth after meaningful clarification
-- keep a pending-question list for later
-
-If the project already uses rough remaining-question counts, continue that convention.
+Use `workflow/question-model.md`. Ask one focused question at a time, include the estimated questions left, and record confirmed answers into project files.
 
 ## Source Of Truth
 
 Prefer durable repo files over chat history.
 
-Use the project's existing structure. If none exists, recommend:
-
-- `docs/collaboration.md` for project-specific agent coordination
-- `agent-workflow-local/current-state.md` for the five-field restart snapshot
-- `openspec/explorations/` for active exploration
-- `openspec/changes/` for formal proposals
-- GitHub issues or PRs once the project is ready for tracked work
+Use the project's existing structure. If none exists, recommend the structure in `workflow/local-project-files.md`, plus `openspec/explorations/` for active exploration and `openspec/changes/` for formal proposals.
 
 ## Consultant Feedback
 

@@ -20,6 +20,10 @@ For the reusable coworking rules that sit above any one project, read:
 
 - `workflow/rule-precedence.md`
 - `workflow/agent-workflow.md`
+- `workflow/local-project-files.md`
+- `workflow/role-boundaries.md`
+- `workflow/question-model.md`
+- `workflow/diagrams.md`
 - `workflow/ai-coworking-guide.md`
 - `workflow/context-management.md`
 - `workflow/markitdown.md`
@@ -54,6 +58,10 @@ shared-workspace/
 │   │   ├── agent-workflow-codex.md
 │   │   ├── agent-workflow-claude.md
 │   │   ├── agent-workflow-gemini.md
+│   │   ├── local-project-files.md
+│   │   ├── role-boundaries.md
+│   │   ├── question-model.md
+│   │   ├── diagrams.md
 │   │   ├── ai-coworking-guide.md
 │   │   ├── context-management.md
 │   │   ├── markitdown.md
@@ -63,6 +71,8 @@ shared-workspace/
 │       └── multi-agent-coworking/
 └── some-project/
     └── agent-workflow-local/
+        ├── project-facts.md
+        ├── rules.md
         ├── agent-workflow.md
         ├── agent-workflow-codex.md
         ├── agent-workflow-claude.md
@@ -73,7 +83,7 @@ shared-workspace/
             └── markitdown/
 ```
 
-Projects should keep only local overrides and current-state material in their own repository.
+Projects should keep only local facts, local rules, local overrides, and current-state material in their own repository.
 
 The shared workflow repo should remain the default home for generic rules.
 Each agent gets one authoritative collaboration file in `docs/`:
@@ -94,16 +104,7 @@ The source of truth (spec, exploration files, etc.) lives outside these files. C
 
 ### Context Budget
 
-Agents should scan before they deep-read:
-
-1. `docs/collaboration.md`
-2. `agent-workflow-local/current-state.md`
-3. generated active queue
-4. one selected collaboration item
-5. focused source-of-truth files
-6. full collaboration threads only when referenced
-
-Use `workflow/context-management.md` for the detailed policy. Use `workflow/markitdown.md` when bulky PDFs, office documents, exported tickets, or other non-Markdown inputs need conversion before agent review. Track those references in `agent-workflow-local/references/reference.md`.
+Agents should scan before they deep-read. Follow `workflow/rule-precedence.md` for startup order and `workflow/context-management.md` for the detailed context policy. Use `workflow/markitdown.md` when bulky PDFs, office documents, exported tickets, or other non-Markdown inputs need conversion before agent review.
 
 ### Triggering
 
@@ -169,28 +170,7 @@ Each item in a collaboration file is a typed, ID-tracked message:
 
 ## Roles In Detail
 
-### Lead Agent
-
-- Writes to source-of-truth files (spec, exploration, domain model)
-- Integrates accepted decisions from consultant agents
-- Reconciles conflicts between consultant agents
-- Records finding dispositions and archives resolved history by size when needed
-- Is the tiebreaker when consultant agents disagree
-
-### Consultant Agents
-
-- Read generated queues and focused source files before broader history
-- Write only to their own `collaboration-[agent].md`
-- Log gaps, conflicts, and review findings using typed messages
-- Do not write to spec or lead agent's collaboration file
-- Surface risks explicitly; do not resolve them unilaterally
-
-### User
-
-- Makes product and scope decisions that agents cannot resolve
-- Receives one question at a time (not a batch dump)
-- Decisions are recorded in the collaboration file of the agent who asked
-- Once recorded, decisions flow into the source of truth via the lead agent
+See `workflow/role-boundaries.md` for lead, consultant, and user responsibilities. Project-specific assignments belong in `agent-workflow-local/project-facts.md` and per-agent local files.
 
 ---
 
@@ -204,9 +184,11 @@ Read `templates/project-init.md`. That is your entry point; it covers fetching t
 1. Copy `templates/docs/` into your project's `docs/` directory
 2. Rename `collaboration-[agent].md` for each agent you are using
 3. Copy `templates/agent-common.md` and your agent's instruction file (`CLAUDE.md`, `CODEX.md`, or `GEMINI.md`) into the project root
-4. Copy `templates/reference.md` to `agent-workflow-local/references/reference.md` and create `agent-workflow-local/references/markitdown/`
-5. Decide which agent is the lead and which are consultants — write this in `docs/collaboration-format.md`
-6. Have each agent read `docs/collaboration-format.md` before writing anything
+4. Copy `templates/project-facts.md` to `agent-workflow-local/project-facts.md`
+5. Copy `templates/local-rules.md` to `agent-workflow-local/rules.md`
+6. Copy `templates/reference.md` to `agent-workflow-local/references/reference.md` and create `agent-workflow-local/references/markitdown/`
+7. Decide which agent is the lead and which are consultants — write this in `docs/collaboration-format.md` and `agent-workflow-local/project-facts.md`
+8. Have each agent read `docs/collaboration-format.md` before writing anything
 
 ---
 
@@ -221,6 +203,10 @@ your-project/
 │   ├── collaboration-[consultant-a].md     # Consultant A thread
 │   └── collaboration-[consultant-b].md     # Consultant B thread (if used)
 ├── agent-workflow-local/
+│   ├── project-facts.md                    # Stable paths, roles, stage tracking, source-of-truth inventory
+│   ├── rules.md                            # Project-specific workflow rules only
+│   ├── agent-workflow.md                   # Short project-wide overrides or local map
+│   ├── agent-workflow-[agent].md           # Per-agent assignment and restrictions
 │   ├── current-state.md
 │   └── references/
 │       ├── reference.md                    # External reference registry
@@ -232,23 +218,20 @@ your-project/
 
 ## Key Rules (Quick Reference)
 
-1. Each agent writes only to its own collaboration file
-2. Source-of-truth files are written by the lead agent only
-3. Every message needs a type, lifecycle status, and unique ID
-4. Collaboration files remain authoritative; generated queues expose active work
-5. User decisions are recorded immediately; the lead agent writes them into spec
-6. Move to the next stage only after agents concur and user has answered all blocking questions
-7. Cleanup passes are most effective when done independently by different agents
-8. Large external documents should be tracked in the reference registry, converted or summarized, and linked instead of pasted
+1. Follow `workflow/rule-precedence.md` before acting.
+2. Use `workflow/role-boundaries.md` for write, GitHub, and stage authority.
+3. Use `workflow/collaboration-format.md` for message schema and generated queues.
+4. Use `workflow/question-model.md` for user questions and remaining-question estimates.
+5. Use `workflow/local-project-files.md` for project-local file placement.
+6. Use `workflow/diagrams.md` when a diagram is requested.
+7. Use `workflow/markitdown.md` for bulky external references.
 
 ---
 
 ## Anti-Patterns To Avoid
 
-- **One agent writing to another agent's file** — causes conflicts and breaks traceability
-- **Dumping all questions on the user at once** — exhausting; ask one at a time
-- **Writing product decisions into collaboration files** — they belong in the source of truth
-- **Moving to proposal before exploration conflicts are resolved** — the proposal will inherit the ambiguity
-- **Maintaining a second authoritative index** — generate active queues from collaboration files instead
-- **Resolving conflicts unilaterally** — surface them; let the lead or user decide
-- **Pasting bulky raw documents into chat** — convert to Markdown, summarize, and link to source material
+- Copying shared workflow rules into local project files without a packaging need.
+- Maintaining a second authoritative collaboration index when generated queues work.
+- Letting collaboration notes become the only record of accepted product decisions.
+- Asking the user to resolve items agents can classify and resolve themselves.
+- Loading full history before generated queues and focused source files.

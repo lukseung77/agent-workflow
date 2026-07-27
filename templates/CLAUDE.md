@@ -11,7 +11,7 @@ This file covers only what is specific to Claude.
 - Role: **[lead | consultant]**
 - Collaboration file: `docs/collaboration-claude.md`
 - Queue command: `python3 ../agent-workflow/scripts/collab_queue.py claude`
-- Source-of-truth path: `[path]`
+- Source-of-truth inventory: `agent-workflow-local/project-facts.md`
 
 ## ID Prefix
 
@@ -39,7 +39,7 @@ This file covers only what is specific to Claude.
 
 ## Source Of Truth
 
-All accepted product decisions live in: `[path]`
+All accepted product decisions live in the files listed in `agent-workflow-local/project-facts.md`.
 
 ## Key Constraints
 

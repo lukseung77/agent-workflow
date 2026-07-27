@@ -11,7 +11,7 @@ This file covers only what is specific to Codex.
 - Role: **[lead | consultant]**
 - Collaboration file: `docs/collaboration-codex.md`
 - Queue command: `python3 ../agent-workflow/scripts/collab_queue.py codex`
-- Source-of-truth path: `[path]`
+- Source-of-truth inventory: `agent-workflow-local/project-facts.md`
 
 ## ID Prefix
 
@@ -40,7 +40,7 @@ This file covers only what is specific to Codex.
 
 ## Source Of Truth
 
-All accepted product decisions live in: `[path]`
+All accepted product decisions live in the files listed in `agent-workflow-local/project-facts.md`.
 
 ## Key Constraints
 

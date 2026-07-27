@@ -2,7 +2,7 @@
 
 Shared defaults for all projects using `agent-workflow`.
 
-Project-specific overrides belong in `./agent-workflow-local/`.
+Project-specific facts, rules, current state, and per-agent assignments belong in `./agent-workflow-local/`; see `workflow/local-project-files.md`.
 
 ## Default Model
 
@@ -10,6 +10,7 @@ Project-specific overrides belong in `./agent-workflow-local/`.
 - Other agents may critique, review, and suggest alternatives, but they do not redirect the project unless the user explicitly changes ownership.
 - Durable project files are the source of truth, not chat history.
 - The lead agent is the default owner of GitHub actions and source-of-truth updates unless the user explicitly delegates those actions elsewhere.
+- Role boundaries are defined in `workflow/role-boundaries.md`.
 
 ## Trigger Model
 
@@ -27,6 +28,7 @@ Project-specific overrides belong in `./agent-workflow-local/`.
 - Prefer focused files by topic instead of one monolithic document.
 - Keep confirmed, deferred, and still-open items distinguishable.
 - Treat converted external documents as source material until the lead records confirmed decisions into source-of-truth files.
+- Project-local file placement is defined in `workflow/local-project-files.md`.
 
 ## Active State Model
 
@@ -48,7 +50,7 @@ Project-specific overrides belong in `./agent-workflow-local/`.
 - Ask one focused question at a time while requirements are still emerging.
 - Ask only what is needed for the next real decision.
 - Record confirmed answers back into project files promptly.
-- Keep a pending-question list for later rather than batching questions at the user.
+- Follow `workflow/question-model.md` for remaining-question estimates, decision queues, and user-facing question format.
 
 ## Review Model
 

@@ -21,7 +21,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 
 - [ ] Identify who the other agents will be (names and roles)
 - [ ] Identify who the lead agent is and who the consultants are
-- [ ] Confirm source-of-truth path: `openspec/explorations/`
+- [ ] Confirm source-of-truth root: `openspec/explorations/`
 
 ---
 
@@ -38,7 +38,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
   - Agent name
   - Role (lead or consultant)
   - Which files they write to
-- [ ] Fill in the source-of-truth path in `docs/collaboration-format.md`
+- [ ] Fill in the source-of-truth root or inventory pointer in `docs/collaboration-format.md`
 
 ---
 
@@ -46,6 +46,10 @@ These must be done before this checklist begins (handled in `project-init.md`):
 
 - [ ] Create `agent-workflow-local/agent-workflow.md`
   - project-wide workflow overrides only
+- [ ] Copy `templates/project-facts.md` -> `agent-workflow-local/project-facts.md`
+  - stable local paths, roles, stage tracking, and source-of-truth inventory
+- [ ] Copy `templates/local-rules.md` -> `agent-workflow-local/rules.md`
+  - project-specific workflow rules only
 - [ ] Create `agent-workflow-local/agent-workflow-[agent].md` for each participating agent
   - project-specific agent role and restrictions only
 - [ ] Copy `templates/current-state.md` -> `agent-workflow-local/current-state.md`
@@ -82,6 +86,7 @@ If starting from scratch (Exploration stage):
   - Primary user
   - Core outcomes
   - Map of exploration files (once they exist)
+- [ ] Record the active source-of-truth files in `agent-workflow-local/project-facts.md`
 
 If joining mid-project:
 
@@ -126,9 +131,11 @@ Write a short onboarding note in your collaboration file addressed `to: all` tha
 Before considering setup complete:
 
 - [ ] All collaboration files exist and are named correctly
-- [ ] `agent-workflow-local/` exists with shared, per-agent, and current-state files
+- [ ] `agent-workflow-local/` exists with project facts, local rules, shared override, per-agent, and current-state files
 - [ ] `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/` exist
-- [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth path filled in
+- [ ] `agent-workflow-local/project-facts.md` has stable paths, roles, stage tracking, and source-of-truth inventory filled in
+- [ ] `agent-workflow-local/rules.md` contains only project-specific rules or says no local overrides are active
+- [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth root or inventory pointer filled in
 - [ ] `docs/collaboration.md` correctly points to the shared workflow repo and local overrides
 - [ ] Large imported documents are linked or summarized rather than pasted into collaboration threads
 - [ ] Your own collaboration file has at least one `status` item logged
