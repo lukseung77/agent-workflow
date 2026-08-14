@@ -4,6 +4,10 @@ Shared Gemini defaults across projects.
 
 Project-specific Gemini rules should live in `./agent-workflow-local/agent-workflow-gemini.md`.
 
+## Alias
+
+- `agy` means Gemini. Treat user requests for `agy` as requests for this Gemini consultant role.
+
 ## Default Role
 
 - Strong at comparative analysis, gap finding, and alternative framing.

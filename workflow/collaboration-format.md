@@ -35,6 +35,7 @@ This file defines the standard message format for per-agent collaboration files.
 ### [ID] Title
 - `date`: YYYY-MM-DD
 - `created_at`: YYYY-MM-DDTHH:MM:SS+HH:MM (optional)
+- `session_id`: native session/run ID or `<agent>-<YYYY-MM-DD>-<project>-<slug>` fallback; required for handoff/status items that summarize a session
 - `from`: <agent>
 - `to`: <agent | all | user>
 - `type`: status | question | gap | review-request | review | suggestion
@@ -53,6 +54,7 @@ Body (optional) — short bullets only
 ### [ID] Response to [original-ID]
 - `date`: YYYY-MM-DD
 - `created_at`: YYYY-MM-DDTHH:MM:SS+HH:MM (optional)
+- `session_id`: native session/run ID or `<agent>-<YYYY-MM-DD>-<project>-<slug>` fallback; required when this response is a session handoff
 - `from`: <agent>
 - `to`: <agent | all | user>
 - `type`: response
@@ -75,7 +77,7 @@ Body (optional) — short bullets only
 | `suggestion` | A non-blocking improvement idea; can be declined without consequence |
 | `response` | A reply to any of the above, referencing the original ID |
 
-`date` must be exact `YYYY-MM-DD`. When `created_at` is present, it must be ISO 8601 with `Z` or a UTC offset and its calendar date must match `date`.
+`date` must be exact `YYYY-MM-DD`. When `created_at` is present, it must be ISO 8601 with `Z` or a UTC offset and its calendar date must match `date`. When a handoff note is requested, include `session_id`; prefer the platform-native conversation/session/run ID, otherwise use the fallback format shown above.
 
 ## Formal Review Findings
 
@@ -98,6 +100,10 @@ Informal reviews may use short bullets. A review request marked `formal: true` u
   - `P1`: required before submission, acceptance, or implementation
   - `P2`: optional improvement
 - The lead records disposition for each canonical finding.
+
+## Agent Aliases
+
+- `agy` is an alias for `gemini`; address collaboration items to `gemini` in files, but treat user requests mentioning `agy` as requests for Gemini.
 
 ## ID Convention
 

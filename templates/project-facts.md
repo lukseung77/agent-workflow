@@ -14,6 +14,7 @@ Stable project-local facts for agents. Current task state belongs in `current-st
 
 - Lead: `[agent]`
 - Consultants: `[agent, agent]`
+- Agent aliases: `agy` means `gemini` when Gemini is present in the project
 
 ## Stage Tracking
 

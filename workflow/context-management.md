@@ -42,12 +42,15 @@ Projects with additional stage names may pass repeatable `--allowed-stage NAME` 
 
 A useful handoff summary includes:
 
+- session ID for the conversation or agent run that produced the handoff
 - current stage
 - lead agent and consultants
 - source-of-truth root or inventory pointer
 - next unresolved question or blocker
 - recently reconciled feedback
 - exact files changed since the last handoff
+
+Use the platform-native conversation/session/run ID when available. If the environment does not expose one, create a stable fallback in the form `<agent>-<YYYY-MM-DD>-<project-or-repo>-<purpose-slug>` and label it as the session ID.
 
 Avoid restating entire specs. Link to the relevant source files instead.
 

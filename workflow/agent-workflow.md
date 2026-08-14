@@ -19,7 +19,8 @@ Project-specific facts, rules, current state, and per-agent assignments belong i
 - File-based handoff is the required portable mechanism. Direct CLI, subprocess, API, or authentication-based invocation of another agent must not be required for the workflow to function.
 - A project may use reliable orchestration supplied by its environment, but all requests and outcomes must still be recorded in project files.
 - The user may identify which agent sessions responded and may direct the lead to wait, consolidate, or proceed. The user should not have to relay prompts, findings, or response content between agents.
-- Default minimal handoff: `Files updated. Re-read docs/collaboration.md and continue from the next unresolved question.`
+- Default minimal handoff: `Session ID: <session_id>. Files updated. Re-read docs/collaboration.md and continue from the next unresolved question.`
+- When the user asks an agent to leave a handoff note, include a `session_id` that the same or another agent can cite when asking the user to resume or reference that session.
 
 ## Source-Of-Truth Model
 
