@@ -17,6 +17,8 @@ Project-specific facts, rules, current state, and per-agent assignments belong i
 - Shared files carry state but do not automatically trigger another agent across tools, terminals, or platforms.
 - The practical trigger is still the user explicitly starting or messaging the next agent.
 - File-based handoff is the required portable mechanism. Direct CLI, subprocess, API, or authentication-based invocation of another agent must not be required for the workflow to function.
+- When the user asks one agent to consult, review with, or hand off to another agent, the default mechanism is collaboration files only: post the request in the writer's collaboration file, verify the target queue when useful, and wait for the target agent to respond in its own collaboration file.
+- Do not invoke another agent through a CLI, subprocess, API, browser session, or direct agent command for collaboration-file consultation unless the user explicitly asks for direct execution or the project has an explicit orchestration rule for that action.
 - A project may use reliable orchestration supplied by its environment, but all requests and outcomes must still be recorded in project files.
 - The user may identify which agent sessions responded and may direct the lead to wait, consolidate, or proceed. The user should not have to relay prompts, findings, or response content between agents.
 - Default minimal handoff: `Session ID: <session_id>. Files updated. Re-read docs/collaboration.md and continue from the next unresolved question.`
@@ -59,6 +61,7 @@ Project-specific facts, rules, current state, and per-agent assignments belong i
 - Consultant feedback should identify the issue, why it matters, where it belongs, and what action or question follows.
 - The lead agent should reconcile feedback explicitly rather than silently absorbing it.
 - Consultant agents should communicate recommendations, gaps, and suggestions through collaboration files.
+- A lead agent requesting consultant review should stop after posting the collaboration item and verifying the queue unless the user explicitly asks it to directly run or orchestrate the consultant agent.
 
 ## Sync Model
 
