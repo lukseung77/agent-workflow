@@ -115,5 +115,9 @@ All of the following must be true before moving to Implementation:
 3. All other agents review and reply with concurrence or remaining blockers
 4. User confirms the transition
 5. Lead agent updates the project status in source-of-truth files
+6. Each agent checks `agent-workflow-local/project-facts.md` and its per-agent local role file before acting in the new stage
+7. Lead agent briefly reminds the user of each active agent's role and review lens for the new stage
 
 Transitions should never be silent. If a stage transition happens without explicit agent concurrence and user confirmation, the project carries hidden ambiguity into the next stage.
+
+The user reminder should be compact, for example: `New phase: Proposal. Codex leads drafting and integration; Claude checks fixed-reference/domain consistency; Gemini checks architecture/breadth feasibility.`

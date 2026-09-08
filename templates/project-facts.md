@@ -14,6 +14,9 @@ Stable project-local facts for agents. Current task state belongs in `current-st
 
 - Lead: `[agent]`
 - Consultants: `[agent, agent]`
+- Consultant review lenses, if used:
+  - `[agent]`: `[fixed-reference/domain | architecture/breadth | project-specific lens]`
+  - `[agent]`: `[fixed-reference/domain | architecture/breadth | project-specific lens]`
 - Agent aliases: `agy` means `gemini` when Gemini is present in the project
 
 ## Stage Tracking

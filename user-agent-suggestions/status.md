@@ -20,5 +20,6 @@ See `workflow/master-governance.md` for submission, evaluation, approval, implem
 
 | suggestion_file | status | decision_date | summary | refs |
 |-----------------|--------|---------------|---------|------|
+| `user-agent-suggestions/submitted/2026-09-08-1418-rideroute-phase-consultant-roles-001.md` | implemented | 2026-09-08 | Accepted in generalized form as optional phase-specific consultant review lenses. | `workflow/role-boundaries.md`; `templates/project-facts.md`; `templates/roles/consultant-agent.md`; `templates/roles/lead-agent.md`; `templates/new-project-setup.md` |
 
 Use `refs` for changed files, commit hashes, backup paths, rollback notes, or follow-up detail when needed. Keep rows compact; add a short detail block below the table only when a row would otherwise become hard to scan.

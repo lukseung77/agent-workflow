@@ -29,6 +29,24 @@ The `master-agent` role applies only to the canonical upstream `agent-workflow` 
 - Do not edit source-of-truth files, run GitHub sync commands, declare stage transitions, or edit another agent's collaboration file unless the user explicitly authorizes that specific action.
 - In downstream projects, do not edit the canonical upstream `agent-workflow` repository. When the human user explicitly asks for an upstream workflow suggestion, create only a new file under `user-agent-suggestions/submitted/` as defined in `workflow/master-governance.md`.
 
+## Phase Review Lenses
+
+Projects may assign consultants complementary review lenses by stage. These lenses are advisory defaults, not exclusive authority and not co-lead status. Project-local files may rename, combine, omit, or replace them.
+
+Common reusable lenses:
+
+- Fixed-reference/domain lens: checks source-of-truth consistency, domain contracts, lifecycle/state invariants, acceptance criteria, edge cases, and test fidelity against settled requirements.
+- Architecture/breadth lens: checks cross-file consistency, technical feasibility, data and storage shape, performance bounds, UI or provider boundaries, implementation complexity, and simplification opportunities.
+
+Recommended cadence:
+
+- Exploration and Proposal: request lens-specific review after major lead cleanup passes and before stage transitions when the existing stage gates require agent concurrence.
+- Implementation: request lens-specific review at milestone gates or coherent implementation batches.
+
+Lens assignments should be recorded in `agent-workflow-local/project-facts.md` or per-agent local role files. A lens does not let a consultant edit source-of-truth files, run GitHub sync, or declare stage transitions.
+
+At every stage transition, each agent should re-check its current role, authority, and review lens before acting in the new stage. The lead agent should give the user a brief role reminder after the transition is confirmed.
+
 ## User
 
 - Resolves product and scope decisions that agents cannot determine from source-of-truth files.

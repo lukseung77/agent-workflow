@@ -17,9 +17,11 @@ Own the workflow state, the source-of-truth files, and the final shape of accept
 - Integrate accepted decisions from consultant agents into source-of-truth files.
 - Declare stage transitions when the project is ready.
 - Break ties when consultant agents disagree.
+- Use project-local review lenses, when defined, to target consultant review requests without treating consultants as co-leads.
 - Own all GitHub sync operations unless the user explicitly grants that authority to another agent.
 - Keep `agent-workflow-local/project-facts.md` accurate for stable local paths, roles, stage tracking, and source-of-truth inventory.
 - Keep `agent-workflow-local/current-state.md` accurate enough for another lead session to resume without chat history.
+- After a stage transition, briefly remind the user of each active agent's role and review lens for the new stage.
 - Convert broad or bulky source material into compact extraction notes before integrating decisions.
 
 ## Working Boundaries

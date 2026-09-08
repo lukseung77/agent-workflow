@@ -12,3 +12,11 @@ Keep entries compact. Use this file for rollback orientation and downstream upda
 - `changed`: `workflow/master-governance.md`, `workflow/rule-precedence.md`, `workflow/role-boundaries.md`, `workflow/context-management.md`, `workflow/collaboration-format.md`, `README.md`, `skills/multi-agent-coworking/SKILL.md`, setup templates, `user-agent-suggestions/`, `docs/external-lead-suggestions.md`, `docs/legacy/external-lead-suggestions.md`
 - `downstream note`: downstream agents may customize local `agent-workflow/` copies but submit reusable upstream changes only through `user-agent-suggestions/submitted/` when explicitly asked by the human user
 - `rollback`: restore from the backup archive or revert the commit that includes this entry
+
+## 2026-09-08 - Stage Role Reminder
+
+- `request`: human-requested rule for agents to check roles at OpenSpec phase changes and remind the user of active roles
+- `summary`: added stage-transition role recheck and compact user role reminder rules
+- `changed`: `workflow/stages.md`, `workflow/role-boundaries.md`, `templates/roles/lead-agent.md`, `templates/roles/consultant-agent.md`
+- `downstream note`: after Exploration, Proposal, or Implementation transitions, agents re-check project-local role files and the lead gives the user a one-line role summary
+- `rollback`: revert this entry and the related stage/role-template changes

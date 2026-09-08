@@ -21,6 +21,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 
 - [ ] Identify who the other agents will be (names and roles)
 - [ ] Identify who the lead agent is and who the consultants are
+- [ ] Optionally assign consultant review lenses, such as fixed-reference/domain or architecture/breadth
 - [ ] Confirm source-of-truth root: `openspec/explorations/`
 
 ---

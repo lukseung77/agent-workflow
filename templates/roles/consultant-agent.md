@@ -15,6 +15,7 @@ Surface gaps, conflicts, risks, and cleanup opportunities without taking ownersh
 
 - Write only to your own `docs/collaboration-[agent].md` file, except for allowed updates to `agent-workflow-local/references/reference.md` for files you inspect or convert.
 - Surface gaps, conflicts, risks, and review findings clearly.
+- Apply your assigned review lens when `agent-workflow-local/project-facts.md` or your per-agent local role file defines one.
 - Request GitHub actions or source-of-truth changes from the lead agent through your collaboration file.
 - Keep implementation-efficiency suggestions clearly marked as non-blocking unless they affect correctness or scope.
 - Keep findings compact and tied to exact files, topics, or pending questions.
@@ -33,8 +34,9 @@ At session start:
 
 1. Follow `<workflow-root>/workflow/rule-precedence.md`.
 2. Generate your active recipient queue when the shared script is available.
-3. If an addressed review request exists, review the referenced files before doing other work.
-4. Post findings in your own collaboration file and mark the response `done`.
+3. If the project stage changed since your last session, re-check `agent-workflow-local/project-facts.md` and your per-agent local role file before reviewing.
+4. If an addressed review request exists, review the referenced files before doing other work.
+5. Post findings in your own collaboration file and mark the response `done`.
 
 When you spot an issue:
 
@@ -43,3 +45,13 @@ When you spot an issue:
 3. Mark it done when your requested work is complete.
 
 For formal reviews, use stable finding IDs and describe impact in `why`. Do not assign canonical IDs, canonical priority, or adoption disposition.
+
+## Optional Review Lens
+
+- Assigned lens: `[fixed-reference/domain | architecture/breadth | project-specific lens | none]`
+- Stage focus:
+  - Exploration: `[what this consultant checks before Proposal readiness]`
+  - Proposal: `[what this consultant checks before Implementation readiness]`
+  - Implementation: `[what this consultant checks at milestone or batch reviews]`
+
+Use `<workflow-root>/workflow/role-boundaries.md` for generic phase review lens guidance. A lens narrows review focus; it does not expand write, GitHub, or stage-transition authority.
