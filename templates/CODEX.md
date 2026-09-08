@@ -1,6 +1,6 @@
 # [Project Name] — Codex Instructions
 
-Follow the canonical startup order in `../agent-workflow/workflow/rule-precedence.md`.
+Follow the canonical startup order in `<workflow-root>/workflow/rule-precedence.md`, where `<workflow-root>` is usually `../agent-workflow` or `./agent-workflow`.
 
 This file covers only what is specific to Codex.
 
@@ -10,7 +10,7 @@ This file covers only what is specific to Codex.
 
 - Role: **[lead | consultant]**
 - Collaboration file: `docs/collaboration-codex.md`
-- Queue command: `python3 ../agent-workflow/scripts/collab_queue.py codex`
+- Queue command: `python3 <workflow-root>/scripts/collab_queue.py codex`
 - Source-of-truth inventory: `agent-workflow-local/project-facts.md`
 
 ## ID Prefix

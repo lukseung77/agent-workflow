@@ -1,6 +1,6 @@
 # Local Rules
 
-Project-specific workflow rules. These rules supplement the shared workflow in `../agent-workflow/workflow/`.
+Project-specific workflow rules. These rules supplement the shared workflow in `<workflow-root>/workflow/`, where `<workflow-root>` is recorded in `agent-workflow-local/project-facts.md`.
 
 ## Source-Of-Truth Hygiene
 

@@ -4,7 +4,7 @@ Stable project-local facts for agents. Current task state belongs in `current-st
 
 ## Paths
 
-- Shared workflow repo: `../agent-workflow`
+- Workflow root: `<../agent-workflow | ./agent-workflow | other explicit path>`
 - Source-of-truth root: `[path]`
 - Reference registry: `agent-workflow-local/references/reference.md`
 - Collaboration bootstrap: `docs/collaboration.md`
@@ -19,7 +19,7 @@ Stable project-local facts for agents. Current task state belongs in `current-st
 ## Stage Tracking
 
 - Active stage is tracked in `agent-workflow-local/current-state.md`.
-- Stage transitions follow `../agent-workflow/workflow/stages.md` unless a local rule explicitly overrides that gate.
+- Stage transitions follow `<workflow-root>/workflow/stages.md` unless a local rule explicitly overrides that gate.
 
 ## Source-Of-Truth Inventory
 

@@ -1,7 +1,7 @@
 # Lead Agent Role Guide
 
 This file defines responsibilities and operating boundaries for any lead agent.
-Follow `workflow/rule-precedence.md`, generate the active queue when available, and load selected items before full collaboration threads.
+Follow `<workflow-root>/workflow/rule-precedence.md`, generate the active queue when available, and load selected items before full collaboration threads.
 
 ---
 

@@ -21,21 +21,24 @@ Record the lead and consultant assignments in `agent-workflow-local/project-fact
 
 ## Step 1: Fetch Workflow Files
 
-Fetch the shared workflow repository:
+Fetch or copy the workflow repository:
 
 ```
 https://github.com/lukseung77/agent-workflow
 ```
 
-Preferred local layout:
+Preferred local layouts:
 
 ```
 ../agent-workflow
+./agent-workflow
 ```
 
-Do not copy the shared global workflow rules into the new project by default.
+Use `../agent-workflow` for a shared sibling checkout or `./agent-workflow` for a project-vendored downstream copy.
 
-The shared rules should stay in `../agent-workflow/workflow/`.
+Do not copy shared global workflow rules into `agent-workflow-local/`.
+
+The shared rules should stay in `<workflow-root>/workflow/`.
 The new project should keep only project-local overrides in `./agent-workflow-local/`.
 
 Read these shared workflow files before continuing:

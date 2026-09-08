@@ -1,67 +1,31 @@
 ---
 name: multi-agent-coworking
-description: Use when multiple AI agents collaborate on a project, especially during exploration, review, handoff, or implementation. Applies one-question-at-a-time elicitation, lead/consultant role boundaries, durable source-of-truth updates, consultant feedback reconciliation, and restart discipline.
+description: Use when multiple AI agents collaborate on a project, especially during exploration, review, handoff, implementation, or upstream workflow governance.
 ---
 
 # Multi-Agent Coworking
 
-Use this skill when Codex, Claude, Gemini, or another agent is collaborating with other AI agents on the same project.
-
-## Core Rule
-
-One agent leads each phase. Other agents consult unless the user explicitly reassigns ownership.
+Use this skill when Codex, Claude, Gemini, or another agent collaborates with other AI agents through this workflow.
 
 ## Startup
 
-Follow `workflow/rule-precedence.md`. Load the project collaboration bootstrap, local facts/rules/current-state when present, generated queue, one selected item, and focused source-of-truth files.
+Follow `workflow/rule-precedence.md`. Load the project bootstrap, local facts/rules/current-state when present, generated queue, one selected item, and focused source files.
 
-Do not ask the user to restate the whole project by default.
+Do not ask the user to restate project context when files can answer it.
 
-## Phase Roles
+## Authority
 
-Use `workflow/role-boundaries.md` for lead, consultant, and user responsibilities. Use `workflow/stages.md` for stage-specific duties.
+- Project phase authority: `workflow/role-boundaries.md` and `workflow/stages.md`
+- Canonical upstream authority and user-agent suggestions: `workflow/master-governance.md`
+- User-question escalation: `workflow/decision-protocol.md` and `workflow/question-model.md`
 
-## Question-At-A-Time Exploration
+One agent leads each phase. Other agents consult unless the user explicitly reassigns ownership.
 
-Use `workflow/question-model.md`. Ask one focused question at a time, include the estimated questions left, and record confirmed answers into project files.
+## Collaboration
 
-## Source Of Truth
+- Message schema and queue behavior: `workflow/collaboration-format.md`
+- Consultant review and lead consolidation: `workflow/review-cycle.md`
+- Context, handoff, and archive hygiene: `workflow/context-management.md`
+- External reference conversion: `workflow/markitdown.md`
 
-Prefer durable repo files over chat history.
-
-Use the project's existing structure. If none exists, recommend the structure in `workflow/local-project-files.md`, plus `openspec/explorations/` for active exploration and `openspec/changes/` for formal proposals.
-
-## Consultant Feedback
-
-Ask consultant agents to leave feedback in one predictable place.
-
-Require feedback to include:
-
-- issue
-- why it matters
-- affected file or topic
-- whether it is a contradiction, missing detail, wording issue, or future-facing suggestion
-- proposed next question, if useful
-
-Reconcile each meaningful suggestion with:
-
-- `Adopted`
-- `Partially adopted`
-- `Not adopted`
-
-Include a short reason so later agents do not repeat the same review.
-
-## Token And Context Discipline
-
-- Load the restart snapshot, generated queue, selected item, and focused source files before full historical threads.
-- Summarize large consultant findings before merging them into source-of-truth files.
-- Move durable guidance into short bootstrap files plus focused references.
-- Use MarkItDown for bulky non-Markdown inputs before pasting or asking another agent to read them; check `agent-workflow-local/references/reference.md` first and reuse current converted Markdown when available.
-- Preserve enough links and file paths that a future agent can reopen the original material when needed.
-
-## Boundaries
-
-- Keep reusable collaboration policy in generic guides or skills.
-- Keep product-specific decisions in the product repo.
-- Do not let consultant agents overwrite confirmed requirements unless the user explicitly asks them to.
-- Do not let multiple agents sync to GitHub independently unless that responsibility is coordinated.
+Keep reusable policy in workflow files, project decisions in source-of-truth files, and project-specific overrides in `agent-workflow-local/`.

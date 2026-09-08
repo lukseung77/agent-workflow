@@ -1,7 +1,7 @@
 # Consultant Agent Role Guide
 
 This file defines responsibilities and operating boundaries for any consultant agent.
-Follow `workflow/rule-precedence.md`, generate the active queue when available, and load selected items before full collaboration threads.
+Follow `<workflow-root>/workflow/rule-precedence.md`, generate the active queue when available, and load selected items before full collaboration threads.
 
 ---
 
@@ -31,7 +31,7 @@ Surface gaps, conflicts, risks, and cleanup opportunities without taking ownersh
 
 At session start:
 
-1. Follow `workflow/rule-precedence.md`.
+1. Follow `<workflow-root>/workflow/rule-precedence.md`.
 2. Generate your active recipient queue when the shared script is available.
 3. If an addressed review request exists, review the referenced files before doing other work.
 4. Post findings in your own collaboration file and mark the response `done`.

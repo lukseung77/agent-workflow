@@ -125,8 +125,8 @@ Responses reference both the response ID and the original:
 Collaboration files are authoritative. Generate an active queue with:
 
 ```sh
-python3 ../agent-workflow/scripts/collab_queue.py <agent>
-python3 ../agent-workflow/scripts/collab_queue.py <agent> --id ITEM-ID
+python3 <workflow-root>/scripts/collab_queue.py <agent>
+python3 <workflow-root>/scripts/collab_queue.py <agent> --id ITEM-ID
 ```
 
 The default output is compact. Use `--full` for all active item details or `--json` for automation. Queues sort newest first for presentation but never expire or hide older unresolved work.

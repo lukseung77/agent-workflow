@@ -4,30 +4,35 @@ This file defines where workflow rules live, what order to read them in, and how
 
 ## Layout
 
-- Shared workflow rules live in `../agent-workflow/workflow/`
+- Shared workflow rules live in the workflow root, normally `../agent-workflow/workflow/` for a sibling checkout or `./agent-workflow/workflow/` for a project-vendored copy.
 - Project-specific overrides live in `./agent-workflow-local/`
-- Projects should not copy the shared global rules into each repository by default
+- Projects may use a shared sibling checkout or a project-local vendored copy. User-agents may customize only their downstream local copy unless acting under `workflow/master-governance.md` in the canonical upstream repository.
+- Projects should not copy shared global rules into `agent-workflow-local/`; local files should contain facts, overrides, and project-specific rules only.
 
 ## Read Order
 
 Read these files in order:
 
 1. `./docs/collaboration.md`
-2. `../agent-workflow/workflow/rule-precedence.md`
-3. `../agent-workflow/workflow/agent-workflow.md`
+2. `<workflow-root>/workflow/rule-precedence.md`
+3. `<workflow-root>/workflow/agent-workflow.md`
 4. `./agent-workflow-local/project-facts.md` when present
 5. `./agent-workflow-local/rules.md` when present
 6. `./agent-workflow-local/current-state.md`
-7. `../agent-workflow/workflow/agent-workflow-{agent}.md`
+7. `<workflow-root>/workflow/agent-workflow-{agent}.md`
 8. `./agent-workflow-local/agent-workflow.md`
 9. `./agent-workflow-local/agent-workflow-{agent}.md`
+
+For downstream projects, `<workflow-root>` is the available `agent-workflow` copy, usually `../agent-workflow` or `./agent-workflow`.
+
+When operating in the canonical upstream `agent-workflow` repository as master-agent, also read `workflow/master-governance.md` before updating workflow files, templates, scripts, skills, docs, suggestion status, or GitHub state.
 
 Read topic files such as `local-project-files.md`, `question-model.md`, `role-boundaries.md`, `diagrams.md`, `context-management.md`, `markitdown.md`, `stages.md`, or `review-cycle.md` only when relevant to the current task.
 
 After the startup path, generate the current agent queue when the shared scripts are available:
 
 ```sh
-python3 ../agent-workflow/scripts/collab_queue.py <agent>
+python3 <workflow-root>/scripts/collab_queue.py <agent>
 ```
 
 Read the selected collaboration item and focused source files only. Use persistent collaboration indexes only as a compatibility fallback.
@@ -37,6 +42,7 @@ Read the selected collaboration item and focused source files only. Use persiste
 | Topic | Canonical file |
 |-------|----------------|
 | Rule location and precedence | `workflow/rule-precedence.md` |
+| Canonical upstream maintenance and suggestion governance | `workflow/master-governance.md` |
 | Shared operating model | `workflow/agent-workflow.md` |
 | Project-local file map and placement rules | `workflow/local-project-files.md` |
 | Lead, consultant, and user boundaries | `workflow/role-boundaries.md` |
@@ -60,8 +66,10 @@ Highest to lowest:
 1. `./agent-workflow-local/agent-workflow-{agent}.md`
 2. `./agent-workflow-local/rules.md`
 3. `./agent-workflow-local/agent-workflow.md`
-4. `../agent-workflow/workflow/agent-workflow-{agent}.md`
-5. `../agent-workflow/workflow/agent-workflow.md`
+4. `<workflow-root>/workflow/agent-workflow-{agent}.md`
+5. `<workflow-root>/workflow/agent-workflow.md`
+
+Project-local overrides affect only the downstream project. They do not authorize changes to the canonical upstream `agent-workflow` repository.
 
 If two files at the same level appear to conflict, do not guess. Treat that as a workflow gap and ask the user or the designated lead agent to resolve it.
 
@@ -123,11 +131,12 @@ Collaboration files:
 
 ## Missing Shared Repo
 
-If `../agent-workflow` is missing:
+If the expected workflow root is missing:
 
 1. Look for a project bootstrap file that provides an alternate path.
-2. If no local shared path is available, use the GitHub repo URL if the environment allows it.
-3. If neither is available, continue in degraded mode using only project-local files and record that the shared workflow repo was unavailable.
+2. Check both common locations: `../agent-workflow` and `./agent-workflow`.
+3. If no local shared path is available, use the GitHub repo URL if the environment allows it.
+4. If neither is available, continue in degraded mode using only project-local files and record that the shared workflow repo was unavailable.
 
 ## Override Style
 

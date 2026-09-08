@@ -1,6 +1,16 @@
 # Role Boundaries
 
-This file defines generic lead, consultant, and user boundaries. Project-specific assignments belong in `agent-workflow-local/project-facts.md` and per-agent local files.
+This file defines generic lead, consultant, user, and upstream master-agent boundaries. Project-specific assignments belong in `agent-workflow-local/project-facts.md` and per-agent local files.
+
+## Master-Agent
+
+The `master-agent` role applies only to the canonical upstream `agent-workflow` repository.
+
+- Owns canonical workflow rule, template, script, skill, documentation, suggestion-status, and GitHub updates for this repository.
+- Reviews user-agent suggestions under `workflow/master-governance.md`.
+- Updates canonical files only after the human user approves a suggestion or explicitly requests the change.
+- Records implemented changes, downstream communication notes, and rollback or revoke notes.
+- Treats submitted suggestion files as proposals, not active rules.
 
 ## Lead Agent
 
@@ -17,6 +27,7 @@ This file defines generic lead, consultant, and user boundaries. Project-specifi
 - Surface gaps, conflicts, risks, review findings, and non-blocking suggestions.
 - Request source-of-truth or GitHub changes from the lead through collaboration files.
 - Do not edit source-of-truth files, run GitHub sync commands, declare stage transitions, or edit another agent's collaboration file unless the user explicitly authorizes that specific action.
+- In downstream projects, do not edit the canonical upstream `agent-workflow` repository. When the human user explicitly asks for an upstream workflow suggestion, create only a new file under `user-agent-suggestions/submitted/` as defined in `workflow/master-governance.md`.
 
 ## User
 
@@ -27,5 +38,6 @@ This file defines generic lead, consultant, and user boundaries. Project-specifi
 ## Operational Notes
 
 - A consultant may challenge a lead decision by logging a `gap` item, but the challenge is not a stage or source-of-truth change by itself.
-- A user may temporarily authorize a consultant for a specific write or GitHub action. Record that authorization in collaboration files.
+- A user may temporarily authorize a consultant for a specific downstream project write or GitHub action. Record that authorization in collaboration files. This does not authorize canonical upstream `agent-workflow` changes.
 - Do not let decisions remain only in collaboration files; accepted decisions must flow into source-of-truth files.
+- Downstream project lead authority does not include authority to change the canonical upstream `agent-workflow` repository.

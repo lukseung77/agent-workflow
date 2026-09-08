@@ -10,7 +10,7 @@ Work through it top to bottom. Check off each item before moving to the next.
 
 These must be done before this checklist begins (handled in `project-init.md`):
 
-- [ ] Shared workflow repo fetched from `https://github.com/lukseung77/agent-workflow`
+- [ ] Workflow root fetched or copied from `https://github.com/lukseung77/agent-workflow`
 - [ ] User interview complete (project title, purpose, primary user, core outcomes, platform, tools)
 - [ ] Repository created and cloned locally
 - [ ] `openspec/explorations/product-scope.md` created from interview answers
@@ -30,8 +30,9 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Create `docs/` in the project root if it does not exist
 - [ ] Create `agent-workflow-local/` in the project root if it does not exist
 - [ ] Create a short `docs/collaboration.md` bootstrap file that points agents to:
-  - `../agent-workflow/workflow/`
-  - `../agent-workflow/skills/`
+  - the chosen workflow root, normally `../agent-workflow/` or `./agent-workflow/`
+  - `<workflow-root>/workflow/`
+  - `<workflow-root>/skills/`
   - `./agent-workflow-local/`
 - [ ] Copy `templates/docs/collaboration-format.md` → `docs/collaboration-format.md`
 - [ ] Fill in the agent roles table in `docs/collaboration-format.md`:
@@ -70,9 +71,9 @@ For each agent (including yourself):
 - [ ] Copy `templates/docs/collaboration-agent.md` → `docs/collaboration-[agentname].md`
 - [ ] Replace `[Agent Name]` with the actual agent name
 - [ ] Replace `[XX]` ID prefix with the agent's assigned prefix (e.g. `CL`, `CX`, `GM`)
-- [ ] Confirm `python3 ../agent-workflow/scripts/collab_queue.py [agentname]` can generate the active queue
+- [ ] Confirm `python3 <workflow-root>/scripts/collab_queue.py [agentname]` can generate the active queue
 - [ ] If scripts cannot run in the project environment, copy `templates/docs/collaboration-index-agent.md` as a compatibility fallback and keep only active rows
-- [ ] Run `python3 ../agent-workflow/scripts/collab_lint.py --root . --strict-state`
+- [ ] Run `python3 <workflow-root>/scripts/collab_lint.py --root . --strict-state`
 
 ---
 

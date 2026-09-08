@@ -21,7 +21,7 @@ Collaboration files are the communication layer only. Do not write product decis
 
 ## Rules
 
-Follow `../agent-workflow/workflow/collaboration-format.md` for the canonical schema, recipient semantics, lifecycle statuses, formal finding rows, and queue commands.
+Follow `<workflow-root>/workflow/collaboration-format.md` for the canonical schema, recipient semantics, lifecycle statuses, formal finding rows, and queue commands.
 
 Project-specific facts in this file are limited to the agent roster and source-of-truth root or inventory pointer.
 
@@ -81,4 +81,4 @@ Always all-caps. Apply on every use, not just the first. Only use for terms conf
 
 ## Startup
 
-Follow `../agent-workflow/workflow/rule-precedence.md`. Generate the current agent queue when scripts are available; use persistent indexes only as a compatibility fallback.
+Follow `<workflow-root>/workflow/rule-precedence.md`. Generate the current agent queue when scripts are available; use persistent indexes only as a compatibility fallback.

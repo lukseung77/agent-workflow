@@ -23,7 +23,7 @@ Tasks belong in collaboration items and generated queues. Confirmed decisions be
 Validate the snapshot with:
 
 ```sh
-python3 ../agent-workflow/scripts/collab_lint.py --root . --strict-state
+python3 <workflow-root>/scripts/collab_lint.py --root . --strict-state
 ```
 
 Projects with additional stage names may pass repeatable `--allowed-stage NAME` options.
@@ -37,6 +37,7 @@ Projects with additional stage names may pass repeatable `--allowed-stage NAME` 
 - Put stable project decisions in source-of-truth files.
 - Put large examples, lessons, and source notes in references.
 - Prefer topic files over one giant product document.
+- Exclude `docs/legacy/`, archived collaboration files, `docs/change-log.md`, and `user-agent-suggestions/` from normal startup reads unless the current task explicitly concerns history, archives, governance, suggestions, rollback, or upstream updates.
 
 ## Handoff Summaries
 
@@ -68,7 +69,7 @@ Avoid restating entire specs. Link to the relevant source files instead.
 - Archive resolved items by size, not by calendar period.
 - The default archive threshold is 50 KB of resolved content per live collaboration file.
 - Use numbered per-agent files under `docs/collaboration-archives/`.
-- Archive files remain readable when referenced but are excluded from normal startup reads.
+- Archive and legacy files remain readable when referenced but are excluded from normal startup reads.
 - Use `scripts/collab_archive.py --dry-run` before writing archives.
 
 ## When To Split Files
