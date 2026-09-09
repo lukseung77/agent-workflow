@@ -12,7 +12,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 
 - [ ] Workflow root fetched or copied from `https://github.com/lukseung77/agent-workflow`
 - [ ] User interview complete (project title, purpose, primary user, core outcomes, platform, tools)
-- [ ] Repository created and cloned locally
+- [ ] Local repository initialized or existing checkout selected; GitHub remote optional
 - [ ] `openspec/explorations/product-scope.md` created from interview answers
 
 ---
@@ -60,7 +60,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Create `agent-workflow-local/references/markitdown/`
 - [ ] Copy `templates/reference.md` -> `agent-workflow-local/references/reference.md`
   - reference registry for original files, content hashes, conversion status, and converted Markdown paths
-- [ ] Do not copy the shared global workflow files into the project repo unless self-contained packaging is explicitly needed
+- [ ] Do not copy shared global workflow rules into `agent-workflow-local/`, `docs/`, or other project files; if vendoring is needed, keep the downstream copy contained in `./agent-workflow/`
 - [ ] Keep local workflow files short; move large project specifics into focused source-of-truth files
 
 ---

@@ -42,9 +42,25 @@ Only the user can resolve these:
 
 ## Decision Queue Protocol
 
-Use `workflow/question-model.md` for queue consolidation, one-question-at-a-time flow, remaining-question estimates, and user-facing question format. Use this file only to classify whether each question is agent-resolvable, lead-agent-resolvable, or user-escalated.
+Use `workflow/question-model.md` for queue consolidation, one-question-at-a-time flow, remaining-question estimates, and user-facing question format. Use this file for decision classification, conflicts, and failure handling.
 
 ---
+
+## Failures And Retries
+
+Before retrying, distinguish task defects, environment/authentication/permission
+failures, transient errors, malformed results, and product/scope decisions.
+Resolve setup issues within existing authority when possible; do not modify
+product behavior to disguise an environment failure or bypass denied access.
+Escalate to the lead or human only when authority, access, or a decision is
+missing. Continue independent work that is not blocked.
+
+Bound repeated attempts at the same failure by task-appropriate time/attempt
+limits and progress. Do not repeat an unchanged failing approach indefinitely.
+When progress stops, summarize evidence and attempts, change the approach, or
+report the blocker to the appropriate decision owner. There is no universal
+two-cycle ceiling and no requirement to ask the user while useful authorized
+progress continues. Missing or malformed results are not successful completion.
 
 ## Conflict Resolution
 
@@ -86,7 +102,7 @@ Every user decision must be recorded:
 - With the date
 - With any clarifications the user added
 
-After recording, the lead agent writes the decision into the source-of-truth files. The collaboration entry then becomes `done` and is commented out.
+After recording, the lead agent writes the decision into the source-of-truth files. The collaboration entry then becomes `done` and remains parseable until `scripts/collab_archive.py` archives it; do not comment it out.
 
 **Do not let decisions float.** A decision that is not written into a source-of-truth file within the same session is likely to be lost or relitigated.
 

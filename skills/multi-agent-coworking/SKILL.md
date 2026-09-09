@@ -9,7 +9,7 @@ Use this skill when Codex, Claude, Gemini, or another agent collaborates with ot
 
 ## Startup
 
-Follow `workflow/rule-precedence.md`. Load the project bootstrap, local facts/rules/current-state when present, generated queue, one selected item, and focused source files.
+Follow `workflow/rule-precedence.md`. Load the project bootstrap, local facts/rules/current-state when present, generated queue, one selected item, and focused source files. Use task routing there before loading topic rules.
 
 Do not ask the user to restate project context when files can answer it.
 

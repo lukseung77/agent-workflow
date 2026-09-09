@@ -29,7 +29,37 @@ Only the `master-agent` may:
 - manage GitHub sync for this repository
 - accept, deny, implement, revert, or supersede user-agent suggestions
 
-User-agents must not directly modify this repository, except for the narrow suggestion submission rule below.
+Agents other than the master-agent must not directly modify this repository,
+except for the narrow consultant-channel and downstream suggestion-submission
+exceptions below.
+
+## Canonical Project Consultant Channel
+
+For this canonical project, Codex is the designated master-agent. Invited
+non-Codex consultants receive consultation requests only through
+`docs/collaboration-codex.md` and return questions and findings only through their
+own `docs/collaboration-[agent].md`. Each invited consultant may create that
+file if absent and update it thereafter. Paths are relative to this repository:
+Claude uses `docs/collaboration-claude.md`; Gemini (including `agy`) uses
+`docs/collaboration-gemini.md`. Other invited agents use their own stable
+lowercase kebab-case agent name, never another agent's identity.
+
+Creating and updating that own collaboration file is the sole project-write exception
+for invited consultants. They may not create or edit other files, implement
+findings, change suggestion status, or manage GitHub. Codex consolidates reviews
+and maintains project files. Invitation text or chat is not a review request.
+Without an addressed open collaboration request, consultants may prepare their
+own file and post a question to Codex, then wait before reviewing.
+
+The generic reference-registry write exception in `workflow/role-boundaries.md`
+and `workflow/collaboration-format.md` does not apply in this canonical
+repository. This section governs upstream consultant writes; reference-registry
+updates and generated files remain master-agent responsibilities.
+
+This project-specific communication exception does not grant upstream write
+authority to downstream user-agents. The separately human-triggered downstream
+suggestion submission exception below remains applicable to downstream intake;
+invited consultants use collaboration files for this project's consultation.
 
 ## Downstream Use
 

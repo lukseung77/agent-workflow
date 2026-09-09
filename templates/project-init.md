@@ -7,11 +7,11 @@ This is the entry point. Complete each step before moving to the next.
 
 **By running this script, you become the setup lead and default project lead unless the user explicitly assigns that role elsewhere.**
 
-Follow `workflow/role-boundaries.md` for generic lead, consultant, and user authority. During setup, the lead agent owns:
+Follow `<workflow-root>/workflow/role-boundaries.md` for generic lead, consultant, and user authority. During setup, the lead agent owns:
 
 - All GitHub operations: `git push`, `git pull`, `gh` commands — only you run these
 - All writes to source-of-truth files (`openspec/`, `spec/`, etc.)
-- Stage transitions: only you declare when the project moves from Exploration → Proposal → Implementation
+- Stage transitions: declare readiness and record the transition only after agent concurrence and user confirmation under `<workflow-root>/workflow/stages.md`
 - Integrating accepted decisions from consultant agents into source-of-truth files
 - Tiebreaker when consultant agents disagree
 
@@ -44,9 +44,9 @@ The new project should keep only project-local overrides in `./agent-workflow-lo
 Read these shared workflow files before continuing:
 
 ```
-workflow/rule-precedence.md
-workflow/agent-workflow.md
-templates/new-project-setup.md
+<workflow-root>/workflow/rule-precedence.md
+<workflow-root>/workflow/agent-workflow.md
+<workflow-root>/templates/new-project-setup.md
 ```
 
 Follow the canonical read order after the project bootstrap exists. Read topic files only when the current setup step requires them.
@@ -54,16 +54,16 @@ Follow the canonical read order after the project bootstrap exists. Read topic f
 Read these setup-oriented files as needed:
 
 ```
-README.md
-workflow/ai-coworking-guide.md
-workflow/markitdown.md
-templates/project-init.md
-templates/current-state.md
-templates/reference.md
-templates/docs/collaboration-format.md
-templates/docs/collaboration-agent.md
-templates/docs/collaboration-index-agent.md
-skills/multi-agent-coworking/SKILL.md
+<workflow-root>/README.md
+<workflow-root>/workflow/ai-coworking-guide.md
+<workflow-root>/workflow/markitdown.md
+<workflow-root>/templates/project-init.md
+<workflow-root>/templates/current-state.md
+<workflow-root>/templates/reference.md
+<workflow-root>/templates/docs/collaboration-format.md
+<workflow-root>/templates/docs/collaboration-agent.md
+<workflow-root>/templates/docs/collaboration-index-agent.md
+<workflow-root>/skills/multi-agent-coworking/SKILL.md
 ```
 
 Do not start the user interview until you understand the workflow.
@@ -100,7 +100,15 @@ Record the answers. These go into the initial `product-scope.md` under a `Tools 
 
 ---
 
-## Step 4: Create The GitHub Repository
+## Step 4: Prepare The Repository
+
+Reuse an existing local repository when available. For a new local-only project,
+initialize Git in its project directory and create a minimal README and initial
+commit; a GitHub remote is optional. Record the chosen repository path in project
+facts. Continue to Step 5 without GitHub when offline or local-only.
+
+Run the following GitHub setup only when the user has requested or confirmed
+remote creation; reuse known name/visibility choices without asking again:
 
 1. Propose a repository name based on the project title (lowercase, hyphenated, e.g. `my-project`)
 2. Ask the user whether they want it public or private
@@ -115,8 +123,8 @@ Record the answers. These go into the initial `product-scope.md` under a `Tools 
 
 Success criteria for this step:
 
-- The repository exists with the confirmed visibility.
-- The working directory points at the cloned repository.
+- The local repository exists and is the working directory.
+- If GitHub setup was requested, its remote exists with the confirmed visibility.
 - The project has an initial commit with a minimal `README.md`.
 
 ---
@@ -196,6 +204,6 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 - Never ask more than one question per message throughout this entire flow
 - End each one-question-at-a-time interview question with the estimated number of questions left for the current stage or session. If uncertain, label the count as an estimate.
 - If the user provides existing PDFs, office files, web exports, or archives, track them in `agent-workflow-local/references/reference.md`, convert them with MarkItDown or another reliable extractor, and summarize them before writing source-of-truth files
-- If the user says "I'll handle the GitHub repo myself," skip Step 4 and ask for the repo URL to clone
+- If the user says "I'll handle the GitHub repo myself," skip remote creation and use their local repository or supplied URL when available
 - If the user already has a brief or existing documents, read them before Step 2 and skip any questions already answered
 - If another agent will also be joining the project, complete setup fully before briefing them — they should join a working structure, not a half-initialized one

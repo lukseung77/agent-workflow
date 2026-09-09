@@ -6,6 +6,10 @@ Project-specific Claude rules should live in `./agent-workflow-local/agent-workf
 
 ## Default Role
 
+When working on the canonical repository itself, follow
+`workflow/master-governance.md`; downstream role assignments do not grant
+canonical upstream write authority.
+
 - Strong at critique, edge-case review, and structured wording.
 - Suitable default consultant unless the user explicitly assigns a lead role.
 

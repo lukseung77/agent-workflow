@@ -7,9 +7,9 @@ Use it for collaboration structure only. Broader operating rules live in the sha
 
 | Agent | Role | Writes To |
 |-------|------|-----------|
-| [Lead] | Lead — integrates accepted decisions into source-of-truth files | `collaboration-[lead].md`, all source-of-truth files |
-| [Agent A] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-a].md`; allowed reference-registry rows |
-| [Agent B] | Consultant — surfaces gaps and reviews; does not write to spec | `collaboration-[agent-b].md`; allowed reference-registry rows |
+| [Lead] | Lead — integrates accepted decisions into source-of-truth files | `docs/collaboration-[lead].md`, all source-of-truth files |
+| [Agent A] | Consultant — surfaces gaps and reviews; does not write to spec | `docs/collaboration-[agent-a].md`; allowed reference-registry rows |
+| [Agent B] | Consultant — surfaces gaps and reviews; does not write to spec | `docs/collaboration-[agent-b].md`; allowed reference-registry rows |
 
 Fill in agent names and roles before distributing to agents.
 
@@ -36,6 +36,7 @@ Project-specific facts in this file are limited to the agent roster and source-o
 - `to`: <agent | all | user>
 - `type`: status | question | gap | review-request | review | suggestion
 - `status`: open
+- `formal`: false (review-request only; optional, defaults to false)
 - `scope`: file(s) or topic
 - `why`: one short sentence
 - `request`: one short sentence
@@ -43,6 +44,9 @@ Project-specific facts in this file are limited to the agent roster and source-o
 ```
 
 ### Response item
+
+For a completed review assessment, use `type: review` and the template in
+`<workflow-root>/workflow/review-cycle.md`; `response` below is for other replies.
 
 ```md
 ### [ID] Response to [original-ID]
@@ -69,15 +73,7 @@ Responses reference both IDs: `### [CL-004] Response to CX-001`
 
 ## Defined Terms
 
-Any term formally defined in this project's domain model is a **defined term**. Format every reference as:
-
-```
-<span style="color: #0066cc">**TERM NAME**</span>
-```
-
-Always all-caps. Apply on every use, not just the first. Only use for terms confirmed in the domain model.
-
-> GitHub strips inline styles — the color will not render there. All-caps bold still distinguishes defined terms in plain markdown.
+Use `<workflow-root>/workflow/defined-terms.md` for confirmed domain-term formatting.
 
 ## Startup
 

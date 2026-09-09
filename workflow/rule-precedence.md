@@ -11,9 +11,10 @@ This file defines where workflow rules live, what order to read them in, and how
 
 ## Read Order
 
-Read these files in order:
+Read these files in order for normal startup:
 
-1. `./docs/collaboration.md`
+1. `./docs/collaboration.md` when present, as a short path/role bootstrap (pointer file, not a message file);
+   do not load collaboration history here
 2. `<workflow-root>/workflow/rule-precedence.md`
 3. `<workflow-root>/workflow/agent-workflow.md`
 4. `./agent-workflow-local/project-facts.md` when present
@@ -27,7 +28,13 @@ For downstream projects, `<workflow-root>` is the available `agent-workflow` cop
 
 When operating in the canonical upstream `agent-workflow` repository as master-agent, also read `workflow/master-governance.md` before updating workflow files, templates, scripts, skills, docs, suggestion status, or GitHub state.
 
-Read topic files such as `local-project-files.md`, `question-model.md`, `role-boundaries.md`, `diagrams.md`, `context-management.md`, `markitdown.md`, `stages.md`, or `review-cycle.md` only when relevant to the current task.
+Read topic files only when relevant to the current task. Use the task-routing table below to avoid missing required rules.
+
+For all agents operating on the canonical repository itself, `<workflow-root>`
+is this repository. Read `workflow/master-governance.md` before acting; consultants
+also read `docs/consultant-orientation.md`. Skip absent downstream bootstrap and
+`agent-workflow-local/` files here. Consultation requests live in
+`docs/collaboration-codex.md` and are selected through the queue below.
 
 After the startup path, generate the current agent queue when the shared scripts are available:
 
@@ -49,6 +56,7 @@ Read the selected collaboration item and focused source files only. Use persiste
 | User question flow and decision queues | `workflow/question-model.md` |
 | Optional diagram defaults | `workflow/diagrams.md` |
 | Collaboration schema and recipient semantics | `workflow/collaboration-format.md` |
+| Defined domain-term formatting | `workflow/defined-terms.md` |
 | Review and finding consolidation | `workflow/review-cycle.md` |
 | Decision classification and escalation | `workflow/decision-protocol.md` |
 | Stage gates | `workflow/stages.md` |
@@ -57,9 +65,35 @@ Read the selected collaboration item and focused source files only. Use persiste
 
 Other files should link to these canonical rules instead of restating detailed schemas or procedures.
 
+## Task Routing
+
+Load these topic files only when the task matches:
+
+| Task | Read |
+|------|------|
+| Canonical upstream update, suggestion evaluation, GitHub sync for this repo | `workflow/master-governance.md`, then focused files named by the task |
+| Consultant review of the canonical agent-workflow repository itself | `workflow/master-governance.md`, `docs/consultant-orientation.md` |
+| Project setup | `templates/project-init.md`, `templates/new-project-setup.md`, `workflow/local-project-files.md` |
+| Collaboration item writing, queue use, message IDs, lifecycle status | `workflow/collaboration-format.md` |
+| Source-of-truth placement, local overrides, project-local facts | `workflow/local-project-files.md` |
+| Role authority, consultant review lenses, capability mapping | `workflow/role-boundaries.md` |
+| Stage readiness or phase transition | `workflow/stages.md`, `workflow/role-boundaries.md` |
+| User question, decision escalation, conflict classification | `workflow/decision-protocol.md`, `workflow/question-model.md` |
+| Consultant review, formal findings, consolidation | `workflow/review-cycle.md`, `workflow/collaboration-format.md` |
+| Defined domain terms in project docs | `workflow/defined-terms.md` |
+| Large context, handoff, restart, archive, file split | `workflow/context-management.md` |
+| Bulky external documents or converted references | `workflow/markitdown.md` |
+| Diagrams | `workflow/diagrams.md` |
+
 ## Conflict Resolution
 
-If two files disagree, the more specific and more local file wins.
+For canonical repository operations, `workflow/master-governance.md` governs
+repository authority and cannot be overridden by per-agent or project-local
+files. For each topic, the canonical file named in the rule map governs over
+summaries in generic or per-agent workflow files. Explicit downstream overrides
+still follow the ladder below, but cannot grant canonical upstream authority.
+
+For downstream overrides, the more specific and more local file wins.
 
 Highest to lowest:
 
@@ -73,61 +107,9 @@ Project-local overrides affect only the downstream project. They do not authoriz
 
 If two files at the same level appear to conflict, do not guess. Treat that as a workflow gap and ask the user or the designated lead agent to resolve it.
 
-## What Belongs Where
+## Placement Summary
 
-Global shared rules:
-
-- stage model
-- trigger model
-- source-of-truth model
-- review and consolidation model
-- generic sync policy
-- generic anti-patterns
-
-See the canonical rule map before adding new shared rules. Prefer updating a focused topic file over expanding bootstrap files.
-
-Global per-agent rules:
-
-- role strengths
-- role limits
-- role-specific review behavior
-- tool-specific cautions
-
-Project-local shared rules:
-
-- project-specific overrides
-- project-specific guardrails
-
-Project-local facts:
-
-- repo paths
-- project-wide role assignments
-- stage tracking location
-- source-of-truth file order for this project
-- external reference registry location
-
-Project-local per-agent rules:
-
-- project role for that agent
-- project-specific responsibilities
-- project-specific prohibitions
-- project-specific reading order differences
-
-Current-state file:
-
-- current stage
-- current artifact
-- next lead action
-- active blockers
-- last updated date
-
-Collaboration files:
-
-- agent-specific recommendations
-- gaps
-- review findings
-- reconciliation history
-- traceable cross-agent communication
+Detailed placement rules live in `workflow/local-project-files.md`. In short: reusable policy belongs in focused workflow files, project facts and overrides belong in `agent-workflow-local/`, collaboration history belongs in `docs/collaboration-*.md`, and confirmed product decisions belong in source-of-truth files.
 
 ## Missing Shared Repo
 

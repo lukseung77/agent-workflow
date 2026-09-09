@@ -12,7 +12,7 @@ This file defines the standard message format for per-agent collaboration files.
 
 ## Rules
 
-1. Each agent writes only to its own collaboration file, except for allowed operational updates to `agent-workflow-local/references/reference.md`.
+1. Each agent writes only to its own collaboration file, except for allowed downstream operational updates to `agent-workflow-local/references/reference.md`. Canonical repository permissions instead follow `workflow/master-governance.md`.
 2. Cross-agent messages must name the target agent explicitly.
 3. Durable decisions do not belong here — put them in the source-of-truth files.
 4. Work discovery uses `status: open|active` plus `to: <agent>|all`. Message `type` controls handling, not visibility.
@@ -40,6 +40,7 @@ This file defines the standard message format for per-agent collaboration files.
 - `to`: <agent | all | user>
 - `type`: status | question | gap | review-request | review | suggestion
 - `status`: open
+- `formal`: false (review-request only; optional, defaults to false; true enables formal review)
 - `scope`: file(s) or topic
 - `why`: one short sentence — why this matters
 - `request`: one short sentence — what action is needed
@@ -49,6 +50,11 @@ Body (optional) — short bullets only
 ```
 
 ### Response item
+
+Completed review assessments use `type: review` and the review template in
+`workflow/review-cycle.md`, referencing the request ID. Use `type: response`
+for other replies, including acknowledgments; an acknowledgment does not count
+as a completed review.
 
 ```md
 ### [ID] Response to [original-ID]
@@ -72,10 +78,10 @@ Body (optional) — short bullets only
 | `status` | Reporting that something happened (workflow change, file updated) |
 | `question` | Asking for a decision from another agent or the user |
 | `gap` | A conflict or missing rule that could cause implementation divergence |
-| `review-request` | Lead agent signalling that a draft is ready for consultant review; includes ready-to-paste prompts |
+| `review-request` | Lead agent signalling that a draft is ready for consultant review; carries scope, file references, and requested review |
 | `review` | A consultant's structured assessment in response to a `review-request` |
 | `suggestion` | A non-blocking improvement idea; can be declined without consequence |
-| `response` | A reply to any of the above, referencing the original ID |
+| `response` | A non-review reply; completed review assessments use `review`, referencing the original ID |
 
 `date` must be exact `YYYY-MM-DD`. When `created_at` is present, it must be ISO 8601 with `Z` or a UTC offset and its calendar date must match `date`. When a handoff note is requested, include `session_id`; prefer the platform-native conversation/session/run ID, otherwise use the fallback format shown above.
 
@@ -92,14 +98,26 @@ Informal reviews may use short bullets. A review request marked `formal: true` u
 - Use one issue per row.
 - `correction` is optional.
 - Consultants describe impact in `why`; they do not assign canonical priority.
-- During consolidation, only the lead may merge equivalent findings into a `canonical_id`.
-- Preserve every `source_finding_id`.
-- Similar but distinct findings remain separate.
-- After deduplication, the lead may assign:
+- The lead uses these canonical priority values:
   - `P0`: correctness, compliance, security, or delivery blocker
   - `P1`: required before submission, acceptance, or implementation
   - `P2`: optional improvement
-- The lead records disposition for each canonical finding.
+- Consolidation, source finding preservation, disposition assignment, and closure
+  follow `workflow/review-cycle.md#formal-review-consolidation`.
+
+## Verification Evidence
+
+Claims that checks passed must identify the actual check, outcome, and relevant
+content/version; cite concise output or an evidence reference when supporting
+review completion, acceptance, or a stage gate. Distinguish passed, failed,
+skipped, and blocked checks. File existence or model agreement alone does not
+prove execution or requirement satisfaction. Reuse reliable current evidence;
+rerun when changed content or uncertainty makes it stale. Scale evidence to the
+claim, without mandatory command receipts for ordinary prose reviews.
+
+When transcribing findings, preserve their substance and reference the original
+agent/item. Optional `authored_by` metadata may identify an author different from
+`from` (the recorder); it grants no permission to write another agent's file.
 
 ## Agent Aliases
 
@@ -135,37 +153,15 @@ Projects that cannot run the script may retain persistent index files as a compa
 
 ## Defined Terms
 
-Any term that has been formally defined in the project's domain model or source-of-truth files is a **defined term**.
-
-Whenever an agent refers to a defined term — in collaboration files, exploration files, proposals, or any project document — format it as:
-
-```
-<span style="color: #0066cc">**TERM NAME**</span>
-```
-
-This renders as bold blue all-caps text in local markdown viewers (VS Code, Obsidian, Typora).
-
-> **GitHub note:** GitHub strips inline `style` attributes and will not render the color. On GitHub the term will appear as plain bold text. This is acceptable — the all-caps convention still distinguishes defined terms from prose.
-
-Rules:
-- Always use all capital letters for defined terms, regardless of where they appear in a sentence
-- Apply the format every time the term is used, not just on first use
-- If a project has not yet established a domain model, do not invent defined terms — wait until the exploration stage produces confirmed definitions
-- When a new term is formally confirmed during exploration, add it to the domain model file and begin using the format immediately
-
-Example — before:
-> The rider creates a ride plan and attaches a route plan to it.
-
-Example — after:
-> The rider creates a <span style="color: #0066cc">**RIDE PLAN**</span> and attaches a <span style="color: #0066cc">**ROUTE PLAN**</span> to it.
+Use `workflow/defined-terms.md` when writing or reviewing formally defined domain terms in collaboration files or other project documents.
 
 ## Writing Style
 
 - Lead the item with the most important fact.
 - Avoid repeating content already in source-of-truth files — link instead.
-- If something is resolved in a source-of-truth file, mark the collaboration item `done` and comment it out.
+- If something is resolved in a source-of-truth file, mark the collaboration item `done` and leave it parseable for `scripts/collab_archive.py`; do not comment it out.
 - One decision per item. Split compound decisions into separate items.
-- Use the defined-term format for all confirmed domain terms (see Defined Terms section above).
+- Use `workflow/defined-terms.md` for confirmed domain-term formatting.
 
 ## Operating Pattern
 

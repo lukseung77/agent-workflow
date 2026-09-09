@@ -17,6 +17,8 @@ Stable project-local facts for agents. Current task state belongs in `current-st
 - Consultant review lenses, if used:
   - `[agent]`: `[fixed-reference/domain | architecture/breadth | project-specific lens]`
   - `[agent]`: `[fixed-reference/domain | architecture/breadth | project-specific lens]`
+- Capability mappings, if used:
+  - `[capability label]`: `[concrete skill | local workflow | command | manual check]`
 - Agent aliases: `agy` means `gemini` when Gemini is present in the project
 
 ## Stage Tracking

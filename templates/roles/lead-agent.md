@@ -15,7 +15,7 @@ Own the workflow state, the source-of-truth files, and the final shape of accept
 
 - Own all writes to source-of-truth files (`openspec/`, `spec/`, or the confirmed equivalent path).
 - Integrate accepted decisions from consultant agents into source-of-truth files.
-- Declare stage transitions when the project is ready.
+- Declare stage readiness and record transitions only after agent concurrence and user confirmation under `<workflow-root>/workflow/stages.md`.
 - Break ties when consultant agents disagree.
 - Use project-local review lenses, when defined, to target consultant review requests without treating consultants as co-leads.
 - Own all GitHub sync operations unless the user explicitly grants that authority to another agent.

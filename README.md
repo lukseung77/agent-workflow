@@ -25,6 +25,7 @@ Load topic files only when the current task needs them.
 | Local project file placement | `workflow/local-project-files.md` |
 | Lead, consultant, user, and master-agent authority | `workflow/role-boundaries.md` |
 | Collaboration message schema and queues | `workflow/collaboration-format.md` |
+| Defined domain-term formatting | `workflow/defined-terms.md` |
 | User questions and decision queues | `workflow/question-model.md` |
 | Decision classification and escalation | `workflow/decision-protocol.md` |
 | Stage gates | `workflow/stages.md` |
@@ -34,6 +35,7 @@ Load topic files only when the current task needs them.
 | Diagram defaults | `workflow/diagrams.md` |
 | Explanatory overview | `workflow/ai-coworking-guide.md` |
 | Canonical update history | `docs/change-log.md` |
+| Advisory skill opportunity channel | `docs/skill-recommendations.md` |
 
 ## Roles
 
@@ -87,10 +89,15 @@ User-agents from downstream projects may submit upstream improvement suggestions
 - Governance: `workflow/master-governance.md`
 - Legacy history: `docs/legacy/external-lead-suggestions.md`
 - Canonical change log: `docs/change-log.md`
+- Skill recommendations: `docs/skill-recommendations.md`
 
 Suggestion files are proposals, not active rules.
 
 ## Setup
+
+For consultants reviewing this canonical repository, use
+[`docs/consultant-invitation.md`](docs/consultant-invitation.md) and its linked
+orientation. These are on-demand review materials, not normal startup reads.
 
 When creating a new project, start with:
 

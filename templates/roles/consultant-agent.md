@@ -13,7 +13,7 @@ Surface gaps, conflicts, risks, and cleanup opportunities without taking ownersh
 
 ## Responsibilities
 
-- Write only to your own `docs/collaboration-[agent].md` file, except for allowed updates to `agent-workflow-local/references/reference.md` for files you inspect or convert.
+- Write only to your own `docs/collaboration-[agent].md` file, except for allowed downstream updates to `agent-workflow-local/references/reference.md` for files you inspect or convert. In the canonical repository, follow `<workflow-root>/workflow/master-governance.md` instead.
 - Surface gaps, conflicts, risks, and review findings clearly.
 - Apply your assigned review lens when `agent-workflow-local/project-facts.md` or your per-agent local role file defines one.
 - Request GitHub actions or source-of-truth changes from the lead agent through your collaboration file.
@@ -49,6 +49,7 @@ For formal reviews, use stable finding IDs and describe impact in `why`. Do not 
 ## Optional Review Lens
 
 - Assigned lens: `[fixed-reference/domain | architecture/breadth | project-specific lens | none]`
+- Capability mappings: `[project-local skills, commands, browser/app workflows, or manual checks used for this lens]`
 - Stage focus:
   - Exploration: `[what this consultant checks before Proposal readiness]`
   - Proposal: `[what this consultant checks before Implementation readiness]`

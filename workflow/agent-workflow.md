@@ -1,102 +1,47 @@
 # Agent Workflow
 
-Shared defaults for all projects using `agent-workflow`.
+Shared startup-safe defaults for projects using `agent-workflow`.
 
-Project-specific facts, rules, current state, and per-agent assignments belong in `./agent-workflow-local/`; see `workflow/local-project-files.md`.
+Use `workflow/rule-precedence.md` for read order, conflict precedence, and task-specific topic routing.
 
-## Default Model
+## Core Model
 
-- One agent leads each phase.
-- Other agents may critique, review, and suggest alternatives, but they do not redirect the project unless the user explicitly changes ownership.
+- One agent leads each phase; other agents consult unless the user explicitly changes ownership.
 - Durable project files are the source of truth, not chat history.
-- The lead agent is the default owner of GitHub actions and source-of-truth updates unless the user explicitly delegates those actions elsewhere.
-- Role boundaries are defined in `workflow/role-boundaries.md`.
+- Project-specific facts, rules, current state, and per-agent assignments belong in `agent-workflow-local/`.
+- Collaboration files carry communication and review history; accepted decisions must flow into source-of-truth files.
+- The lead agent owns source-of-truth updates and GitHub sync by default unless project-local rules or the user explicitly delegate a specific downstream action.
 
 ## Trigger Model
 
-- Shared files carry state but do not automatically trigger another agent across tools, terminals, or platforms.
-- The practical trigger is still the user explicitly starting or messaging the next agent.
-- File-based handoff is the required portable mechanism. Direct CLI, subprocess, API, or authentication-based invocation of another agent must not be required for the workflow to function.
-- When the user asks one agent to consult, review with, or hand off to another agent, the default mechanism is collaboration files only: post the request in the writer's collaboration file, verify the target queue when useful, and wait for the target agent to respond in its own collaboration file.
-- Do not invoke another agent through a CLI, subprocess, API, browser session, or direct agent command for collaboration-file consultation unless the user explicitly asks for direct execution or the project has an explicit orchestration rule for that action.
-- A project may use reliable orchestration supplied by its environment, but all requests and outcomes must still be recorded in project files.
-- The user may identify which agent sessions responded and may direct the lead to wait, consolidate, or proceed. The user should not have to relay prompts, findings, or response content between agents.
-- Default minimal handoff: `Session ID: <session_id>. Files updated. Re-read docs/collaboration.md and continue from the next unresolved question.`
-- When the user asks an agent to leave a handoff note, include a `session_id` that the same or another agent can cite when asking the user to resume or reference that session.
+- Files carry state but do not automatically trigger other tools, terminals, or agent sessions.
+- The practical trigger is the user starting or messaging the next agent session.
+- Default collaboration uses files: write the request, verify the queue when useful, and wait for the target agent to respond in its own collaboration file.
+- Direct CLI, subprocess, API, browser, or authentication-based invocation of another agent is optional orchestration, not a workflow requirement. Use it only when the user explicitly asks or project-local rules allow it.
+- The user may identify which sessions responded and direct wait, consolidate, or proceed; the lead still reads the files directly.
 
-## Source-Of-Truth Model
+## State Model
 
-- Use project files as the durable source of truth.
-- Separate stable rules from current project state.
-- Prefer focused files by topic instead of one monolithic document.
-- Keep confirmed, deferred, and still-open items distinguishable.
-- Treat converted external documents as source material until the lead records confirmed decisions into source-of-truth files.
-- Project-local file placement is defined in `workflow/local-project-files.md`.
+- Generate active work from collaboration files by recipient and lifecycle status when scripts are available.
+- Treat persistent collaboration indexes as compatibility fallbacks only.
+- Keep `agent-workflow-local/current-state.md` as a compact restart snapshot, not a task queue.
+- On resume, rebuild context from files: startup path, current state, generated queue, selected item, and focused source files.
 
-## Active State Model
+## Review And Decision Model
 
-- Collaboration files are authoritative for collaboration items and history.
-- Active work is derived by recipient and lifecycle status, not by message type.
-- Generated queues are the default discovery mechanism when the shared scripts are available. Persistent indexes are a compatibility fallback, not a second source of truth.
-- `current-state.md` is a compact restart snapshot, not a task queue or decision history.
-- Source-of-truth files own confirmed decisions.
+- Consultant feedback should identify the issue, why it matters, where it belongs, and the requested action or question.
+- On resume, the lead checks its own open review requests for referenced consultant responses, including `done` reviews omitted from active recipient queues.
+- The lead reconciles consultant feedback explicitly and writes accepted outcomes into source-of-truth files.
+- Ask the user one focused question at a time only after agent-resolvable and lead-resolvable decisions are handled.
 
-## Cross-Session Lead Resume
+## Sync And Scope Model
 
-- A lead agent starting from another session should rebuild context from files, not from assumptions about prior chat history.
-- On resume, the lead agent should re-read the startup path first, then `current-state.md`, then any relevant collaboration files before making new decisions.
-- If consultant feedback was posted while the lead agent was away, the lead agent should reconcile it explicitly into source-of-truth files or new collaboration items rather than leaving it implicit.
-- A resumed lead agent should leave a traceable status note when it has finished reconciling cross-session feedback.
+- Prefer local repository state before extra Git operations when files are already available.
+- Withhold GitHub sync unless the user asks, project rules require it, or no reasonable local-only path completes the task.
+- Do not let multiple agents push or sync concurrently unless deliberately coordinated.
+- During Implementation, scope changes go through a mini-proposal cycle before changing accepted specs.
 
-## Question Model
+## Topic Rules
 
-- Ask one focused question at a time while requirements are still emerging.
-- Ask only what is needed for the next real decision.
-- Record confirmed answers back into project files promptly.
-- Follow `workflow/question-model.md` for remaining-question estimates, decision queues, and user-facing question format.
-
-## Review Model
-
-- Review should be file-based and traceable.
-- Consultant feedback should identify the issue, why it matters, where it belongs, and what action or question follows.
-- The lead agent should reconcile feedback explicitly rather than silently absorbing it.
-- Consultant agents should communicate recommendations, gaps, and suggestions through collaboration files.
-- A lead agent requesting consultant review should stop after posting the collaboration item and verifying the queue unless the user explicitly asks it to directly run or orchestrate the consultant agent.
-
-## Sync Model
-
-- One agent should be the default Git integrator for a project unless the user explicitly changes that.
-- The lead agent should handle GitHub actions and source-of-truth updates by default.
-- Consultant agents should not perform GitHub actions or edit source-of-truth files unless the user explicitly authorizes that for the current project.
-- If the relevant repositories are already available locally, prefer local files and local repository state over additional Git operations.
-- Withhold Git operations by default unless the user explicitly asks for them or there is no reasonable local-only way to complete the task.
-- Do not have multiple agents push or sync concurrently unless that is deliberately coordinated.
-- Project-local files should state any stronger sync restrictions.
-
-## Large-Rule Handling
-
-- Keep bootstrap files short.
-- Split stable rules from current-state files.
-- Split large topic areas into reference files and load them only when relevant.
-- If a rule file becomes too large for reliable startup reading, move detail into topic-specific references and keep only summary rules in the bootstrap files.
-
-## Context Budget Model
-
-- Default to scan-first orientation: bootstrap, restart snapshot, generated queue, selected item, then focused source files.
-- Do not load full collaboration history unless a selected item or source file points to it.
-- Use concise handoff summaries after long reviews, broad searches, or multi-agent reconciliation.
-- Put reusable lessons into `docs/lessons-learned.md`, then promote stable rules into workflow files or skills.
-- See `workflow/context-management.md` for split criteria and restart discipline.
-
-## External Document Model
-
-- Use Markdown as the default agent-readable import format.
-- Use MarkItDown for bulky PDFs, office files, HTML exports, emails, archives, and similar inputs when local conversion is appropriate.
-- Track external references in `agent-workflow-local/references/reference.md` with content hashes, source paths, conversion status, and converted Markdown paths.
-- Store MarkItDown outputs in `agent-workflow-local/references/markitdown/`.
-- Before reading an external reference, use an existing current Markdown conversion when the registry shows one.
-- If a requested file name is ambiguous, list the plausible matches and ask the user which file they meant.
-- Treat files in `_OLD` as obsolete unless the user explicitly asks for old material; keep tracking metadata when practical.
-- Keep original documents and converted Markdown separate from confirmed source-of-truth files.
-- Summarize decision-relevant content before asking another agent to review it.
-- See `workflow/markitdown.md` for install, conversion, and token-discipline guidance.
+Use the Canonical Rule Map and Task Routing in `workflow/rule-precedence.md`
+for focused rules; load only topics relevant to the current task.

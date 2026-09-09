@@ -37,7 +37,7 @@ Projects with additional stage names may pass repeatable `--allowed-stage NAME` 
 - Put stable project decisions in source-of-truth files.
 - Put large examples, lessons, and source notes in references.
 - Prefer topic files over one giant product document.
-- Exclude `docs/legacy/`, archived collaboration files, `docs/change-log.md`, and `user-agent-suggestions/` from normal startup reads unless the current task explicitly concerns history, archives, governance, suggestions, rollback, or upstream updates.
+- Exclude `docs/legacy/`, archived collaboration files, `docs/change-log.md`, `docs/skill-recommendations.md`, `docs/consultant-invitation.md`, `docs/consultant-orientation.md`, and `user-agent-suggestions/` from normal startup reads unless the task-routing table in `workflow/rule-precedence.md` makes them relevant.
 
 ## Handoff Summaries
 

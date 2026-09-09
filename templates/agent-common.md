@@ -7,7 +7,7 @@ Shared bootstrap for every project agent. Keep this file short; detailed reusabl
 1. Follow `<workflow-root>/workflow/rule-precedence.md`.
 2. Generate your active queue when scripts are available.
 3. Load one selected item and its focused source files.
-4. Read topic rules only when the task needs them.
+4. Use the task-routing table in `<workflow-root>/workflow/rule-precedence.md` to load only the topic rules the task needs.
 
 Do not act from stale chat context when current project files are available.
 
@@ -28,5 +28,6 @@ Do not act from stale chat context when current project files are available.
 - Context and handoff: `<workflow-root>/workflow/context-management.md`
 - External references: `<workflow-root>/workflow/markitdown.md`
 - Local placement rules: `<workflow-root>/workflow/local-project-files.md`
+- Defined terms: `<workflow-root>/workflow/defined-terms.md`
 
 Project-specific constraints belong in `agent-workflow-local/rules.md` or `agent-workflow-local/agent-workflow-[agent].md`.

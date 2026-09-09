@@ -20,6 +20,15 @@ This file defines the generic shape of `agent-workflow-local/`. Keep project-spe
 - Keep collaboration history and traceability in `docs/collaboration-*.md`.
 - Keep product decisions in the source-of-truth files listed in `project-facts.md`.
 
+## Ownership Summary
+
+- Shared workflow files: reusable stage, trigger, source-of-truth, review, sync, role, context, and anti-pattern rules.
+- Shared per-agent files: generic role strengths, limits, review behavior, and tool-specific cautions.
+- Project-local shared rules: project-specific overrides and guardrails.
+- Project-local facts: repo paths, role assignments, stage tracking location, source-of-truth inventory, and reference registry location.
+- Project-local per-agent files: current responsibility, project-specific restrictions, and local reading-order differences.
+- Collaboration files: recommendations, gaps, review findings, reconciliation history, and traceable cross-agent communication.
+
 ## Override Style
 
 When a project-local rule overrides a shared rule, state it explicitly:
