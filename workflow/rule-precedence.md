@@ -62,6 +62,7 @@ Read the selected collaboration item and focused source files only. Use persiste
 | Stage gates | `workflow/stages.md` |
 | Startup context, restart state, and archives | `workflow/context-management.md` |
 | External reference conversion | `workflow/markitdown.md` |
+| Optional agent tooling and phase routing | `workflow/agent-tooling.md` |
 
 Other files should link to these canonical rules instead of restating detailed schemas or procedures.
 
@@ -84,6 +85,7 @@ Load these topic files only when the task matches:
 | Large context, handoff, restart, archive, file split | `workflow/context-management.md` |
 | Bulky external documents or converted references | `workflow/markitdown.md` |
 | Diagrams | `workflow/diagrams.md` |
+| Repository discovery, implementation, validation, or verbose CLI execution | `workflow/agent-tooling.md` |
 
 ## Conflict Resolution
 

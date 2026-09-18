@@ -45,3 +45,7 @@ All accepted product decisions live in the files listed in `agent-workflow-local
 ## Key Constraints
 
 - [List any project-specific rules or guardrails here]
+
+## Tool Adapters
+
+Read `<workflow-root>/workflow/agent-tooling.md` for shared Ponytail, Graphify, and RTK policy. `agy` is the Gemini role; Antigravity uses the same shared policy with its own project adapter when supported.

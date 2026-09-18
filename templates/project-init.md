@@ -57,6 +57,7 @@ Read these setup-oriented files as needed:
 <workflow-root>/README.md
 <workflow-root>/workflow/ai-coworking-guide.md
 <workflow-root>/workflow/markitdown.md
+<workflow-root>/workflow/agent-tooling.md
 <workflow-root>/templates/project-init.md
 <workflow-root>/templates/current-state.md
 <workflow-root>/templates/reference.md
@@ -127,6 +128,9 @@ Success criteria for this step:
 - If GitHub setup was requested, its remote exists with the confirmed visibility.
 - The project has an initial commit with a minimal `README.md`.
 
+Continue to Step 5. The environment bootstrap runs after the workflow files
+exist so the initial Graphify index includes the initialized project structure.
+
 ---
 
 ## Step 5: Run The File Setup Checklist
@@ -180,6 +184,22 @@ Success criteria for this step:
 - The collaboration files, local workflow files, and source-of-truth directory all exist.
 - The copied templates have been filled in with real agent names, roles, and paths.
 - A new agent could join the project and orient itself without asking setup questions.
+
+After the checklist creates the workflow files, run the safe environment
+bootstrap from the project root:
+
+```sh
+python3 <workflow-root>/scripts/agent_workflow_env.py init \
+  --root . --workflow-root <workflow-root> --agents auto
+```
+
+This detects available agents and tools, creates a thin `AGENTS.md` pointer
+without overwriting existing instructions, configures available project-scoped
+adapters, initializes the Graphify index, and verifies the environment. It does
+not install packages or change agent-wide hooks by default. Only after the user
+explicitly approves those changes, rerun with
+`--install-missing --configure-hosts`. Missing optional tools are warnings, not
+setup blockers.
 
 ---
 

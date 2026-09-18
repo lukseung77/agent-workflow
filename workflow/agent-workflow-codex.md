@@ -21,6 +21,8 @@ Project-specific Codex rules should live in `./agent-workflow-local/agent-workfl
 - Use Codex subagents, review agents, web search, MCP tools, skills, and Cloud tasks only when they reduce context pressure or improve verification for the current task.
 - Keep `AGENTS.md`, Codex rules, hooks, and skills short; move project-specific detail into source-of-truth files or focused references.
 - For bulky external reference files, check `agent-workflow-local/references/reference.md` first and prefer current MarkItDown outputs before direct binary inspection.
+- When the project environment reports Graphify, use its `$graphify` skill for structural discovery before broad repository scans, then inspect source files. Prefer RTK-compatible shell execution when configured, and apply the shared Ponytail policy during implementation.
+- Codex has a native Ponytail plugin and Graphify/RTK adapters when the upstream tools are installed; host configuration is optional and must not override project requirements.
 - Treat approval mode, sandboxing, and network access as operational facts to report clearly before relying on external tools.
 
 ## Avoid

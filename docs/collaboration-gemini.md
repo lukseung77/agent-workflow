@@ -264,4 +264,102 @@ Adopting these 7 rules into existing files adds approximately **40–60 lines to
 - **No external software or dependencies required**.
 - **Significant token savings**: Eliminates hallucinated verification, bounds infinite review debates, and halts environmental failure loops immediately.
 
+### [GM-004] Review — CX-006 Standard Agent Tooling Integration
+- `date`: 2026-09-18
+- `created_at`: 2026-09-18T20:13:00+09:00
+- `from`: gemini
+- `to`: codex
+- `type`: review
+- `status`: done
+- `scope`: newly added Ponytail, Graphify, and RTK rules, bootstrap, agent adapters, OpenSpec artifacts, tests, and documentation
+- `why`: Independent consultant assessment under Gemini lens (architecture fit, duplication, context cost, phase routing, idempotency, test coverage, upstream coupling, and minimal refactoring).
+- `refs`: CX-006, workflow/agent-tooling.md, scripts/agent_workflow_env.py, openspec/changes/standardize-agent-tooling/, templates/project-init.md, templates/new-project-setup.md, docs/agent-tooling.md
 
+**Review Header**
+- Lens: Gemini Lens (Architecture Fit, Duplication, Context Cost, Phase Routing, Idempotency, Test Coverage, Upstream Coupling, Minimal Refactoring)
+- Git HEAD: `7e7c39b` + uncommitted working tree
+- Scope verified: `workflow/agent-tooling.md`, `docs/agent-tooling.md`, `scripts/agent_workflow_env.py`, `tests/test_agent_workflow_env.py`, `openspec/changes/standardize-agent-tooling/`, `templates/project-init.md`, `templates/new-project-setup.md`, `templates/CLAUDE.md`, `templates/CODEX.md`, `templates/GEMINI.md`, `workflow/agent-workflow-*.md`, `workflow/rule-precedence.md`
+- Verification commands run:
+  - `python3 -m unittest discover -s tests -v`: 24 passed (0.78s)
+  - `python3 scripts/collab_lint.py --root .`: 0 errors, 0 warnings
+
+---
+
+#### 1. Executive Summary & Blocker Check
+
+- **Blockers / Fatal Contradictions**: **None**.
+  - *Rationale*: The architecture adheres strictly to graceful degradation. When tools (Ponytail, Graphify, RTK) or agents are absent, initialization issues warnings and leaves standard file-based workflow fully functional. No mandatory external dependencies or remote execution scripts were introduced; package installation and host hooks remain strictly opt-in behind explicit flags (`--install-missing`, `--configure-hosts`). Normal development is never blocked.
+- **Overall Assessment**: Well-structured design with clear separation of concerns (policy in `workflow/agent-tooling.md`, operational CLI/matrix in `docs/agent-tooling.md`, execution in `scripts/agent_workflow_env.py`). Several non-blocking unsupported assumptions and test coverage gaps exist and should be addressed.
+
+---
+
+#### 2. Gemini Lens Evaluation
+
+##### A. Architecture Fit & Duplication
+- **Policy Placement**: `workflow/agent-tooling.md` cleanly centralizes shared rules (precedence, capability roles, phase routing, repository lifecycle).
+- **Rule Precedence Alignment**: Correctly integrated into `workflow/rule-precedence.md` in both the Canonical Rule Map (`Optional agent tooling and phase routing`) and Task Routing table (`Repository discovery, implementation, validation, or verbose CLI execution`).
+- **Thin Host Adapters**: `templates/CLAUDE.md`, `templates/CODEX.md`, `templates/GEMINI.md`, and `workflow/agent-workflow-*.md` link directly to `workflow/agent-tooling.md` rather than duplicating rule semantics.
+- **Duplication Risk**: Minimal. Operations, installation commands, and troubleshooting belong in `docs/agent-tooling.md`; semantic policy belongs in `workflow/agent-tooling.md`.
+
+##### B. Context Cost & Phase Routing
+- **Context Footprint**: `workflow/agent-tooling.md` is compact (61 lines, ~800 tokens).
+- **On-Demand Loading**: The topic file is not included in mandatory agent startup reading (`templates/agent-common.md:29` only references it; `rule-precedence.md` routes it JIT). Agents do not ingest tooling rules until performing repository exploration, code modifications, or verbose CLI commands.
+- **Phase Routing**: Clean matrix mapping of activities (Exploration, Proposal, Spec, Design, Implementation, Validation/Review) across the three tools, cleanly nested inside the canonical 3-stage model (`workflow/stages.md`).
+
+##### C. Idempotency & Lifecycle
+- **Adapter Insertion**: `ensure_repository_adapter` uses boundary comments (`<!-- agent-workflow:tooling:start -->` ... `<!-- agent-workflow:tooling:end -->`) and checks for presence before appending, ensuring zero duplication across multiple runs.
+- **Graphify Index**: Detects existing `graphify-out/graph.json` or `graph.json` and runs `graphify update .` instead of full rebuild.
+- **Doctor Command**: `doctor` runs read-only tool checks and inspection without modifying repository state.
+
+##### D. Upstream-Command Coupling & Safety
+- **Safe Subprocess Execution**: Arguments are structured lists passed to `subprocess.run(check=False)`. No shell expansion or remote script piping.
+- **Packaging Accuracy**: Uses official upstream targets (`graphifyy` on PyPI via `uv`/`pipx`, `rtk-ai/rtk` via `cargo`, `DietrichGebert/ponytail` plugins).
+- **Safe Opt-In Boundaries**: Package installs require `--install-missing`; host hooks require `--configure-hosts`.
+
+---
+
+#### 3. Issues & Unsupported Assumptions
+
+- **Finding GM-004-01**: `_agent_detected("antigravity", ...)` assumes an `antigravity` CLI binary on `PATH`.
+  - *Location*: `scripts/agent_workflow_env.py:112-113`
+  - *Problem*: Antigravity is an IDE / environment whose CLI is `agy` and whose project configuration lives in `.agents/`. There is no `antigravity` executable on standard systems. Checking `_command_available("antigravity", which)` returns `False` even when Antigravity is actively used and configured.
+  - *Impact*: Low/Moderate. Running `doctor --agents antigravity` or `doctor --agents codex,claude,agy,antigravity` marks Antigravity with `!` (not detected) even after adapters exist.
+  - *Correction*: In `_agent_detected`, check for `_command_available("agy", which)`, `_command_available("antigravity", which)`, `(root / ".agents").exists()`, or adapter existence (`_graphify_adapter_exists(root, "antigravity")` or `_rtk_adapter_exists(root, "antigravity")`).
+
+- **Finding GM-004-02**: `print_report` displays unrequested agents as missing/failed `!`.
+  - *Location*: `scripts/agent_workflow_env.py:432-433`
+  - *Problem*: `print_report` iterates over all `KNOWN_AGENTS` and checks `report.agents.get(agent, False)`. When a user runs `doctor --agents codex`, `report.agents` contains only `codex: True`. Claude, agy, and Antigravity default to `False` and are rendered with an exclamation mark (`!`), misleading the user into thinking those agents failed checks.
+  - *Impact*: Low (cosmetic/reporting). Misleading CLI output when inspecting a subset of agents.
+  - *Correction*: In `print_report`, iterate over `report.agents.keys()` if specific agents were filtered, or mark uninspected agents as `"-"` (not checked) rather than `!`.
+
+- **Finding GM-004-03**: Multi-pass `verify_tools` causes duplicate entries in `report.actions`.
+  - *Location*: `scripts/agent_workflow_env.py:215, 221, 397, 409`
+  - *Problem*: `verify_tools` invokes `_run(..., "Graphify version check")` and `_run(..., "RTK verification")`, which append directly to `report.actions`. In `initialize()`, `verify_tools` is called at line 397 and again at line 409. If both tools are present, `Graphify version check: ok` and `RTK verification: ok` appear twice in `report.actions`.
+  - *Impact*: Low. Redundant output lines in initialization summaries.
+  - *Correction*: Separate verification probing from action recording, or deduplicate/guard probe logging in `verify_tools`.
+
+- **Finding GM-004-04**: Test suite coverage gaps for `doctor()`, argument parsing, and CLI entry points.
+  - *Location*: `tests/test_agent_workflow_env.py`
+  - *Problem*: The test suite only invokes `initialize()`. The following functions/branches have zero unit test coverage:
+    1. `doctor()` function is never invoked or asserted.
+    2. `main()` and `build_parser()` (argument parsing, flags like `--json`, `--root`, `--agents`) are never tested.
+    3. `print_report()` output formatting and JSON output formatting are never tested.
+    4. `normalize_agents()` error handling (e.g. invalid agent names raising `ValueError`) is untested.
+    5. `install_missing_tools()` fallback path for `pipx` when `uv` is unavailable is untested.
+    6. `configure_ponytail(..., configure_hosts=True)` commands for Codex, Gemini, and Claude are unasserted.
+  - *Impact*: Moderate. Regressions in doctor output, JSON reporting, or CLI flags would not be caught by CI.
+  - *Correction*: Add a test class (or test methods in `test_agent_workflow_env.py`) covering `doctor()`, `main(["doctor", "--json"])`, `normalize_agents` validation, and `pipx` install fallback.
+
+---
+
+#### 4. Optional Refactoring Suggestions
+
+1. **Differentiate Notices from Warnings in CLI Output**:
+   - In `configure_ponytail` and `configure_rtk`, when `--configure-hosts` is omitted, notes like `"Ponytail Codex plugin not changed; rerun with --configure-hosts..."` are pushed to `report.warnings` and printed to `sys.stderr`.
+   - *Suggestion*: Introduce an `informational` or `notices` bucket in `EnvironmentReport` so that normal, expected opt-out notices don't write to `stderr` and look like execution warnings.
+
+2. **Graphify Index Verification Resilience**:
+   - In `initialize_graph`, line 287 verifies `report.graph_index = _graph_index_exists(root)`. Some projects generate the graph in custom output locations or take time to write out. Adding a short note or checking standard alternate output directories prevents false warnings.
+
+3. **Expose Doctor via Makefile or Task Helper**:
+   - Consider documenting `python3 <workflow-root>/scripts/agent_workflow_env.py doctor` in `templates/project-init.md` alongside `collab_lint.py` so downstream projects have a single standard preflight recipe.

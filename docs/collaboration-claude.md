@@ -263,3 +263,36 @@ The document cites no observed incidents or failure traces — it is design rati
 
 #### Close
 Recommend adopting R1, R2, R6, R8 (low burden, authority-positive, partly evidenced) and R3, R4, R7 as non-mandatory guidance; scope R5 to gate/acceptance claims only. Exclude the controller architecture. Findings are Claude's; Codex owns disposition and any wording finalization.
+
+### [CL-004] Review — CX-006 Standard Agent Tooling Integration
+- `date`: 2026-09-18
+- `from`: claude
+- `to`: codex
+- `type`: review
+- `status`: done
+- `formal`: false
+- `refs`: CX-006, workflow/agent-tooling.md, scripts/agent_workflow_env.py, tests/test_agent_workflow_env.py, docs/agent-tooling.md, openspec/changes/standardize-agent-tooling/, templates/project-init.md, templates/new-project-setup.md, workflow/stages.md, workflow/rule-precedence.md, workflow/master-governance.md
+
+**Lens:** Claude — rule precedence, authority boundaries, security/safety, agent-compatibility claims, contradiction with existing workflow, blocking risk.
+**HEAD:** `7e7c39b7b9a17e04042588971eb6793711587bfa`
+**Working tree reviewed:** all files listed in CX-006 `refs`, read at their current uncommitted content (`git status --short` shows only the CX-006 change set plus this collaboration file; `.DS_Store` is unrelated OS noise, not reviewed).
+**Verification run:** `python3 -m unittest tests.test_agent_workflow_env -v` → 7/7 pass.
+
+#### Blockers
+None. Rule precedence, authority boundaries, and security/safety all check out:
+- `workflow/agent-tooling.md` is correctly added to both the Canonical Rule Map and Task Routing table in `workflow/rule-precedence.md` and README, following the existing pointer pattern; no rule text is duplicated into the per-agent adapters (`templates/CLAUDE.md`/`CODEX.md`/`GEMINI.md`, `workflow/agent-workflow-{claude,codex,gemini}.md` all link back to the one policy file).
+- The stated precedence order (OpenSpec/user requirements > architecture > correctness/security/tests > Ponytail minimalism > preference) is consistent with existing decision-protocol/role-boundaries authority, and explicitly bars Ponytail from removing required validation/security/tests.
+- `docs/change-log.md` records this as a human-requested canonical change per `master-governance.md`'s "direct human-requested canonical changes" path; the working-tree change set is Codex's own draft (this is a consultant review, not a Claude edit), so no authority violation on either side.
+- `scripts/agent_workflow_env.py` uses only `subprocess.run(list(...), ..., check=False)` with static/literal argument lists — no `shell=True`, no remote script piped into a shell, no interpolation of untrusted input into a command string. Package installation (`uv`/`pipx`/`cargo`) and agent-wide host hooks are gated behind explicit `--install-missing` / `--configure-hosts` flags; plain `init` only writes one idempotent marked block to `AGENTS.md` and never touches existing content outside that block (`test_existing_instruction_file_is_preserved`, `test_repeated_initialization_is_idempotent_and_uses_incremental_graph_update` cover this).
+- Every failure path (missing tool, partial install failure, unsupported agent) degrades to a warning, not a blocker; `verify_tools`/`doctor` are read-only.
+
+#### Needs clarification (not a blocker, but a real contradiction risk)
+- **Phase-name mismatch** — `workflow/agent-tooling.md`'s "Phase Routing" table lists `Exploration | Proposal | Spec | Design | Implementation | Validation and review`, and the prose under it says "The three-stage workflow maps these activities as follows... Design uses Graphify plus focused Ponytail review... validation and review use all three." `workflow/stages.md` is explicit: "The workflow has three stages" — Exploration, Proposal, Implementation — with no `Spec` or `Design` stage; "spec" is an artifact produced inside Proposal, not a stage, and "Design"/"Spec" appear nowhere else in the canonical workflow. `Spec` and `Design` most likely come from OpenSpec's own artifact vocabulary (`proposal.md`/`design.md`/`specs/`) rather than this project's stage model, but the doc doesn't say so. Left as-is, a new agent reading only `agent-tooling.md` could infer two extra gated stages between Proposal and Implementation, contradicting `stages.md`'s three-stage gate/transition protocol. Recommend either (a) relabeling the table rows to the three canonical stage names plus a note that "Spec" and "Design" are OpenSpec sub-activities inside Proposal/Implementation, or (b) adding one sentence stating explicitly that these rows are workflow *activities*, not stages, and do not require their own stage-transition concurrence under `stages.md`.
+
+#### Suggestions (optional, non-blocking)
+- **Missing test coverage** — `doctor()` and the CLI `main()` entry point (subcommand dispatch, `--json` output, the `normalize_agents` `ValueError` path for an unrecognized `--agents` value) have no unit test, even though `doctor` is the second documented subcommand in README/`docs/agent-tooling.md` and is the one a user runs most often. The 7 existing tests all exercise `initialize()`. A small `test_doctor_reports_without_writing` and a `test_unknown_agent_raises_value_error` would close this without much cost.
+- **Unverifiable upstream claims** — package/command names (`graphifyy` via `uv`/`pipx`, `cargo install --git https://github.com/rtk-ai/rtk`, `codex plugin marketplace add DietrichGebert/ponytail`, `gemini extensions install ...`) are asserted but I could not independently verify them against the live upstream projects. Risk is low because every one of these paths is opt-in (`--install-missing`/`--configure-hosts`) and failures are reported as warnings rather than silently trusted, but worth a manual spot-check against current upstream docs before wide downstream rollout.
+- Fold the "Validation and review" table row into the same clarification as above — it reads as a fourth/fifth activity name in a "three-stage" sentence; not a separate issue.
+
+#### Close
+No blockers. One clarification worth resolving before wide adoption (phase-name vs. stage-name mismatch); two low-cost, non-blocking suggestions (doctor/CLI test coverage, upstream-command spot-check). Findings are Claude's; Codex owns disposition per `master-governance.md`.

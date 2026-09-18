@@ -36,6 +36,7 @@ Load topic files only when the current task needs them.
 | Explanatory overview | `workflow/ai-coworking-guide.md` |
 | Canonical update history | `docs/change-log.md` |
 | Advisory skill opportunity channel | `docs/skill-recommendations.md` |
+| Optional agent tooling policy and phase routing | `workflow/agent-tooling.md` |
 
 ## Roles
 
@@ -110,12 +111,38 @@ When creating a new project, start with:
 - `scripts/collab_queue.py`: compact active queue and item detail
 - `scripts/collab_lint.py`: collaboration schema and restart-state validation
 - `scripts/collab_archive.py`: threshold-based resolved-item archives
+- `scripts/agent_workflow_env.py`: safe optional-tool bootstrap and environment doctor
 
 Run validation from a project root:
 
 ```sh
 python3 <workflow-root>/scripts/collab_lint.py --root . --strict-state
 ```
+
+### Optional agent tooling
+
+The workflow treats three upstream tools as separate capabilities:
+
+- Ponytail keeps implementation minimal and reuse-oriented. It never overrides OpenSpec, architecture, correctness, security, or tests.
+- Graphify provides a repository graph for structural discovery and impact analysis. Agents still inspect source files, and source wins over a stale graph.
+- RTK (Rust Token Killer) compresses verbose command output. Agents must fall back to detailed output when a failure needs diagnosis.
+
+New-project setup performs a safe detect/configure/index/verify pass:
+
+```sh
+python3 <workflow-root>/scripts/agent_workflow_env.py init \
+  --root . --workflow-root <workflow-root> --agents auto
+python3 <workflow-root>/scripts/agent_workflow_env.py doctor --root . --agents auto
+```
+
+Package installation and agent-wide hooks are never enabled implicitly. After
+explicit user approval, add `--install-missing --configure-hosts`. The command
+uses upstream-supported mechanisms, preserves existing `AGENTS.md`, and reports
+unsupported integrations without blocking normal development. Refresh an
+existing Graphify index with `graphify update .` after substantial structural
+changes; a commit hook is optional.
+
+See `docs/agent-tooling.md` for the compatibility matrix and troubleshooting.
 
 ## Anti-Patterns
 

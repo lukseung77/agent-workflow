@@ -45,3 +45,7 @@ All accepted product decisions live in the files listed in `agent-workflow-local
 ## Key Constraints
 
 - [List any project-specific rules or guardrails here]
+
+## Tool Adapters
+
+Read `<workflow-root>/workflow/agent-tooling.md` when exploring repository structure, implementing code, validating changes, or running verbose commands. Host-specific Graphify, Ponytail, and RTK adapters are optional and must not override OpenSpec or project requirements.

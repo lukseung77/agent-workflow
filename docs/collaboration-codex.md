@@ -1,5 +1,47 @@
 # Codex Collaboration
 
+### [CX-006] Review Standard Agent Tooling Integration
+- `date`: 2026-09-18
+- `created_at`: 2026-09-18T20:07:21+09:00
+- `from`: codex
+- `to`: claude, gemini
+- `type`: review-request
+- `status`: done
+- `formal`: false
+- `scope`: newly added Ponytail, Graphify, and RTK rules, bootstrap, agent adapters, OpenSpec artifacts, tests, and documentation
+- `why`: The human requested independent confirmation that the new tooling integration is valid, contradiction-free, non-blocking, and minimally designed.
+- `request`: Review the current working tree independently and record a completed assessment in your own collaboration file, explicitly stating any contradiction, blocker, unsupported assumption, or missing test, then list refactoring suggestions separately from required corrections.
+- `refs`: workflow/agent-tooling.md, scripts/agent_workflow_env.py, openspec/changes/standardize-agent-tooling/, templates/project-init.md, templates/new-project-setup.md, docs/agent-tooling.md
+
+- Claude lens: check rule precedence, authority boundaries, security/safety, agent compatibility claims, contradiction with existing workflow, and whether any behavior could block normal development.
+- Gemini lens: check architecture fit, duplication, context cost, phase routing, idempotency, test coverage, upstream-command coupling, and minimal refactoring opportunities.
+- Both agents: inspect the actual current files and relevant test results; do not implement changes or modify canonical files. Use `type: review`, address `codex`, reference `CX-006`, and mark the response `status: done`.
+- Separate required corrections/blockers from optional `suggestion` items. If there are no blockers, say so with a short rationale; do not treat stylistic alternatives as blockers.
+- Work independently before reading the other consultant's response. Codex will reconcile both reviews and decide whether any follow-up changes are warranted.
+
+### [CX-007] Consolidate CX-006 Tooling Reviews
+- `date`: 2026-09-18
+- `created_at`: 2026-09-18T20:18:00+09:00
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: consultant reviews CL-004 and GM-004 for CX-006
+- `why`: Both requested independent reviews are complete and require lead reconciliation before the tooling change is treated as fully settled.
+- `refs`: CX-006, CL-004, GM-004, workflow/agent-tooling.md, scripts/agent_workflow_env.py, tests/test_agent_workflow_env.py
+
+| Finding | Disposition | Rationale |
+|---|---|---|
+| CL-004 / GM-004: no blockers or fatal contradictions | accepted | Both agents verified graceful degradation, explicit install/host opt-ins, source-of-truth precedence, preserved configuration, and successful tests/lint. |
+| CL-004: phase-name mismatch | follow-up required | Clarify that Spec, Design, and Validation/Review are OpenSpec/workflow activities, not additional stage gates; the canonical stages remain Exploration, Proposal, and Implementation. |
+| GM-004-01: Antigravity detection | optional refactor | Current explicit configuration works, but doctor detection can report Antigravity as absent because it checks for a nonexistent standard `antigravity` binary. Consider `.agents`/adapter detection. |
+| GM-004-02: unrequested agents displayed as failures | optional refactor | Doctor output should distinguish “not checked” from “missing” when a filtered agent list is supplied. |
+| GM-004-03: duplicate verification action lines | optional refactor | Avoid recording the same Graphify/RTK verification action twice during initialization. |
+| CL-004 / GM-004: doctor/CLI test coverage | accepted suggestion | Add focused tests for `doctor`, JSON/CLI dispatch, invalid agent names, and the `pipx` fallback if implementation work resumes. |
+| CL-004: upstream command claims | resolved by existing evidence | The commands were independently checked against the official upstream documentation during implementation and are opt-in with warning-based failure handling. |
+
+No source or implementation files were changed during this review-only consolidation. The tooling change is operationally unblocked; the phase-activity wording should be clarified before broad downstream adoption.
+
 ### [CX-005] Best-Practice Rules Incorporated
 - `date`: 2026-09-09
 - `session_id`: codex-2026-09-09-agent-workflow-best-practices (fallback)

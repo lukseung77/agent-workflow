@@ -27,6 +27,7 @@ Project-specific Gemini rules should live in `./agent-workflow-local/agent-workf
 - Link local skill directories when iterating on shared coworking skills instead of copying large prompt blocks into project files.
 - Keep `GEMINI.md` as a short bootstrap with project-specific overrides; leave generic workflow in `<workflow-root>`.
 - Prefer summarizing comparison findings over pasting full alternative analyses into collaboration files.
+- `agy` uses the Gemini adapter. When available, use Graphify for repository structure, apply the shared Ponytail rules while implementing, and use RTK's Gemini or Antigravity adapter for verbose commands. Treat missing integrations as warnings and continue with normal inspection.
 
 ## Avoid
 

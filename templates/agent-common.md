@@ -29,5 +29,6 @@ Do not act from stale chat context when current project files are available.
 - External references: `<workflow-root>/workflow/markitdown.md`
 - Local placement rules: `<workflow-root>/workflow/local-project-files.md`
 - Defined terms: `<workflow-root>/workflow/defined-terms.md`
+- Optional agent tooling and phase routing: `<workflow-root>/workflow/agent-tooling.md`
 
 Project-specific constraints belong in `agent-workflow-local/rules.md` or `agent-workflow-local/agent-workflow-[agent].md`.

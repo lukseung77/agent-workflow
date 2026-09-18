@@ -24,6 +24,7 @@ canonical upstream write authority.
 - Require compact subagent findings with file references.
 - Keep hook and subagent behavior visible in project-local settings when it affects collaboration or verification.
 - Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading; check `agent-workflow-local/references/reference.md` first and use Claude Code's direct PDF/image reading for spot checks or when conversion misses decision-relevant content.
+- When configured, use Graphify for structural discovery, Ponytail for implementation minimalism, and RTK's PreToolUse command rewriting for compact shell output. Read actual source files and rerun uncompressed commands when diagnosis requires it.
 - Treat agent-team or multi-session work as consultant input unless the user explicitly assigns ownership.
 
 ## Avoid

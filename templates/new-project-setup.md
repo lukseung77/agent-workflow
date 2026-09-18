@@ -62,6 +62,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
   - reference registry for original files, content hashes, conversion status, and converted Markdown paths
 - [ ] Do not copy shared global workflow rules into `agent-workflow-local/`, `docs/`, or other project files; if vendoring is needed, keep the downstream copy contained in `./agent-workflow/`
 - [ ] Keep local workflow files short; move large project specifics into focused source-of-truth files
+- [ ] Keep the generated `AGENTS.md` tooling block as a pointer to `<workflow-root>/workflow/agent-tooling.md`; do not copy the shared policy into project-local rules
 
 ---
 
@@ -115,6 +116,14 @@ In your own collaboration file (`docs/collaboration-[yourname].md`):
 - [ ] Note the current stage
 - [ ] Note any immediate open questions you spotted during setup
 
+After the workflow files and source-of-truth structure exist, initialize the
+optional agent tooling from the project root:
+
+- [ ] Run `python3 <workflow-root>/scripts/agent_workflow_env.py init --root . --workflow-root <workflow-root> --agents auto`
+- [ ] Record unavailable optional tools or unsupported agent integrations as warnings, not blockers
+- [ ] Obtain explicit approval before rerunning with `--install-missing --configure-hosts`
+- [ ] Run `python3 <workflow-root>/scripts/agent_workflow_env.py doctor --root . --agents auto`
+
 ---
 
 ## 8. Brief Other Agents
@@ -135,6 +144,7 @@ Before considering setup complete:
 - [ ] All collaboration files exist and are named correctly
 - [ ] `agent-workflow-local/` exists with project facts, local rules, shared override, per-agent, and current-state files
 - [ ] `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/` exist
+- [ ] `python3 <workflow-root>/scripts/agent_workflow_env.py doctor --root . --agents auto` reports the detected agents, Ponytail rules, Graphify, Graphify index, and RTK without exposing secrets
 - [ ] `agent-workflow-local/project-facts.md` has stable paths, roles, stage tracking, and source-of-truth inventory filled in
 - [ ] `agent-workflow-local/rules.md` contains only project-specific rules or says no local overrides are active
 - [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth root or inventory pointer filled in

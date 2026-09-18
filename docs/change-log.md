@@ -4,6 +4,14 @@ The master-agent records canonical `agent-workflow` updates here when they are n
 
 Keep entries compact. Use this file for rollback orientation and downstream update notes, not detailed design discussion.
 
+## 2026-09-18 - Standard Optional Agent Tooling
+
+- `request`: human-requested Ponytail, Graphify, and RTK integration
+- `summary`: added shared capability policy, safe/idempotent environment bootstrap and doctor, OpenSpec change artifacts, phase routing, agent adapters, compatibility/troubleshooting docs, and mocked lifecycle tests
+- `changed`: `workflow/agent-tooling.md`, rule routing and agent defaults, setup/templates, `scripts/agent_workflow_env.py`, tests, README/docs, `openspec/changes/standardize-agent-tooling/`
+- `downstream note`: optional tools remain non-blocking; package installation and host-wide hooks require explicit flags; existing `AGENTS.md` content is preserved
+- `rollback`: remove the marked downstream adapter and upstream-generated tool files, then revert this entry and the related change files; normal workflow files remain usable without optional tooling
+
 ## 2026-09-09 - Lightweight Best-Practice Rules
 
 - `request`: human approval of consolidated CL-003 and GM-003 recommendations

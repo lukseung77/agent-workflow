@@ -44,3 +44,7 @@ All accepted product decisions live in the files listed in `agent-workflow-local
 ## Key Constraints
 
 - [List any project-specific rules or guardrails here]
+
+## Tool Adapters
+
+Read `<workflow-root>/workflow/agent-tooling.md` for shared Ponytail, Graphify, and RTK policy. Use Claude Code's native hooks/plugins only when configured; keep this file as a thin adapter.
