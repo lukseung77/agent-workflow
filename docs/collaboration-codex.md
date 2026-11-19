@@ -1,5 +1,146 @@
 # Codex Collaboration
 
+### [CX-010] Reconciled CL-006 And Added Evidence-Based Critique
+- `date`: 2026-11-19
+- `session_id`: codex-2026-11-19-agent-workflow-cl006-reconciliation
+- `from`: codex
+- `to`: codex
+- `type`: status
+- `status`: done
+- `scope`: critical review guidance, CL-006 conflicts and context recommendations, setup, governance, and historical collaboration lookup
+- `why`: The human approved the critical-review recommendation and requested checking and incorporating Claude's latest suggestions.
+- `request`: Implementation and reconciliation complete; pending stage policy is tracked by CX-011.
+- `refs`: CL-006, CX-011, docs/change-log.md, workflow/agent-workflow.md, workflow/review-cycle.md, workflow/question-model.md
+
+Human instruction: "1. I'll take your recommendation above. 2. claude made
+suggestions for update. please check and incorporate it."
+
+This item is the canonical disposition record for this update. Critical review
+is evidence-based and proportionate: use intent matching normally and select
+counterarguments, pre-mortems, disconfirming evidence, or Socratic questions when
+useful. No flaw quota, adversarial persona, mandatory interview, or extra approval
+gate was added. Original consultant records and historical decision evidence are
+preserved.
+
+| CL-006 row | Disposition | Result / rationale |
+|---|---|---|
+| C01 | adopted | Authority governs before recency; lower-authority notes cannot supersede accepted requirements. |
+| C02 | adopted | The lead assesses and posts stage readiness. |
+| C03 | awaiting human decision | CX-011 tracks the question about explicit user waivers of missing consultant concurrence; existing stage gates remain in force pending an answer. |
+| C04 | adopted | Initial scope is created during checklist section 6; existing source roots remain valid and OpenSpec is the default. |
+| C05 | adopted | Setup installs common and participating host entry files; Codex gets an AGENTS.md pointer without overwriting user instructions. |
+| C06 | adopted | Local rules template contains only project-specific override scaffolding. |
+| C07 | adopted within existing human authority | Explicit human consultant assessment requests are valid when origin/scope/date are recorded in the own file; write restrictions remain unchanged. |
+| C08 | adopted | Setup and Complete are ungated administrative bookends, not extra workflow stages. |
+| C09 | adopted | One concise canonical-startup pointer leads to master governance; duplicate startup paragraphs removed. |
+| U01 | partially adopted | New projects use rules.md only; existing agent-workflow.md remains an optional compatibility read at its existing precedence. No forced migration. |
+| U02 | adopted with compatibility | Project facts own the roster; collaboration-format template is a small pointer with no duplicate table. |
+| U03 | partially adopted | README uses the single router; overview becomes a compatibility pointer. Keep the existing 31-line skill entry and its focused topic links rather than removing useful discovery paths. |
+| U04 | adopted with compatibility | Role-template paths become short pointers to canonical role boundaries and local assignments. |
+| U05 | adopted | Activation instructions are owned by the operating model; review cycle keeps one pointer and stage-readiness guidance. |
+| U06 | adopted | Setup requires only its three entry documents; task routing supplies other rules. |
+| U07 | partially adopted | Operational tooling commands live in docs/agent-tooling.md; README and setup point there. Semantic tooling policy stays canonical in workflow/agent-tooling.md. |
+| U08 | adopted | Alias meaning is canonical in collaboration-format.md; redundant alias definitions removed. Host adapter command examples may still name agy. |
+| U09 | adopted | Consultant onboarding uses relative paths and selected-request scope, not a dated refactor description. |
+| U10 | partially adopted | Registry shrinks to eight columns and rules move to canonical guidance. Keep both content hashes; converted Markdown can change independently. Wider existing registries remain valid. |
+| U11 | adopted | Removed repeated collaboration goals/operating pattern, duplicate conversion caution, parser-boundary copy, and manual item-position guidance. |
+| U12 | deferred policy choice | Preserve defined-term formatting; no separate human choice to remove the color span has been recorded. |
+| U13 | partially adopted | This consolidation owns current dispositions; other current records link here. Retain historical evidence and distinct OpenSpec requirements/design/tasks rather than erasing them. |
+| M01 | adopted | One routing table replaces two; startup/precedence are compact and placement details stay in their topic file. |
+| M02 | adopted | Suggestion submission/evaluation/status procedures moved to an on-demand intake file; authority and a routing pointer remain in master governance. |
+| M03 | adopted | --id retrieves any uniquely identified live/archive item; --refs lists exact referencing items including completed reviews. Default queues stay active and recipient-filtered. |
+| M04 | adopted | Default archival threshold is 20,000 bytes; focused reviews link supporting detail without a mandatory body cap. Live consultant files were not archived by this task. |
+| M05 | adopted through preceding changes | Four startup files total about 15.2 KB versus 26.7 KB before this update, about 43% less source text; this is not measured model-token usage or performance. |
+| M06 | deferred enforcement | No unvalidated universal context budget or broad path-failure gate. Measured startup size and manually checked literal active-guidance paths; planned downstream/generated paths are not broken repository links. |
+
+Validation: `python3 -B scripts/validate.py --require-openspec` passed with 43
+unit tests, zero collaboration lint errors/warnings, and both OpenSpec changes
+valid. `git diff --check` passed. Direct CLI checks retrieved completed CL-004
+and the review/consolidation items referencing CX-006. A literal-path scan of
+38 active guidance files found only seven expected downstream/generated paths,
+not unexpected missing repository files. CI and real host integrations were not
+run remotely. The archived-lookup and threshold cases use temporary fixtures.
+
+Pre-update rollback snapshot:
+`/private/tmp/agent-workflow-before-cl006-0tkik0ww.tgz`; restore selectively to
+preserve later user edits and consultant input. No GitHub publication or older
+downstream suggestion-status decision is part of this update.
+
+### [CX-011] Question — Explicit Stage Concurrence Waivers
+- `date`: 2026-11-19
+- `from`: codex
+- `to`: user
+- `type`: question
+- `status`: open
+- `scope`: workflow/stages.md, missing consultant concurrence
+- `why`: CL-006 C03 proposes a policy choice that the prior prompt cleanup deliberately left open.
+- `request`: Decide whether the lead may proceed after an explicit user waiver of an unavailable consultant's concurrence, recording the waiver and remaining risk.
+- `refs`: CL-006, CX-010, workflow/stages.md
+
+The same question was presented to the human during this update. No answer is
+recorded yet. Default concurrence and user stage confirmation remain required.
+CL-006 U12's defined-term formatting change is also deferred; ask that separate
+policy question after this one rather than bundling approvals.
+
+### [CX-009] Simplified Workflow Prompts
+- `date`: 2026-11-19
+- `session_id`: codex-2026-11-19-agent-workflow-prompt-simplification
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: shared agent prompts, project instruction templates, collaboration template, setup flow, and question rules
+- `why`: The human requested applying the unnecessary-prompt assessment.
+- `refs`: docs/change-log.md, docs/project-evaluation.md, templates/, workflow/question-model.md, workflow/agent-workflow-codex.md, workflow/agent-workflow-claude.md, workflow/agent-workflow-gemini.md
+
+Removed repeated model-strength guidance, startup routing, message schemas, and
+stage/constraint copies. Agent templates now point to actual local assignments.
+Interview counts are optional, source reading follows affected dependencies, and
+environment constraints are reported when they affect work. Consultants report
+cleanup findings rather than treating obvious fixes as write authorization.
+Defined-term formatting and stage-concurrence policy remain separate decisions.
+
+Checks: collaboration lint reported zero errors/warnings; `git diff --check`
+passed. A search of active prompts found none of the removed mandatory count,
+model-strength, duplicate stage/constraint, or unrestricted-cleanup instructions.
+The three agent instruction templates shrank from 152 to 55 lines combined.
+
+### [CX-008] Combined Evaluation And Workflow Integrity Refactor
+- `date`: 2026-11-19
+- `session_id`: codex-2026-11-19-agent-workflow-integrity-refactor
+- `from`: codex
+- `to`: codex
+- `type`: status
+- `status`: done
+- `scope`: whole-project consistency, collaboration tooling, optional-tool diagnostics, tests, CI, and maintenance records
+- `why`: The human requested implementation of Codex and Claude's evaluation followed by an assumption review and refactor.
+- `request`: Finish validation and record the implemented dispositions and downstream compatibility notes.
+- `refs`: CL-005, CX-007, docs/project-evaluation.md, openspec/changes/harden-workflow-integrity/, docs/change-log.md
+
+Human instruction: "please update current project with your and claude's evaluation.
+then utilize grill-me kind of skill. then refactor whole project."
+
+`docs/project-evaluation.md` records each CL-005 disposition and eight additional
+Codex findings. The project retains its standard-library tools, existing entry
+points, manual activation, and authority rules. No installed grill-me skill was
+found; a question-driven assumption review was used. The optional scope question
+has no recorded answer; preserving existing workflow contracts is a lead assumption.
+
+The previously untracked CX-007 wording follow-up is implemented in
+`workflow/agent-tooling.md`. Optional diagnostic/test improvements were incorporated
+where supported. Default package pins, branch publication, and deferred suggestion
+decisions retain their separate status. Claude's original CL-005 and earlier
+consultant evidence are preserved; this record reconciles them without editing
+another agent's lifecycle metadata.
+
+Validation: `python3 -B scripts/validate.py --require-openspec` passed with 39
+unit tests, zero collaboration lint errors/warnings, and two valid OpenSpec
+changes. `git diff --check` passed. Optional installations and host integrations
+were tested with fakes; the new GitHub CI workflow has not run remotely.
+
+The refactor is implemented locally. Migration and remaining decisions are in
+`docs/project-evaluation.md`; rollback orientation is in `docs/change-log.md`.
+
 ### [CX-006] Review Standard Agent Tooling Integration
 - `date`: 2026-09-18
 - `created_at`: 2026-09-18T20:07:21+09:00

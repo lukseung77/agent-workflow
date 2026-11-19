@@ -17,26 +17,10 @@ Load topic files only when the current task needs them.
 
 ## Canonical Rule Map
 
-| Need | File |
-|------|------|
-| Startup order, rule ownership, conflict precedence | `workflow/rule-precedence.md` |
-| Shared operating model | `workflow/agent-workflow.md` |
-| Canonical upstream maintenance and suggestions | `workflow/master-governance.md` |
-| Local project file placement | `workflow/local-project-files.md` |
-| Lead, consultant, user, and master-agent authority | `workflow/role-boundaries.md` |
-| Collaboration message schema and queues | `workflow/collaboration-format.md` |
-| Defined domain-term formatting | `workflow/defined-terms.md` |
-| User questions and decision queues | `workflow/question-model.md` |
-| Decision classification and escalation | `workflow/decision-protocol.md` |
-| Stage gates | `workflow/stages.md` |
-| Reviews and finding consolidation | `workflow/review-cycle.md` |
-| Context, restart state, handoff, archives | `workflow/context-management.md` |
-| External document conversion | `workflow/markitdown.md` |
-| Diagram defaults | `workflow/diagrams.md` |
-| Explanatory overview | `workflow/ai-coworking-guide.md` |
-| Canonical update history | `docs/change-log.md` |
-| Advisory skill opportunity channel | `docs/skill-recommendations.md` |
-| Optional agent tooling policy and phase routing | `workflow/agent-tooling.md` |
+Use the single task-to-file map in
+[`workflow/rule-precedence.md`](workflow/rule-precedence.md#task-routing).
+Update history is in `docs/change-log.md`; optional capability suggestions are
+in `docs/skill-recommendations.md`.
 
 ## Roles
 
@@ -76,6 +60,7 @@ Generate active work from collaboration files:
 ```sh
 python3 <workflow-root>/scripts/collab_queue.py <agent>
 python3 <workflow-root>/scripts/collab_queue.py <agent> --id ITEM-ID
+python3 <workflow-root>/scripts/collab_queue.py <agent> --refs REQUEST-ID
 ```
 
 Persistent collaboration indexes are compatibility fallbacks only.
@@ -87,7 +72,7 @@ User-agents from downstream projects may submit upstream improvement suggestions
 - Template: `user-agent-suggestions/suggestion-form.md`
 - Submission directory: `user-agent-suggestions/submitted/`
 - Status ledger: `user-agent-suggestions/status.md`
-- Governance: `workflow/master-governance.md`
+- Governance: `workflow/master-governance.md`; intake procedure: `workflow/suggestion-intake.md`
 - Legacy history: `docs/legacy/external-lead-suggestions.md`
 - Canonical change log: `docs/change-log.md`
 - Skill recommendations: `docs/skill-recommendations.md`
@@ -112,6 +97,7 @@ When creating a new project, start with:
 - `scripts/collab_lint.py`: collaboration schema and restart-state validation
 - `scripts/collab_archive.py`: threshold-based resolved-item archives
 - `scripts/agent_workflow_env.py`: safe optional-tool bootstrap and environment doctor
+- `scripts/validate.py`: repository tests, collaboration lint, and available OpenSpec validation
 
 Run validation from a project root:
 
@@ -119,30 +105,17 @@ Run validation from a project root:
 python3 <workflow-root>/scripts/collab_lint.py --root . --strict-state
 ```
 
-### Optional agent tooling
+Maintainers can check this repository with `python3 scripts/validate.py`.
+OpenSpec is optional for local validation; use `--require-openspec` to require
+it as CI does. The validator installs nothing and does not configure agent hosts.
+See `docs/project-evaluation.md` for the combined Claude/Codex assessment and
+refactor decisions; it is on-demand maintenance material.
 
-The workflow treats three upstream tools as separate capabilities:
+### Optional Agent Tooling
 
-- Ponytail keeps implementation minimal and reuse-oriented. It never overrides OpenSpec, architecture, correctness, security, or tests.
-- Graphify provides a repository graph for structural discovery and impact analysis. Agents still inspect source files, and source wins over a stale graph.
-- RTK (Rust Token Killer) compresses verbose command output. Agents must fall back to detailed output when a failure needs diagnosis.
-
-New-project setup performs a safe detect/configure/index/verify pass:
-
-```sh
-python3 <workflow-root>/scripts/agent_workflow_env.py init \
-  --root . --workflow-root <workflow-root> --agents auto
-python3 <workflow-root>/scripts/agent_workflow_env.py doctor --root . --agents auto
-```
-
-Package installation and agent-wide hooks are never enabled implicitly. After
-explicit user approval, add `--install-missing --configure-hosts`. The command
-uses upstream-supported mechanisms, preserves existing `AGENTS.md`, and reports
-unsupported integrations without blocking normal development. Refresh an
-existing Graphify index with `graphify update .` after substantial structural
-changes; a commit hook is optional.
-
-See `docs/agent-tooling.md` for the compatibility matrix and troubleshooting.
+See [`docs/agent-tooling.md`](docs/agent-tooling.md) for tool roles, setup
+commands, compatibility, opt-in installation/host configuration, and diagnostics.
+Shared policy remains in `workflow/agent-tooling.md`.
 
 ## Anti-Patterns
 

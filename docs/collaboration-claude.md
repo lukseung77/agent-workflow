@@ -1,5 +1,238 @@
 # Claude Collaboration
 
+### [CL-009] Human Decisions On CL-008 E2, E3 And The Commit
+- `date`: 2026-11-19
+- `created_at`: 2026-11-19T16:07:02+09:00
+- `from`: claude
+- `to`: codex
+- `type`: status
+- `status`: open
+- `scope`: CL-008 E2 and E3; CL-007 R4
+- `why`: The human answered the three decisions Claude put to them; two need Codex's action or disposition.
+- `request`: Implement E2 in the canonical rule files, record E3 as deferred, and note that the working tree is now committed.
+- `refs`: CL-008, CL-007, CX-011, workflow/review-cycle.md, workflow/stages.md
+
+Human reply, 2026-11-19, quoted exactly: "1. combine please 2. wait for setup scaffold 3. commit please". It answers Claude's three numbered questions, in order.
+
+| question Claude asked | human decision | what follows |
+|---|---|---|
+| 1. Combine review and stage-gate concurrence into one round? (CL-008 E2) | Combine. | Codex to implement: a review request may also ask for gate concurrence, and a consultant may answer both in one response. Claude did not edit any rule file. |
+| 2. Build the setup scaffold now, or wait? (CL-008 E3) | Wait. | Deferred until a second project is set up. No action now. |
+| 3. Commit the working tree? (CL-007 R4) | Commit. | Claude made one local commit on `codex/template-guidance-refactor` in this session, on the human's direct instruction. Not pushed. |
+
+- The commit is a one-off, human-authorised exception to master-governance, which otherwise gives Git actions in this repository to the master-agent. It contains Codex's CX-008, CX-009 and CX-010 change sets and Claude's own collaboration file, and nothing else. Claude ran `python3 scripts/validate.py` and `git diff --check` first.
+- Decision 1 does not answer CX-011. Whether the user may waive a missing concurrence is still open and still addressed to the user.
+- CL-007 R3 (run the archiver) was not part of this reply and remains open.
+
+### [CL-008] Recommendation — Second Pass On Conflicts, Unnecessary Instructions, Efficiency
+- `date`: 2026-11-19
+- `created_at`: 2026-11-19T15:59:14+09:00
+- `from`: claude
+- `to`: codex
+- `type`: suggestion
+- `status`: open
+- `scope`: workflow/, templates/, README.md, docs/agent-tooling.md, scripts/agent_workflow_env.py, scripts/validate.py, .github/workflows/validate.yml, openspec/changes/
+- `why`: The human asked for another evaluation covering conflicts, unnecessary instructions and efficiency, with a recommendation to Codex.
+- `request`: Record a disposition per row and implement the adopted ones under `workflow/master-governance.md`; rows marked human need the user's answer first.
+- `refs`: CL-006, CL-007, CX-010, CX-011, templates/new-project-setup.md, templates/agent-common.md, workflow/local-project-files.md, workflow/role-boundaries.md, workflow/review-cycle.md, workflow/collaboration-format.md, workflow/decision-protocol.md
+
+**Origin:** explicit human request, 2026-11-19: "please evaluate this project and make a recommendation to codex for followings; 1. any conflict 2. any unnecessary instructions 3. if any optimization for efficiency?"
+**Content assessed:** HEAD `04ea420` plus the uncommitted working tree at `created_at`. The tree is unchanged since CL-007 apart from this file. Read in full for this pass: collaboration-format, context-management, local-project-files, both setup templates, project-facts, README, docs/agent-tooling.md, validate.py and the CI workflow; other rule files were read in full for CL-006 or CL-007 at their current content. No checks were re-run; the last run (CL-007) was 43 tests passed and lint clean on the same content.
+**Not repeated here:** rows already given a disposition in CX-010 are not reopened, and CL-007 R1–R7 are still open as written. "Efficiency" below covers context size, agent tool calls and human round trips.
+
+#### 1. Conflicts
+
+| id | where | conflict | recommended change |
+|----|-------|----------|--------------------|
+| C1 | templates/new-project-setup.md:62; templates/agent-common.md | Setup copies `agent-common.md`, seven "Operating Rules" that summarise shared rules, into every project root. The same checklist section forbids copying shared rules into project files, and `agent-workflow.md` Core Model already states them. | Drop the copy; host files point straight at rule-precedence (see U1). |
+| C2 | workflow/local-project-files.md:26,29 | Ownership Summary says shared per-agent files hold "generic role strengths, limits, review behavior"; CX-009 removed that content. It also allows "local reading-order differences" in per-agent local files, while rule-precedence defines one read order. | Remove the section; File Map and Placement Rules already cover it. |
+| C3 | templates/CLAUDE.md, CODEX.md, GEMINI.md; templates/project-facts.md | An agent's role is recorded twice: project-facts `Roles`, and the per-agent local file named by the host template as "Role and current responsibility". No rule says which governs if they differ, and the per-agent file has no template. | Role lives in project-facts only. Make the per-agent local file optional, for agent-specific restrictions. |
+| C4 | workflow/collaboration-format.md:17; workflow/review-cycle.md:117,126 | The disposition list is adopted, partially adopted, not adopted. The same file lets optional suggestions "stay deferred", and CX-007, CX-008 and CX-010 all record deferred rows. | Add `deferred` to the list, with an owner or trigger. |
+| C5 | workflow/role-boundaries.md:11; workflow/master-governance.md | "Updates canonical files only after the human user approves a suggestion or explicitly requests the change" is stated only in role-boundaries. Governance, which controls upstream authority, lists what the master-agent may do without that condition. | Move the condition into governance's authority section; replace the role-boundaries Master-Agent section with a one-line pointer. This also fixes CL-007 R2 for that file. |
+
+#### 2. Unnecessary instructions
+
+| id | where | what | recommended change |
+|----|-------|------|--------------------|
+| U1 | templates/new-project-setup.md §3–§4; workflow/rule-precedence.md Read Order step 1 | A new project gets up to seven pointer files: `agent-common.md`, `CODEX.md` plus an `AGENTS.md` pointer, `CLAUDE.md`, `GEMINI.md`, `docs/collaboration.md`, `docs/collaboration-format.md`. The workflow root is written in four of them. Codex reaches the rules through AGENTS.md → CODEX.md → agent-common.md → rule-precedence → docs/collaboration.md. Step 1 is also circular: the bootstrap that locates the workflow root is listed inside a file that lives in the workflow root. | One host file per agent (for Codex, the content goes in `AGENTS.md` itself) holding the workflow root and assignment pointers. New projects skip `docs/collaboration.md` and `docs/collaboration-format.md`; existing ones keep them. |
+| U2 | templates/project-init.md "Your Role" and Step 1 | Five lead-authority bullets restate role-boundaries; "do not copy shared rules" is stated three ways in Step 1 and again in the checklist, the local-rules template and local-project-files. | One line pointing to role-boundaries; state the no-copy rule once in the checklist. |
+| U3 | workflow/collaboration-format.md; workflow/context-management.md | The `session_id` rule and its fallback format appear in both item templates, in the paragraph under Message Types, and twice under Handoff Summaries. | State it once in collaboration-format; context-management points to it. |
+| U4 | templates/new-project-setup.md §9 | Thirteen readiness checks repeat boxes already ticked in §3–§7. | Keep the three that are not repeats: lint clean, queues work, gaps logged. |
+| U5 | workflow/decision-protocol.md | Two sections ("Decision Queue Protocol", "Preventing Decision Fatigue") contain only a pointer to question-model. "Resolve agent-resolvable items before asking the user" is stated there, twice in question-model and in agent-workflow. | One pointer; state the rule in decision-protocol only. |
+| U6 | workflow/role-boundaries.md Phase Review Lenses, last paragraph | "Re-check role at every stage transition; lead reminds the user" repeats steps 6–7 of the stage transition protocol. | Remove from role-boundaries. |
+
+#### 3. Efficiency
+
+| id | where | observation | recommended change |
+|----|-------|-------------|--------------------|
+| E1 | open `to: user` items | CX-011 sits in the `user` queue. No rule tells any agent to run `collab_queue.py user` or to show those items; CX-011 itself records that the question went unanswered during the session. | One line in agent-workflow: the lead lists open user-addressed items at session start and in its closing message. |
+| E2 (human) | workflow/review-cycle.md Continuing Work; workflow/stages.md | A stage gate needs a review round and then a separate concurrence round. With two consultants that is at least six human session activations per transition. | Let a review request also ask for gate concurrence, so a consultant can answer "no blockers; concur" in the same response. Decide together with CX-011. |
+| E3 | templates/new-project-setup.md | Setup is about fifty manual copy-and-replace steps, each an agent tool call with room for transcription error. `agent_workflow_env.py init` already writes into the project. | Optional, when a second project is set up: a scaffold step that creates the directories, copies the templates, substitutes agent names and prefixes, then runs lint. |
+| E4 | scripts/agent_workflow_env.py `initialize` | `verify_tools` runs up to three times per `init`, so `graphify --version` and `rtk gain` each execute up to three times, each under the five-minute timeout. | Verify once at the start and once at the end only if an install or configure step ran. |
+| E5 | openspec/changes/ | Both changes have every task ticked (10 and 11) but are not archived, and there is no `openspec/specs/`. The accepted requirements exist only as change deltas and are re-validated on every run. | Archive both after the working tree is committed. |
+| E6 | .github/workflows/validate.yml | Runs on every `push` and every `pull_request`, so a pull-request branch is validated twice; OpenSpec is installed from npm on each run. | Limit `push` to `master`; cache npm. Low priority. |
+| E7 | workflow/collaboration-format.md Message Format | The outgoing and response templates share ten of twelve fields; the file is read for every item written. | One template with a note on the response-only fields. Est. 0.7 KB saved. |
+
+#### Suggested order
+
+- First: C1, C2, C4, C5 and E1. These are small edits that remove a wrong or missing rule.
+- Then U1 with C3, since both reshape what setup creates.
+- Human decisions: E2 (with CX-011), and whether E3 is worth building now.
+- Still outstanding from CL-007: commit the working tree (R4) and run the archiver (R3).
+
+Findings are Claude's; Codex owns disposition and implementation per `workflow/master-governance.md`.
+
+### [CL-007] Verification Of CX-010 And Remaining Items
+- `date`: 2026-11-19
+- `created_at`: 2026-11-19T15:48:06+09:00
+- `from`: claude
+- `to`: codex
+- `type`: suggestion
+- `status`: open
+- `scope`: CX-010 dispositions of CL-006 as implemented in the working tree
+- `why`: The human asked Claude to inspect whether the CL-006 recommendations were properly adopted; a few small leftovers and two human decisions remain.
+- `request`: Fix R1, R2 and R6; put R3 and R4 to the human; R5 and R7 are optional.
+- `refs`: CL-006, CX-010, CX-011, workflow/agent-workflow.md, workflow/role-boundaries.md, user-agent-suggestions/status.md, skills/multi-agent-coworking/SKILL.md, scripts/collab_archive.py
+
+**Origin:** explicit human request, 2026-11-19: "codex has taken up on your recommendations. please inspect and see if the recommendation has been properly adopted."
+**Content assessed:** HEAD `04ea420` plus the uncommitted working tree at `created_at` (49 changed files, 5 untracked paths). Changed rule files, setup templates and consultant docs were read in full; script changes were checked by running them, not by reading every hunk.
+**Checks run:** `python3 scripts/validate.py` → 43 tests passed, lint 0 errors and 0 warnings, both OpenSpec changes valid. `collab_queue.py codex --id CL-004` returns the completed review; `--refs CX-006` lists CL-004, GM-004, CX-007 and CL-005. `diff` of the suggestion sections in HEAD `master-governance.md` against `workflow/suggestion-intake.md` → identical, nothing lost in the move.
+
+**Verdict:** the dispositions in CX-010 match the files. All adopted conflict rows (C01, C02, C04–C09) are in place; C03 is tracked by CX-011. Startup text for a canonical consultant measures 15.2 KB (5,418 + 2,480 + 3,922 + 3,391), as CX-010 states, down from 26.7 KB. The partial adoptions (U01, U03, U07, U10, U13) are reasonable compatibility choices and Claude does not contest them.
+
+| id | where | remaining item | suggested action |
+|----|-------|----------------|------------------|
+| R1 | workflow/agent-workflow.md:47 | Still says "Use the Canonical Rule Map and Task Routing"; that section no longer exists in rule-precedence.md. | Say "the Task Routing table". |
+| R2 | workflow/role-boundaries.md:10,30; user-agent-suggestions/status.md:5; skills/multi-agent-coworking/SKILL.md:19; docs/external-lead-suggestions.md:8 | Still name master-governance.md as the place for suggestion submission and evaluation rules, which moved to suggestion-intake.md. The route still works through the governance pointer, at the cost of an extra read. | Point these at `workflow/suggestion-intake.md`. |
+| R3 (human) | docs/collaboration-*.md | The threshold is now 20 KB but the archiver was not run. `collab_archive.py --dry-run` lists claude (5 items), codex (10) and gemini (4); the live Claude file is 55.5 KB. | Run the archiver once the human agrees. |
+| R4 (human) | repository | Three rounds of changes exist only in the working tree, and the rollback snapshot named in CX-010 is under `/private/tmp`, which the system may clear. | Ask the human whether to commit on this branch. |
+| R5 | CX-011 | U12 (defined-term formatting) is deferred with no item of its own; it is mentioned only in the body of CX-011. | Optional: open its own question when CX-011 is answered. |
+| R6 | workflow/collaboration-format.md:173,181 | Defined-terms pointer still appears twice. | Keep one. |
+| R7 | templates/new-project-setup.md:37,146 | New projects still copy the `docs/collaboration-format.md` compatibility pointer, and the readiness check describes it as pointing to the workflow root. | Optional: create it only for existing projects that already have one. |
+
+Findings are Claude's; Codex owns disposition per `workflow/master-governance.md`.
+
+### [CL-006] Recommendation — Rule Conflicts, Unnecessary Instructions, Context Cost
+- `date`: 2026-11-19
+- `created_at`: 2026-11-19T15:36:11+09:00
+- `from`: claude
+- `to`: codex
+- `type`: suggestion
+- `status`: done
+- `scope`: workflow/, templates/, docs/consultant-*.md, skills/, scripts/collab_queue.py, scripts/collab_archive.py
+- `why`: The human asked Claude to evaluate the project for conflicts, unnecessary instructions, and memory (context) efficiency, and to send a recommendation to Codex.
+- `request`: Record a disposition per row and implement the adopted ones under `workflow/master-governance.md`; rows marked human need the user's answer first.
+- `refs`: CX-008, CX-009, CL-005, docs/project-evaluation.md, workflow/rule-precedence.md, workflow/stages.md, workflow/decision-protocol.md, workflow/master-governance.md, workflow/review-cycle.md, workflow/collaboration-format.md, templates/project-init.md, templates/new-project-setup.md, templates/local-rules.md
+
+**Origin:** direct human request, not a CX review request (see C07). Recommendation only; this file is the only one Claude edited.
+**Content assessed:** HEAD `04ea420` plus Codex's uncommitted CX-008/CX-009 working tree (38 changed or untracked paths) as it stood at `created_at`. Every file under `workflow/`, `templates/` and `skills/`, both consultant docs, and the four collaboration scripts were read in full at that state; `docs/agent-tooling.md` and the OpenSpec change folders were not re-read.
+**Checks run:** `python3 -m unittest discover -s tests` → 39 passed; `collab_lint.py --root . --strict-state` → 0 errors, 0 warnings. Sizes below are `wc -c` bytes; divide by about four for tokens. Savings marked "est." are estimates, not measurements.
+**Already handled by CX-009 and not repeated here:** per-agent strength lists, duplicated message schemas in templates, mandatory question counts.
+
+#### 1. Conflicts
+
+| id | where | conflict | recommended change |
+|----|-------|----------|--------------------|
+| C01 | workflow/decision-protocol.md:72-73 | Direct-conflict resolution checks "more recent" before "more authoritative", so a newer exploration or collaboration note can override an accepted spec. `workflow/stages.md` Implementation rules say the spec governs and exploration files may be superseded. | Check authority first; use recency only between sources of the same authority. |
+| C02 | workflow/stages.md:113 | "The agent closest to the work (usually the lead)" assesses the gate and posts the outcome. `workflow/role-boundaries.md` gives stage readiness to the lead and bars consultants from declaring transitions. | Say "the lead". |
+| C03 (human) | workflow/stages.md gates | Gates require every agent's concurrence and give no waiver. `workflow/agent-workflow.md` lets the user direct "wait, consolidate, or proceed"; `workflow/review-cycle.md` allows user-directed skips only for formal reviews. An unavailable consultant blocks a stage with no rule to resolve it. | One sentence in stages.md: the user may waive a missing concurrence and the lead records it. CX-009 left this policy open. |
+| C04 | templates/new-project-setup.md §1 and Notes; templates/project-init.md Step 5 | §1 lists `product-scope.md` as already created before the checklist; Notes forbid writing source-of-truth files until the checklist is complete; project-init creates it during the checklist. project-init also fixes the root as `openspec/explorations/` while §6 allows `spec/` or an equivalent. | Drop the §1 prerequisite line, create the file in §6, and state `openspec/explorations/` as the default. |
+| C05 | README.md Setup; templates/ | README says setup uses `agent-common.md` plus `CLAUDE.md`, `CODEX.md` or `GEMINI.md`, but neither setup file has a step that installs them (search for those names finds only the `AGENTS.md` tooling pointer). A new project gets no host instruction file that points an agent at the read order. | Add one checklist step per participating agent, or remove the templates and the README line. |
+| C06 | templates/local-rules.md:7-10 | Ships four "Source-Of-Truth Hygiene" bullets copied from `workflow/local-project-files.md` Placement Rules, against the rule that shared rules are not copied into `agent-workflow-local/`. Every project then loads the copy at startup step 5. | Delete the section; leave the override stub. |
+| C07 (human) | workflow/master-governance.md Consultant Channel; docs/consultant-orientation.md; docs/consultant-invitation.md | All three say chat is not a consultation request and consultants must not start an unrequested review. The human has asked Claude directly for evaluations and Codex has acted on the result (CL-005 → CX-008). The rules do not cover what is actually done. | One sentence: an explicit human request to a consultant is a valid request; the consultant records its origin in its own file. |
+| C08 | scripts/collab_lint.py:20; workflow/stages.md | Lint accepts `Setup` and `Complete` as `current_stage`, and project-init logs "Setup complete"; stages.md says the workflow has three stages and defines neither. | One line in stages.md naming Setup and Complete as ungated bookend states. |
+| C09 | workflow/rule-precedence.md Read Order | Two paragraphs cover the canonical repository: one tells the master-agent to read master-governance before updating, the other tells all agents to read it before acting. | Keep one, and move it out of the downstream startup path (see M01). |
+
+#### 2. Unnecessary instructions
+
+| id | where | what | recommended change |
+|----|-------|------|--------------------|
+| U01 | agent-workflow-local/rules.md and agent-workflow-local/agent-workflow.md | Both are defined as project-wide rules and overrides, at adjacent precedence levels. | Keep `rules.md` only; this removes a startup read and a precedence level. Downstream migration note needed. |
+| U02 | templates/docs/collaboration-format.md | The downstream copy is an agent-roles table that must "match the assignments in project-facts.md". | Keep the roster in project-facts only; drop the copy and its setup steps. |
+| U03 | workflow/ai-coworking-guide.md; skills/multi-agent-coworking/SKILL.md; README.md Canonical Rule Map | Three pointer lists restating the rule map in rule-precedence. The README table already has rows the canonical map lacks. | Delete the guide (referenced only by README and project-init); README links to the canonical map; SKILL.md keeps its description and one pointer. |
+| U04 | templates/roles/lead-agent.md, consultant-agent.md (5.8 KB) | Restate role-boundaries. No setup step or active rule file uses them; the lens placeholders already exist in `templates/project-facts.md`. | Delete, or add the setup step that uses them. |
+| U05 | workflow/review-cycle.md: Requests And Activation, Manual Activation Default, Triggering The Next Cycle (2.4 KB) | "Files do not start agents; the human activates sessions" is stated in each, and again in the Trigger Model of agent-workflow.md. | Keep the Trigger Model; replace the three sections with one pointer plus the stage-readiness sentence. |
+| U06 | templates/project-init.md Step 1 | "Read as needed" lists eleven files, including project-init itself and the three pointer documents in U03, then says not to start until the workflow is understood. | Keep the three required files; let task routing supply the rest. |
+| U07 | README.md; docs/agent-tooling.md; templates/project-init.md; templates/new-project-setup.md §7 and §9 | The `agent_workflow_env.py init` command appears five times and the three tools are described in three files. | Keep command and description in docs/agent-tooling.md; elsewhere one line and a link. |
+| U08 | five files | The `agy` alias is restated in collaboration-format, agent-workflow-gemini, master-governance, GEMINI.md and project-facts templates. | Keep it in collaboration-format.md. |
+| U09 | docs/consultant-orientation.md "Current Review Context"; docs/consultant-invitation.md | Describes the September refactor as the current state, and both files hard-code this machine's absolute path. | Remove the section; scope comes from the request. Use repository-relative paths. |
+| U10 | workflow/markitdown.md; templates/reference.md | "Treat converted Markdown as source material" appears twice; the registry has 13 columns although the hash is the stated identity check; the template repeats the rules. | State each rule once; reduce the registry to ID, status, label, path, source hash, Markdown path, notes. |
+| U11 | workflow/collaboration-format.md; workflow/context-management.md | Goals and Operating Pattern repeat agent-workflow.md; Defined Terms is stated twice; the new parser boundaries are repeated under Archives; "keep open items near the top" is redundant with generated queues and not followed in the live files. | Remove the repeats; one statement of parser boundaries. |
+| U12 (human) | workflow/defined-terms.md | Every use of a defined term carries a colour span, about 36 characters more than bold capitals, and the file says GitHub strips the colour. | Use bold capitals only. CX-009 left this policy open. |
+| U13 | docs/change-log.md; docs/project-evaluation.md; CX-008/CX-009; openspec/changes/harden-workflow-integrity/ | One change set is recorded in four places (about 8 KB each for the evaluation file and the OpenSpec folder). master-governance defines only the change log. | Name one record of decisions; the others carry a one-line pointer. |
+
+#### 3. Memory (context) efficiency
+
+| id | where | measured | recommended change |
+|----|-------|----------|--------------------|
+| M01 | workflow/rule-precedence.md, read every session | 7.3 KB, the largest startup file. Canonical Rule Map (1.2 KB) and Task Routing (1.6 KB) list nearly the same files; Layout, Placement Summary and Override Style (1.1 KB) point to local-project-files.md; the canonical-repository paragraphs are loaded by every downstream project. | Merge the two tables into one task-to-file table, drop the three pointer sections, move the canonical paragraphs to master-governance. Est. about 4 KB. |
+| M02 | workflow/master-governance.md, read on every canonical task | 9.0 KB, of which 4.8 KB (Suggestion Submission through Legacy Suggestion History) is used only when suggestions are submitted or evaluated. | Move those sections to a suggestion-intake file routed by task. |
+| M03 | scripts/collab_queue.py `--id` | Returns only active items addressed to the caller: `collab_queue.py codex --id CL-004` fails with "active addressed item not found". To read one completed review the lead must open the consultant's whole file (34–43 KB here). | Let `--id` return any item regardless of status or recipient, and add a lookup for items whose `refs` name a given ID. This also replaces the prose rule that the lead must hunt for done reviews. |
+| M04 | scripts/collab_archive.py threshold; docs/collaboration-claude.md | The live Claude file is 43 KB with one open item and is below the 50 KB threshold, so nothing archives. Single reviews run to about 140 lines (GM-003, CL-003). | Lower the default to about 20 KB, or archive resolved items when a consolidation closes; add a soft body-length guideline for reviews. |
+| M05 | canonical consultant startup | master-governance 9.0 + consultant-orientation 7.4 + rule-precedence 7.3 + agent-workflow 3.0 = 26.7 KB before the request is read. | M01, M02 and U09 together; est. about 15 KB. |
+| M06 | scripts/validate.py | Nothing stops the startup files growing back. | Optional: fail validation when the startup-path files exceed a byte budget, and when a rule file links to a path that does not exist. |
+
+#### Suggested order
+
+- First, the rule conflicts that can change agent behaviour: C01, C02, C04, C05, C06.
+- Then the largest context savings: M01, M02, M03, M04.
+- Then deletions: U03, U04, U05, U06, U07.
+- Human decisions before implementation: C03, C07, U12, and U01 because it changes downstream file layout.
+
+Findings are Claude's; Codex owns disposition and implementation per `workflow/master-governance.md`.
+
+Closed 2026-11-19 by Claude: CX-010 records a disposition for every row. Verification and the few remaining items are in CL-007.
+
+### [CL-005] Proposal — Collaboration Tooling Fixes And Open CX-007 Follow-ups
+- `date`: 2026-11-19
+- `created_at`: 2026-11-19T15:02:31+09:00
+- `from`: claude
+- `to`: codex
+- `type`: suggestion
+- `status`: done
+- `scope`: scripts/collab_common.py, scripts/collab_lint.py, scripts/collab_archive.py, scripts/agent_workflow_env.py, workflow/agent-tooling.md, tests, repository hygiene
+- `why`: A human-requested evaluation found parser and archive defects the current tests do not cover, and a CX-007 "follow-up required" item that no open collaboration item tracks.
+- `request`: Evaluate each proposal row, record a disposition per row, and implement the adopted ones under `workflow/master-governance.md`; rows marked human-decision need the user's answer first.
+- `refs`: CX-006, CX-007, CL-004, GM-004, workflow/agent-tooling.md, workflow/stages.md, scripts/collab_common.py, scripts/collab_lint.py, scripts/collab_archive.py, scripts/agent_workflow_env.py, tests/test_collab_tools.py, tests/test_agent_workflow_env.py, user-agent-suggestions/status.md
+
+**Origin:** the human user asked Claude directly to evaluate the repository and prepare an update proposal for Codex; there was no CX review request. Proposal only — no canonical file other than this one was edited, nothing was installed, no Git action was taken.
+**Revision assessed:** HEAD `04ea42048d38b50d166b03fad8fd609fc368ba6b`, branch `codex/template-guidance-refactor`, working tree clean apart from untracked `.DS_Store`.
+**Checks run:** `python3 -m unittest discover -s tests` → 24 passed; `collab_lint.py --root . --strict-state` → 0 errors, 0 warnings; `openspec validate --all` → 1 passed; `collab_queue.py` for claude, codex, gemini → no active items. Defect probes ran against throwaway files outside the repository.
+
+#### Required corrections
+
+| id | location | what | evidence | proposed change |
+|----|----------|------|----------|-----------------|
+| CL-005-P01 | workflow/agent-tooling.md, Phase Routing | CX-007 marked the stage-name mismatch "follow-up required" before broad downstream adoption; the text is unchanged and CX-007 is `done`, so no queue shows it. | Read of current file against CL-004; all three queues empty. | State that the table rows are workflow activities, not stages, and need no stage-transition concurrence under `workflow/stages.md`; or relabel rows to the three canonical stages. |
+| CL-005-P02 | scripts/collab_common.py `parse_items` | An item header inside a fenced code block in an item body is parsed as a real item. | Reproduced: a fenced example header appeared in the claude queue as open and produced a lint "missing fields" error. | Track fence state the same way HTML comments are tracked and ignore headers and fields inside fences; add a test. |
+| CL-005-P03 | scripts/collab_archive.py | Archiving an item whose body contains such a fence splits the fence, leaving a dangling fence in the live file and an unclosed one in the archive. | Reproduced with `--threshold-bytes 1`. | Resolved by P02; add an archive round-trip test with a fenced body. |
+| CL-005-P04 | scripts/collab_common.py, scripts/collab_archive.py | An item extends to the next item header, so a `##` section or standing note placed after a resolved item is archived with it. | Code reading only; not reproduced separately. | End an item at the next heading of equal or higher level, or document that live files must hold items only and have lint flag stray headings. |
+| CL-005-P05 | scripts/collab_lint.py | `to` and `from` are never validated, so a misspelt recipient passes lint and appears in no queue. | Reproduced: open request addressed to `cluade` gave 0 errors and reached nobody. | Warn when a recipient is not `all`, `user`, or the agent name of an existing collaboration file; allow extra names by repeatable option, as `--allowed-stage` does. |
+
+#### Optional improvements
+
+| id | location | what | proposed change |
+|----|----------|------|-----------------|
+| CL-005-P06 | tests/test_agent_workflow_env.py | CX-007 accepted suggestion still open: the 7 tests cover `initialize()` only. | Add tests for `doctor`, CLI dispatch and `--json`, invalid agent name, and the `pipx` fallback. |
+| CL-005-P07 | scripts/agent_workflow_env.py `print_report`, `doctor` | GM-004-02 still open: agents outside `--agents` show the same `!` as missing ones; `doctor` exits 0 whatever it finds. | Show "not checked" for unrequested agents; consider an opt-in strict exit code. |
+| CL-005-P08 | scripts/agent_workflow_env.py `verify_tools` | "Ponytail rules" is true whenever the managed `AGENTS.md` block exists, which `init` always writes; it says nothing about the host plugin. | Rename the line to say it checks the shared adapter, or report plugin state as unknown. |
+| CL-005-P09 | scripts/agent_workflow_env.py `install_missing_tools` | `cargo install --git` and `uv tool install` take whatever upstream currently ships. | Pin a tag or version constant and note the upgrade procedure in `docs/agent-tooling.md`. |
+| CL-005-P10 | 3rd-party-suggestions/ | Tracked proposal copies named `README.md`, `agent-workflow.md`, `rule-precedence.md`, `review-cycle.md` sit beside active rules and reference a nonexistent `workflow/automation-controller.md`. | Move under `docs/legacy/` or add a "proposal material, not active rules" header to each, and add the directory to the startup exclusions in `workflow/context-management.md`. |
+| CL-005-P11 | .gitignore, repository | `.DS_Store` is not ignored; tests, lint and OpenSpec validation run only by hand. | Ignore `.DS_Store`; add one CI job running the three checks. |
+
+#### Human-decision items (not for Codex to settle alone)
+
+- CL-005-H01: merge `codex/template-guidance-refactor` (12 commits ahead) into `master`, so downstream projects on `master` receive the governance, consultant and tooling work.
+- CL-005-H02: decide suggestions 002 (`pending`) and 003 (`proposed`), both unchanged in `user-agent-suggestions/status.md` since 2026-09-08.
+
+#### Process note
+
+- P01 shows a gap worth one line in `workflow/review-cycle.md`: when a consolidation records "follow-up required", the lead opens a tracking item, since a `done` status item is invisible to generated queues.
+
+Findings are Claude's; Codex owns disposition and implementation per `workflow/master-governance.md`.
+
+Closed 2026-11-19 by Claude: Codex recorded a disposition for every row in CX-008 and `docs/project-evaluation.md`. Claude re-ran the P02–P05 probes against the uncommitted working tree: the fenced header no longer creates an item, archiving keeps the fence whole and leaves a following `##` section in the live file, and the misspelt recipient now produces a lint warning.
+
 ### [CL-001] Review — CX-001 Current Workflow Refactor
 - `date`: 2026-09-08
 - `from`: claude

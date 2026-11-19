@@ -2,14 +2,6 @@
 
 This file defines the standard message format for per-agent collaboration files.
 
-## Goals
-
-- Low token cost per read
-- Fast scan by humans and agents
-- Explicit traceability between suggestion and response
-- Explicit status tracking
-- No file-lock conflicts between agents
-
 ## Rules
 
 1. Each agent writes only to its own collaboration file, except for allowed downstream operational updates to `agent-workflow-local/references/reference.md`. Canonical repository permissions instead follow `workflow/master-governance.md`.
@@ -48,6 +40,16 @@ This file defines the standard message format for per-agent collaboration files.
 
 Body (optional) — short bullets only
 ```
+
+### Parser Boundaries
+
+Keep each item header at column one as `### [ID] Title`. Put its metadata in the
+initial contiguous field block, before body text or a blank separator. Later
+metadata-looking bullets are body content and cannot change routing or status.
+Fenced code blocks (backticks or tildes) and HTML comments never create items or
+metadata. Use headings of level 4–6 inside an item; a heading of level 1–3 ends
+the item and starts another item or a standing section. These boundaries also
+govern archival, so standing notes remain in the live file.
 
 ### Response item
 
@@ -145,9 +147,24 @@ Collaboration files are authoritative. Generate an active queue with:
 ```sh
 python3 <workflow-root>/scripts/collab_queue.py <agent>
 python3 <workflow-root>/scripts/collab_queue.py <agent> --id ITEM-ID
+python3 <workflow-root>/scripts/collab_queue.py <agent> --refs REQUEST-ID
 ```
 
+`--id` retrieves a uniquely identified live or numbered-archive item regardless
+of status or recipient. `--refs` lists items referencing an exact request ID,
+including completed and archived reviews; the agent argument filters only the
+default active queue. Missing or duplicate IDs fail rather than select silently.
+
 The default output is compact. Use `--full` for all active item details or `--json` for automation. Queues sort newest first for presentation but never expire or hide older unresolved work.
+
+Timestamp order uses actual UTC instants. Date-only legacy items use midnight
+UTC; malformed timestamps fall back to the date and are diagnosed by lint.
+The `agy` alias works in queue arguments as well as recipient fields.
+
+Lint warns on sender/recipient names not represented by a collaboration file
+(except `all` and `user`). Use repeatable `--allowed-agent NAME` for legitimate
+participants without a file. Warnings preserve compatibility; inspect them before
+relying on a queue because a misspelled recipient can hide work.
 
 Projects that cannot run the script may retain persistent index files as a compatibility fallback. Such indexes should contain active items only.
 
@@ -162,11 +179,3 @@ Use `workflow/defined-terms.md` when writing or reviewing formally defined domai
 - If something is resolved in a source-of-truth file, mark the collaboration item `done` and leave it parseable for `scripts/collab_archive.py`; do not comment it out.
 - One decision per item. Split compound decisions into separate items.
 - Use `workflow/defined-terms.md` for confirmed domain-term formatting.
-
-## Operating Pattern
-
-1. Agent writes a compact item in its own collaboration file.
-2. Target agent discovers it by recipient and lifecycle status, then replies in its own file referencing the original ID.
-3. Lead agent integrates accepted outcomes into source-of-truth files.
-4. Agents mark completed items `done`; archival is size-based and separate.
-5. User is asked one question at a time by whichever agent is consolidating the decision queue.

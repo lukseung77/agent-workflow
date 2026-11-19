@@ -2,6 +2,10 @@
 
 Status: Proposed improvement
 
+This is proposal material, not an active workflow or installation instruction.
+Canonical activation and authority rules remain in `workflow/`. The sibling
+`automation-controller.md` preserves the same original controller proposal.
+
 This document proposes an optional automation layer for projects that use
 multiple CLI coding agents. It extends the existing file-based collaboration
 workflow without replacing its single-lead model, source-of-truth rules, or

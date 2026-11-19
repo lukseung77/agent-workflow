@@ -1,5 +1,10 @@
 # Agent Collaboration Workflow
 
+> Proposal material, not active workflow rules. Canonical rules live in
+> `workflow/`; this directory preserves external drafts for evaluation.
+> The controller proposal is `3rd-party-suggestions/automation-controller.md`.
+> Historical draft paths below are not instructions to create or load those files.
+
 A generic, file-based multi-agent collaboration workflow for software and product projects.
 Designed for async coordination between AI agents (Claude, Codex, Gemini, or others) and a human decision-maker, across exploration, proposal, and implementation stages.
 

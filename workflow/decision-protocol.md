@@ -69,8 +69,8 @@ progress continues. Missing or malformed results are not successful completion.
 Two rules that cannot both be true. Example: "field X is required" and "entity Y may exist without field X."
 
 Resolution order:
-1. Check if one source is more recent — the newer decision usually supersedes
-2. Check if one source is more authoritative (spec > exploration > collaboration note)
+1. Apply the authority rules in `workflow/rule-precedence.md`; accepted specs and decisions govern over exploration and collaboration notes
+2. Between sources of the same authority, check for an explicit superseding decision; recency alone does not give a lower-authority source permission to change an accepted requirement
 3. If still unclear, escalate to the user as a user-escalated decision
 
 ### Indirect conflict

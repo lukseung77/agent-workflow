@@ -1,140 +1,42 @@
-# Consultant Orientation: Canonical Repository Review
+# Consultant Orientation
 
-## Purpose And Authority
+This is the canonical upstream repository. Codex maintains project files under
+`workflow/master-governance.md`; consultants write only their own collaboration
+file. All paths below are relative to this repository, not a downstream project.
 
-This is the reusable upstream workflow, not a downstream application project.
-The human has requested assessment and refactoring to reduce context load and
-help agents find and follow all applicable rules. Consultants provide independent
-review; Codex is the master-agent and owns repository changes, reconciliation, suggestion
-status, and GitHub actions. The human decides suggestion acceptance and stage
-transitions under the applicable workflow rules.
+## Start And Select Work
 
-`workflow/master-governance.md` governs upstream authority, including this
-project's narrow consultant communication exception. Non-Codex agents may create
-and update only their own `docs/collaboration-[agent].md`. They must not
-create or modify other project files, including another agent's
-collaboration file. Reference
-registry updates and generated files are not exceptions here.
+1. Read `workflow/master-governance.md`, then the normal startup and task routing
+   in `workflow/rule-precedence.md`. Skip absent downstream bootstrap/local files.
+2. Find an addressed request with `python3 scripts/collab_queue.py <agent>` and
+   read it with `--id ITEM-ID`. Scope, lens, and reviewed content come from that
+   request, not from an old refactor description or this onboarding document.
+3. An explicit human assessment request is also valid. Record its origin, date,
+   scope, and exact user direction in your own file, then return findings there.
+   Without either request, prepare your file if needed, ask Codex, and wait.
+4. Read the collaboration schema and review cycle, then only the topic rules and
+   source files the selected scope needs.
 
-## File Location And Creation
+Use your own stable lowercase agent name in `docs/collaboration-<agent>.md`.
+Agent-file mappings and the upstream write exception are defined in master
+governance. Create the file if absent, preserve existing content, and continue
+its ID sequence. Do not edit Codex's request or another consultant's file.
 
-The collaboration directory is:
-`/Volumes/Data/troy/Documents/_lukseung/__Projects/agent-workflow/docs/`
-and already exists. Use this project's directory, not a downstream project's
-`docs/` directory.
+## Review And Respond
 
-- Claude: `docs/collaboration-claude.md`
-- Gemini / `agy`: `docs/collaboration-gemini.md` (use `gemini` in message fields)
-- Codex: `docs/collaboration-codex.md` (only Codex may write this file)
-- Other invited agents: `docs/collaboration-<agent>.md`, using their own stable
-  lowercase kebab-case agent name, never another agent's identity.
+Identify HEAD and the actual reviewed working-tree content, including relevant
+untracked files; a commit hash alone does not identify uncommitted changes.
+Read-only Git inspection and focused searches are normally sufficient. Follow
+the assigned scope for checks; report any checks not performed. Do not generate
+project files outside your own collaboration file or install dependencies.
 
-If your file is absent, create it with a heading such as
-`# Claude Collaboration`, then add messages using
-`workflow/collaboration-format.md`. If it exists, preserve its contents and
-continue its message ID sequence. Creation of your own file does not require
-separate approval or an open review request. Multiple sessions using the same
-agent identity share that file and must avoid overwriting each other's work.
+Use the format in `workflow/review-cycle.md` and reference the request ID. For a
+human-origin request, quote that instruction and identify it as the origin.
+Provide exact locations, concrete triggers, evidence and uncertainty, impact,
+and the smallest supported correction. Distinguish defects from optional
+improvements; no minimum finding count is required. Review independently before
+reading other consultants' conclusions when the request calls for independence.
 
-## Consultation Channel
-
-1. Read `docs/collaboration-codex.md` for an open `review-request` addressed to
-   your agent name or `all`. Use the generated queue if useful.
-2. Take scope, lens, and file references from that request. Invitations and
-   chat messages are not consultation requests; Codex records requests in its
-   collaboration file before consultants act.
-3. Post questions, gaps, and findings only in your own
-   collaboration file, addressed to `codex` and referencing the request ID.
-   Follow `workflow/collaboration-format.md` and `workflow/review-cycle.md`.
-4. Mark your completed review response `done`. Do not modify Codex's request;
-   Codex handles consolidation and closes it.
-5. Receive follow-up requests through the same channel. Chat may acknowledge
-   completion with a file/item reference, but must not substitute for the
-   consultation record.
-
-If Codex's request file is missing or no addressed open request exists, you may
-prepare your own file and post a question to `codex` there, then wait. Do not
-create Codex's file or start an unrequested review.
-
-## Focused Reading Order
-
-1. Read `workflow/master-governance.md` for upstream authority.
-2. Read `workflow/rule-precedence.md` and `workflow/agent-workflow.md` for startup
-   and task routing. Here the workflow root is this repository itself.
-3. Read `workflow/role-boundaries.md`, the collaboration format and review cycle,
-   then the addressed request and its assigned lens.
-4. Inspect `git status --short`, `git diff --stat`, and the relevant diff. Read
-   relevant untracked files explicitly: `git diff` does not include them.
-5. Follow task-routing links only for the scenario being checked. For template
-   consistency, compare the relevant template with its canonical topic file.
-
-Downstream `agent-workflow-local/` and collaboration bootstrap files may be
-absent here. Do not create them or mistake their absence for a downstream setup
-failure. Do not load legacy history or every rule file by default.
-
-## Current Review Context
-
-The working tree contains changes from several approved requests. Confirm the
-actual state with Git; the list below is orientation, not a fixed revision.
-
-- Task-based routing in `workflow/rule-precedence.md` and a shorter operating
-  model in `workflow/agent-workflow.md`.
-- Placement details moved to `workflow/local-project-files.md`.
-- Defined-term rules extracted to `workflow/defined-terms.md`, with pointers
-  from collaboration guidance and templates.
-- Startup and setup templates adjusted for focused reads and workflow-root paths.
-- Capability mapping in `workflow/role-boundaries.md` and optional skill
-  opportunity guidance in `docs/skill-recommendations.md`.
-- Earlier governance and phase-role checks remain applicable.
-
-Use `docs/change-log.md` for change intent and rollback orientation. Use
-`user-agent-suggestions/status.md` only when suggestion history is relevant.
-Submitted suggestions are proposals, not rules; this review does not accept,
-deny, or change their status. A separate human-triggered evaluation follows
-`workflow/master-governance.md`.
-
-## Review Method
-
-Walk representative tasks through their entry points and linked rules. For
-each problem, show where an agent would encounter it, what it could do wrong,
-and the smallest correction. Assess whether reduced reading retains a reliable
-route to required rules. Distinguish measured context reduction from estimates;
-word counts alone do not prove agents will remember or obey rules.
-
-Read-only Git inspection and file searches are sufficient for this assignment.
-The master-agent owns checks that create caches or generated files. Apart from
-your assigned collaboration file, do not alter the working tree; do not reset,
-stash, clean, or checkout. Record the
-HEAD hash and relevant working-tree state in the report so findings can be
-reconciled if files change during review.
-
-If an OpenSpec phase changes during the assignment, re-check your consultant
-role and assigned lens before continuing. The master/lead gives the human the
-brief role reminder; reviewing does not confer transition authority.
-
-## Response Format
-
-Write a `review` item in your assigned collaboration file, addressed to `codex`,
-with the original request ID in `refs`. Begin its body with your assigned lens,
-HEAD hash, and files or scenarios reviewed. For `formal: true` requests, use the
-canonical finding table in `workflow/collaboration-format.md`.
-For each finding, provide:
-
-- Local finding ID, such as `A-01` or `B-01`.
-- Exact file and line reference; include both locations for a conflict.
-- Observed problem and a concrete trigger or example.
-- Impact and whether it blocks the stated refactor objective.
-- Suggested minimal correction, with compatibility or maintenance tradeoffs.
-
-Order findings by impact. These are consultant findings; the master-agent
-assigns consolidated IDs, final priorities, and dispositions. End with optional
-improvements, uncertainties, and checks not performed. Explicitly say when no
-findings were found. No minimum finding count is required.
-
-## Reconciliation
-
-The master-agent verifies findings against the current files, consolidates
-duplicates, records adoption or rejection with reasons, and applies changes
-within the human-authorized scope. Recommendations needing a new human decision
-remain proposals until that decision. Consultants do not implement their own
-findings in this canonical repository.
+Mark the completed response `done`. Codex reconciles findings, records
+implementation and deferred decisions, and closes its own request. Discussion,
+reviewer agreement, or elapsed time grants no additional write or stage authority.

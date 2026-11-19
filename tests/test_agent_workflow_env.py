@@ -1,9 +1,14 @@
 from __future__ import annotations
 
 import sys
+import contextlib
+import io
+import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -181,6 +186,103 @@ class AgentWorkflowEnvironmentTest(unittest.TestCase):
             which=installed_tools("graphify", "rtk"),
         )
         self.assertTrue(any(command[:2] == ["rtk", "init"] for command in host_runner.commands))
+
+    def test_doctor_reports_only_requested_agents_and_writes_nothing(self) -> None:
+        report = env.doctor(self.root, ["codex"], runner=FakeRunner(), which=installed_tools("codex"))
+        self.assertEqual(report.agents, {"codex": True})
+        self.assertEqual(list(self.root.iterdir()), [])
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            env.print_report(report)
+        self.assertIn("not checked", output.getvalue())
+        self.assertIn("Shared adapter", output.getvalue())
+        self.assertIn("unknown (not inspected)", output.getvalue())
+
+    def test_cli_doctor_json_and_invalid_agent(self) -> None:
+        output, errors = io.StringIO(), io.StringIO()
+        with patch.object(env.shutil, "which", installed_tools()), contextlib.redirect_stdout(output):
+            code = env.main(["doctor", "--root", str(self.root), "--agents", "codex", "--json"])
+        self.assertEqual(code, 0)
+        self.assertEqual(json.loads(output.getvalue())["agents"], {"codex": False})
+        with contextlib.redirect_stderr(errors):
+            code = env.main(["init", "--root", str(self.root), "--agents", "cluade"])
+        self.assertEqual(code, 2)
+        self.assertIn("unknown agent", errors.getvalue())
+        self.assertFalse((self.root / "AGENTS.md").exists())
+
+    def test_pipx_fallback_uses_requested_version_and_rtk_revision(self) -> None:
+        runner = FakeRunner()
+        env.initialize(
+            self.root, "../agent-workflow", [], install_missing=True,
+            runner=runner, which=installed_tools("pipx", "cargo"),
+            graphify_version="1.2.3", rtk_revision="abc123",
+        )
+        self.assertIn(["pipx", "install", "graphifyy==1.2.3"], runner.commands)
+        self.assertIn(["cargo", "install", "--git", env.RTK_REPO, "--rev", "abc123"], runner.commands)
+
+    def test_cli_init_dispatches_install_and_version_options(self) -> None:
+        with patch.object(env, "initialize", return_value=env.EnvironmentReport()) as initialize:
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = env.main([
+                    "init", "--root", str(self.root), "--agents", "gemini",
+                    "--install-missing", "--configure-hosts", "--json",
+                    "--graphify-version", "1.2.3", "--rtk-revision", "abc123",
+                ])
+        self.assertEqual(code, 0)
+        self.assertEqual(initialize.call_args.args[2], ["agy"])
+        self.assertTrue(initialize.call_args.kwargs["install_missing"])
+        self.assertTrue(initialize.call_args.kwargs["configure_hosts"])
+        self.assertEqual(initialize.call_args.kwargs["graphify_version"], "1.2.3")
+        self.assertEqual(initialize.call_args.kwargs["rtk_revision"], "abc123")
+
+    def test_local_rtk_file_does_not_suppress_requested_global_configuration(self) -> None:
+        (self.root / "RTK.md").write_text("Local instructions only\n", encoding="utf-8")
+        runner = FakeRunner()
+        env.initialize(self.root, "../agent-workflow", ["codex"], configure_hosts=True, runner=runner, which=installed_tools("rtk"))
+        self.assertIn(["rtk", "init", "--global", "--codex"], runner.commands)
+
+    def test_optional_command_exceptions_do_not_abort_other_tools(self) -> None:
+        for failure in (FileNotFoundError("missing"), subprocess.TimeoutExpired("graphify", 300)):
+            with self.subTest(failure=type(failure).__name__):
+                runner = FakeRunner()
+                original = runner.run
+
+                def run(command, cwd):
+                    if command[0] == "graphify":
+                        raise failure
+                    return original(command, cwd)
+
+                runner.run = run
+                report = env.initialize(self.root, "../agent-workflow", [], runner=runner, which=installed_tools("graphify", "rtk"))
+                self.assertFalse(report.tools["graphify"])
+                self.assertTrue(report.tools["rtk"])
+                self.assertTrue(any("Graphify version check failed" in warning for warning in report.warnings))
+
+    def test_adapter_updates_pointer_and_preserves_surrounding_content(self) -> None:
+        path = self.root / "AGENTS.md"
+        path.write_text("# Existing\n", encoding="utf-8")
+        env.ensure_repository_adapter(self.root, "../old-workflow")
+        with path.open("a", encoding="utf-8") as output:
+            output.write("\nKeep this footer.\n")
+        self.assertTrue(env.ensure_repository_adapter(self.root, "./agent-workflow"))
+        content = path.read_text(encoding="utf-8")
+        self.assertIn("# Existing\n", content)
+        self.assertIn("Keep this footer.", content)
+        self.assertIn("./agent-workflow/workflow/agent-tooling.md", content)
+        self.assertNotIn("../old-workflow", content)
+        self.assertFalse(env.ensure_repository_adapter(self.root, "./agent-workflow"))
+
+    def test_malformed_managed_block_is_rejected_without_rewriting(self) -> None:
+        path = self.root / "AGENTS.md"
+        for content in (env.ADAPTER_START, env.ADAPTER_END + "\n" + env.ADAPTER_START):
+            with self.subTest(content=content):
+                path.write_text(content, encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    env.ensure_repository_adapter(self.root, "../agent-workflow")
+                self.assertEqual(path.read_text(encoding="utf-8"), content)
+                report = env.doctor(self.root, [], runner=FakeRunner(), which=installed_tools())
+                self.assertFalse(report.tools["ponytail"])
+                self.assertTrue(report.warnings)
 
 
 if __name__ == "__main__":

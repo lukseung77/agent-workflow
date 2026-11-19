@@ -24,20 +24,24 @@ Graphify must not replace source inspection. Agents must inspect the actual sour
 
 RTK must not hide information needed to diagnose a failure. Rerun the command without compression, use a more detailed RTK mode, or inspect the underlying log when the summary is insufficient.
 
-## Phase Routing
+## Stage And Activity Routing
 
 Load this policy when the task-routing table calls for tooling, then apply only the relevant capability:
 
-| Workflow activity | Ponytail | Graphify | RTK |
+| Canonical stage / activity | Ponytail | Graphify | RTK |
 |---|---|---|---|
 | Exploration | Optional | High: map structure and impact before broad scanning | High for verbose discovery commands |
 | Proposal | Optional | High: identify affected components | Normal |
-| Spec | Low | Useful for terminology and boundaries | Normal |
-| Design | Useful: prefer existing capabilities | High: inspect relationships and blast radius | Normal |
+| Proposal: specification | Low | Useful for terminology and boundaries | Normal |
+| Proposal: design | Useful: prefer existing capabilities | High: inspect relationships and blast radius | Normal |
 | Implementation | High | High, followed by source inspection | High |
 | Validation and review | Medium: flag needless complexity without failing correct code | High: check affected paths and references | High, with diagnostic fallback |
 
-The three-stage workflow maps these activities as follows: Exploration and Proposal use Graphify-led discovery; Design uses Graphify plus focused Ponytail review; Implementation activates Ponytail and RTK strongly; validation and review use all three with correctness and diagnosability taking precedence.
+The canonical stages remain Exploration, Proposal, and Implementation under
+`workflow/stages.md`. Specification, design, validation, and review are activities,
+not additional stages; they require no separate stage-transition concurrence.
+Design refinement during Implementation stays within accepted scope or follows
+the existing mini-proposal rule. Validation and review can occur in any stage.
 
 ## Repository Lifecycle
 
@@ -47,7 +51,13 @@ For a new project, the environment command follows this order:
 detect -> install only with explicit approval -> configure -> initialize -> verify
 ```
 
-Initialization is idempotent. It preserves existing instruction files and merges only a marked adapter block. It installs project-scoped Graphify adapters when the CLI is available, builds the initial graph, and uses `graphify update .` for an existing graph rather than rebuilding from scratch. A commit hook may be enabled when the user asks for automatic refresh; otherwise refresh after substantial structural changes with `graphify update .`.
+Initialization is idempotent. It preserves existing instruction files and creates
+or refreshes only a correctly marked adapter block. Malformed or duplicate markers
+require repair before initialization writes the instruction file. It installs
+project-scoped Graphify adapters when the CLI is available, builds the initial
+graph, and uses `graphify update .` for an existing graph. A commit hook may be
+enabled when the user asks for automatic refresh; otherwise refresh after
+substantial structural changes with `graphify update .`.
 
 Native agent integrations are preferred where upstream supports them. The shared adapter remains the fallback for agents that only consume repository instructions. Missing tooling produces a warning and does not stop normal development:
 

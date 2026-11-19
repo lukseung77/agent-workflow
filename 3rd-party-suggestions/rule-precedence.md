@@ -1,5 +1,7 @@
 # Rule Precedence
 
+> External proposal, not active rules. Use `workflow/rule-precedence.md`.
+
 This file defines where workflow rules live, what order to read them in, and how conflicts are resolved.
 
 ## Layout

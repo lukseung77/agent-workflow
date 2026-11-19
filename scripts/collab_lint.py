@@ -9,7 +9,8 @@ import re
 from datetime import date, datetime
 from pathlib import Path
 
-from collab_common import Item, all_items
+from collab_common import Item, all_items, collaboration_files, normalize_agent, visible_lines
+from collab_common import refs_contain_id as _refs_contain_id
 
 
 TYPES = {"status", "question", "gap", "review-request", "review", "suggestion", "response"}
@@ -19,13 +20,6 @@ REQUIRED_FIELDS = {"date", "from", "to", "type", "status"}
 STATE_FIELDS = {"updated", "current_stage", "current_artifact", "next_lead_action", "active_blockers"}
 DEFAULT_STAGES = {"Setup", "Exploration", "Proposal", "Implementation", "Complete"}
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-
-
-def _refs_contain_id(refs_value: str, item_id: str) -> bool:
-    """Return True if item_id appears (bare or bracketed) in a refs field value."""
-    parts = re.split(r"[,|]", refs_value)
-    tokens = {re.sub(r"[\[\]\s]", "", p).lower() for p in parts}
-    return item_id.lower() in tokens
 
 
 def check_formal_completion(
@@ -45,6 +39,9 @@ def check_formal_completion(
         location = f"{req.source.relative_to(root)}:{req.start_line}"
         req_id = req.item_id
 
+        if req.status == "superseded":
+            continue
+
         if req.status in ("open", "active"):
             errors.append(
                 f"{location}: formal review-request {req_id} is not done"
@@ -56,6 +53,7 @@ def check_formal_completion(
                 item for item in items
                 if item.fields.get("type") == "status"
                 and item.status == "done"
+                and item.sender == req.sender
                 and _refs_contain_id(item.fields.get("refs", ""), req_id)
             ),
             None,
@@ -82,7 +80,7 @@ def check_formal_completion(
 
 def parse_state(path: Path) -> dict[str, str]:
     values: dict[str, str] = {}
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for _, line in visible_lines(path.read_text(encoding="utf-8").splitlines()):
         match = re.match(r"^- `([^`]+)`:\s*(.*)$", line)
         if match:
             values[match.group(1)] = match.group(2).strip()
@@ -95,6 +93,12 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--verbose-warnings", action="store_true")
     parser.add_argument("--strict-state", action="store_true")
+    parser.add_argument(
+        "--allowed-agent",
+        action="append",
+        default=[],
+        help="Additional sender/recipient name; may be repeated",
+    )
     parser.add_argument(
         "--check-completion",
         action="store_true",
@@ -113,6 +117,10 @@ def main() -> int:
     seen: dict[str, str] = {}
 
     items = all_items(root)
+    allowed_agents = {"all", "user"} | {
+        normalize_agent(path.stem.removeprefix("collaboration-"))
+        for path in collaboration_files(root)
+    } | {normalize_agent(name) for name in args.allowed_agent}
     for item in items:
         location = f"{item.source.relative_to(root)}:{item.start_line}"
         key = item.item_id.lower()
@@ -120,9 +128,17 @@ def main() -> int:
             errors.append(f"{location}: duplicate ID {item.item_id}; first seen at {seen[key]}")
         seen[key] = location
 
-        missing = REQUIRED_FIELDS - item.fields.keys()
+        missing = {name for name in REQUIRED_FIELDS if not item.fields.get(name, "").strip()}
         if missing:
             errors.append(f"{location}: missing fields: {', '.join(sorted(missing))}")
+
+        for name in sorted(({item.sender} | item.recipients) - allowed_agents - {""}):
+            warnings.append(f"{location}: unknown agent '{name}'; check spelling or pass --allowed-agent")
+        if item.sender == "all":
+            errors.append(f"{location}: from must name a sender, not all")
+        formal = item.fields.get("formal", "").strip().lower()
+        if formal and formal not in {"true", "false"}:
+            errors.append(f"{location}: formal must be true or false")
 
         item_type = item.fields.get("type", "")
         if item_type and item_type not in TYPES:
@@ -156,7 +172,7 @@ def main() -> int:
                 errors.append(f"{location}: invalid ISO 8601 created_at")
 
     if args.check_completion:
-        check_formal_completion(items, root, errors, warnings)
+        check_formal_completion(all_items(root, include_archives=True), root, errors, warnings)
 
     state_path = root / "agent-workflow-local" / "current-state.md"
     if args.strict_state and state_path.exists():
@@ -165,6 +181,9 @@ def main() -> int:
             errors.append(
                 f"{state_path.relative_to(root)}: expected exactly: {', '.join(sorted(STATE_FIELDS))}"
             )
+        empty = sorted(name for name in STATE_FIELDS if name in state and not state[name])
+        if empty:
+            errors.append(f"{state_path.relative_to(root)}: empty fields: {', '.join(empty)}")
         updated = state.get("updated", "")
         if updated:
             if not DATE_RE.fullmatch(updated):
@@ -184,7 +203,7 @@ def main() -> int:
         if artifact and artifact.lower() != "none":
             artifact_path = Path(artifact)
             candidate = root / artifact_path
-            if artifact_path.is_absolute() or not candidate.exists():
+            if artifact_path.is_absolute() or not candidate.resolve().is_relative_to(root) or not candidate.exists():
                 errors.append(
                     f"{state_path.relative_to(root)}: current_artifact must be an existing project-relative path or None"
                 )

@@ -1,38 +1,12 @@
 # Agent Workflow - Gemini
 
-Shared Gemini defaults across projects.
+Read the role, responsibility, and review lens in
+`agent-workflow-local/agent-workflow-gemini.md` and
+`agent-workflow-local/project-facts.md` when present.
+Shared authority and operating rules follow `workflow/rule-precedence.md`.
 
-Project-specific Gemini rules should live in `./agent-workflow-local/agent-workflow-gemini.md`.
+## Host Guidance
 
-## Alias
-
-- `agy` means Gemini. Treat user requests for `agy` as requests for this Gemini consultant role.
-
-## Default Role
-
-- Strong at comparative analysis, gap finding, and alternative framing.
-- Suitable default consultant unless the user explicitly assigns a lead role.
-
-## Shared Expectations
-
-- Surface contradictions, duplication risk, and missing decisions.
-- Use collaboration files for recommendations, gaps, and review notes.
-- Suggest focused next questions instead of broad restatements.
-- Keep recommendations tied to the correct topic files.
-- After significant source-of-truth changes, Gemini is well-suited to run a focused consistency check across affected files and report only actionable contradictions, omissions, or verification risks.
-- Structure review feedback with: issue, why it matters, affected file or topic, finding type, and proposed next question when useful.
-- Use Gemini CLI MCP servers and agent skills when they provide focused external context or reusable workflow guidance.
-- Use the `multi-agent-coworking` skill when a project needs structured cross-agent collaboration, handoff, or feedback reconciliation.
-- Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading, even if Gemini can inspect the original file directly; check `agent-workflow-local/references/reference.md` first.
-- Link local skill directories when iterating on shared coworking skills instead of copying large prompt blocks into project files.
-- Keep `GEMINI.md` as a short bootstrap with project-specific overrides; leave generic workflow in `<workflow-root>`.
-- Prefer summarizing comparison findings over pasting full alternative analyses into collaboration files.
-- `agy` uses the Gemini adapter. When available, use Graphify for repository structure, apply the shared Ponytail rules while implementing, and use RTK's Gemini or Antigravity adapter for verbose commands. Treat missing integrations as warnings and continue with normal inspection.
-
-## Avoid
-
-- scattering new rule text across multiple unrelated files
-- performing GitHub actions or source-of-truth updates unless the user explicitly assigns that role in the project
-- treating consultant analysis as final source-of-truth content
-- assuming another agent has already seen a file change without explicit user-triggered handoff
-- using MCP or skills as an excuse to bypass local source-of-truth files
+- Keep `GEMINI.md` as a short bootstrap. Link local skill directories when iterating on shared skills instead of copying prompt blocks.
+- Use configured MCP servers and skills when they supply relevant context; report compact findings with source references.
+- Follow `workflow/agent-tooling.md` for Gemini/agy and Antigravity integrations, and `workflow/markitdown.md` for bulky references when relevant.

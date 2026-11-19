@@ -4,6 +4,33 @@ The master-agent records canonical `agent-workflow` updates here when they are n
 
 Keep entries compact. Use this file for rollback orientation and downstream update notes, not detailed design discussion.
 
+## 2026-11-19 - Critical Review And CL-006 Reconciliation
+
+- `request`: human approved evidence-based critique guidance and asked to check and incorporate Claude's latest suggestions
+- `summary`: added proportionate critical-review methods; corrected rule authority and setup contradictions; reduced startup duplication; split suggestion intake; preserved compatibility pointers; added historical item/reference lookup and a 20 KB archive threshold
+- `decisions`: `docs/collaboration-codex.md` CX-010 owns all CL-006 dispositions, measured context changes, pending policy decisions, and verification outcomes
+- `downstream note`: default active queues and existing override precedence remain compatible; setup installs actual host entry files, keeps roles in project facts, and uses canonical message examples; the compact reference registry retains both hashes
+- `rollback`: selectively restore from `/private/tmp/agent-workflow-before-cl006-0tkik0ww.tgz`, preserving later edits and consultant input; `workflow/suggestion-intake.md` is the new routed procedure file
+
+## 2026-11-19 - Prompt Simplification
+
+- `request`: human approved applying the unnecessary-prompt assessment
+- `summary`: shortened agent templates and shared agent prompts to assignment pointers and host guidance; removed model-strength prescriptions, duplicated message schemas/routing, and duplicate stage/constraint fields; made interview progress counts optional; narrowed joining-project reads to affected files and dependencies; made environment reporting conditional on impact; directed consultants to report cleanup within their write authority
+- `changed`: `templates/{CODEX,CLAUDE,GEMINI,agent-common,project-init,new-project-setup}.md`, `templates/docs/collaboration-format.md`, `workflow/agent-workflow-{codex,claude,gemini}.md`, `workflow/question-model.md`
+- `downstream note`: roles and review lenses come from project facts and per-agent assignments; stage and constraints come from existing local state/rules; use canonical collaboration examples rather than copying schemas; defined-term formatting, stage approval, ownership, and review-evidence rules remain in force
+- `validation`: collaboration lint passed with zero errors/warnings; diff whitespace check passed; searched active prompts for the removed mandatory counts, model-strength sections, duplicated stage/constraint sections, and unrestricted cleanup instructions
+- `rollback`: restore the three agent templates, three shared agent prompts, common template, and project-init from baseline `04ea42048d38b50d166b03fad8fd609fc368ba6b`; reverse only prompt-simplification hunks in the collaboration template, setup checklist, and question model to preserve the preceding integrity fixes
+
+## 2026-11-19 - Evaluation And Workflow Integrity Refactor
+
+- `request`: human requested incorporating Claude and Codex's evaluations, a grill-me-style assumption review, and a whole-project refactor
+- `summary`: hardened shared Markdown parsing and archive boundaries, corrected queue chronology and aliases, preserved archived review evidence, improved recipient/state checks and optional-tool diagnostics, refreshed managed adapters, isolated optional command failures, and added installation version selectors
+- `changed`: collaboration/environment scripts and regression tests; canonical collaboration, review, context, question, and tooling rules; setup templates; README and operational docs; external-proposal labels; `.gitignore`; `scripts/validate.py`; `.github/workflows/validate.yml`; `openspec/changes/harden-workflow-integrity/`
+- `decisions`: `docs/project-evaluation.md` records every CL-005 disposition, eight independent findings, the question-driven assumption review, and remaining limitations; `docs/collaboration-codex.md` CX-008 records completion
+- `validation`: 39 tests passed; collaboration lint reported zero errors/warnings; both OpenSpec changes validated; diff whitespace check passed; CI is configured but has not run remotely
+- `downstream note`: commands and paths remain stable; keep metadata in the initial contiguous field block and use level 4–6 item subheadings; `tools.ponytail` retains its shared-adapter meaning, while text diagnostics identify unrequested agents and unknown native plugin state; package version selectors apply only to missing tools
+- `rollback`: restore only these maintenance changes from baseline `04ea42048d38b50d166b03fad8fd609fc368ba6b` and remove newly added validation/change-record files, preserving consultant input and unrelated user edits; no host configuration, installation, merge, or publication occurred
+
 ## 2026-09-18 - Standard Optional Agent Tooling
 
 - `request`: human-requested Ponytail, Graphify, and RTK integration

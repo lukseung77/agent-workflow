@@ -51,53 +51,39 @@ Read these shared workflow files before continuing:
 
 Follow the canonical read order after the project bootstrap exists. Read topic files only when the current setup step requires them.
 
-Read these setup-oriented files as needed:
-
-```
-<workflow-root>/README.md
-<workflow-root>/workflow/ai-coworking-guide.md
-<workflow-root>/workflow/markitdown.md
-<workflow-root>/workflow/agent-tooling.md
-<workflow-root>/templates/project-init.md
-<workflow-root>/templates/current-state.md
-<workflow-root>/templates/reference.md
-<workflow-root>/templates/docs/collaboration-format.md
-<workflow-root>/templates/docs/collaboration-agent.md
-<workflow-root>/templates/docs/collaboration-index-agent.md
-<workflow-root>/skills/multi-agent-coworking/SKILL.md
-```
-
-Do not start the user interview until you understand the workflow.
+Use task routing for additional rules when a setup step needs them.
 
 ---
 
 ## Step 2: Interview The User — Project Purpose
 
-Ask these questions **one at a time**. Wait for each answer before asking the next. Do not ask multiple questions in one message. End each question with the estimated questions left for the setup interview.
+Ask unanswered questions **one at a time**, following
+`workflow/question-model.md`. Read supplied briefs first and skip facts already
+established. A remaining-question estimate is optional when useful.
 
-| # | Question | Questions left after asking |
-|---|----------|----------------------------|
-| Q1 | What is the project title or name? | 5 |
-| Q2 | What problem does this project solve, or what is its main goal? | 4 |
-| Q3 | Who is the primary user? | 3 |
-| Q4 | What are the 2–3 core outcomes you want from this project? | 2 |
+| # | Question |
+|---|----------|
+| Q1 | What is the project title or name? |
+| Q2 | What problem does this project solve, or what is its main goal? |
+| Q3 | Who is the primary user? |
+| Q4 | What are the 2–3 core outcomes you want from this project? |
 
-Record each answer. These go directly into the initial `openspec/explorations/product-scope.md` after setup.
+Record each answer. These go directly into the initial `product-scope.md` in checklist section 6.
 
 ---
 
 ## Step 3: Interview The User — Tools And Platform
 
-Continue one at a time and keep ending each question with the estimated questions left for the setup interview:
+Continue with any unanswered platform and tool questions:
 
-| # | Question | Questions left after asking |
-|---|----------|----------------------------|
-| Q5 | What platform or environment is this for? (e.g. Android, iOS, web app, desktop, API, CLI) | 1 |
-| Q6 | Are there any tools, languages, or frameworks already decided? ("None yet" is a valid answer.) | 0 |
+| # | Question |
+|---|----------|
+| Q5 | What platform or environment is this for? (e.g. Android, iOS, web app, desktop, API, CLI) |
+| Q6 | Are there any tools, languages, or frameworks already decided? ("None yet" is a valid answer.) |
 
 **Scope boundary:** only ask about platform and already-decided tools. Do not ask about architecture, libraries, database choices, or implementation approach — those are deferred to the proposal stage.
 
-Record the answers. These go into the initial `product-scope.md` under a `Tools And Platform` section.
+Record the answers. These go into the initial scope document under a `Tools And Platform` section.
 
 ---
 
@@ -138,13 +124,13 @@ exist so the initial Graphify index includes the initialized project structure.
 Follow `templates/new-project-setup.md` to complete the full project structure:
 
 - Create `docs/` and all collaboration files
-- Create `agent-workflow-local/` for project facts, local rules, project-local shared overrides, per-agent rules, and current state
+- Create `agent-workflow-local/` for project facts, local rules, per-agent assignments, and current state
 - Create `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/`
 - Verify generated collaboration queues, or create active-only compatibility indexes when scripts cannot run
-- Create `openspec/explorations/` as the source-of-truth directory
+- Use the source root recorded in project facts; `openspec/explorations/` is the default, not a required migration for an existing project
 - Record stable paths, roles, stage tracking, and active source-of-truth inventory in `agent-workflow-local/project-facts.md`
 - Record only project-specific workflow rules in `agent-workflow-local/rules.md`
-- Create `openspec/explorations/product-scope.md` using the Q1–Q6 answers:
+- In checklist section 6, create `product-scope.md` under that source root using the Q1–Q6 answers and this initial template:
 
 ```md
 # Product Scope
@@ -185,21 +171,8 @@ Success criteria for this step:
 - The copied templates have been filled in with real agent names, roles, and paths.
 - A new agent could join the project and orient itself without asking setup questions.
 
-After the checklist creates the workflow files, run the safe environment
-bootstrap from the project root:
-
-```sh
-python3 <workflow-root>/scripts/agent_workflow_env.py init \
-  --root . --workflow-root <workflow-root> --agents auto
-```
-
-This detects available agents and tools, creates a thin `AGENTS.md` pointer
-without overwriting existing instructions, configures available project-scoped
-adapters, initializes the Graphify index, and verifies the environment. It does
-not install packages or change agent-wide hooks by default. Only after the user
-explicitly approves those changes, rerun with
-`--install-missing --configure-hosts`. Missing optional tools are warnings, not
-setup blockers.
+Optional tool initialization is handled once in the checklist using
+`docs/agent-tooling.md`; use its commands, opt-ins, and diagnostic definitions.
 
 ---
 
@@ -210,9 +183,9 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 1. Log the transition in your collaboration file as a `status` item: "Setup complete — entering Exploration stage"
 2. Begin the domain model exploration with the first question:
 
-   > "Let's start mapping out the domain. What are the main things this project works with — the core objects or concepts a user creates, manages, or interacts with? (For example, in a ride-planning app the core objects are routes, ride plans, and recorded rides.) Estimated questions left for this exploration session: 4."
+   > "What are the main things a user creates, manages, or interacts with in this project?"
 
-3. Ask follow-up questions **one at a time**, recording confirmed answers directly into `openspec/explorations/domain-model.md` as you go
+3. Ask follow-up questions **one at a time**, recording confirmed answers directly into `domain-model.md` under the recorded source root as you go
 4. After the domain model is started, move to the next exploration file — ask the user which area to explore next, or suggest the most logical next area based on the answers so far
 
 **Exploration continues until all agents concur the space is proposal-ready and the user has answered all blocking questions. See `workflow/stages.md` for gate criteria.**
@@ -221,8 +194,7 @@ After setup is confirmed complete (all checklist items in `new-project-setup.md`
 
 ## Notes
 
-- Never ask more than one question per message throughout this entire flow
-- End each one-question-at-a-time interview question with the estimated number of questions left for the current stage or session. If uncertain, label the count as an estimate.
+- Use `workflow/question-model.md` for interview pacing and optional progress estimates.
 - If the user provides existing PDFs, office files, web exports, or archives, track them in `agent-workflow-local/references/reference.md`, convert them with MarkItDown or another reliable extractor, and summarize them before writing source-of-truth files
 - If the user says "I'll handle the GitHub repo myself," skip remote creation and use their local repository or supplied URL when available
 - If the user already has a brief or existing documents, read them before Step 2 and skip any questions already answered

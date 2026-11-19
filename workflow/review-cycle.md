@@ -19,27 +19,6 @@ Consultants may review in either order or in parallel unless the request states
 a dependency. Agent names and reviewer count come from project assignments and
 the request; this protocol does not require a fixed Codex/Claude/Gemini order.
 
-## Requests And Activation
-
-- A collaboration file records what work is requested. Writing or updating it
-  does not launch, wake, notify, or resume another agent by itself.
-- By default, the human starts, resumes, or messages the relevant session to
-  read its queue. A fresh session is not required for each review step.
-- Optional orchestration may activate sessions only when the user explicitly
-  asks or project-local rules allow it, as defined in `workflow/agent-workflow.md`.
-  This protocol does not itself authorize agent invocation or install a watcher.
-- An already-running lead may continue consolidation when responses are
-  available; it need not be restarted. In the manual workflow, the human can
-  message or resume it to check the files.
-- Activation messages may point to a request ID, but requests, findings, and
-  consolidation remain in collaboration files. Human approval decisions remain
-  human decisions; agents record them under the applicable decision rules.
-- Activation does not expand write authority, waive review completion gates, or
-  confirm a stage transition. For this canonical repository, also follow
-  `workflow/master-governance.md`.
-
----
-
 ## Step 1: Lead Posts Review Request
 
 After completing any draft, the lead posts a `review-request` in its collaboration file:
@@ -63,6 +42,23 @@ Set `formal: true` only when reviewer accounting, stable finding IDs, deduplicat
 ---
 
 ## Step 2: Consultants Self-Direct
+
+### Optional Critical Review Techniques
+
+Start with the stated goal and check where execution fails it. For consequential
+or uncertain decisions, select a useful technique rather than applying every one:
+
+- Strongest counterargument: identify a credible alternative and when it would be preferable.
+- Pre-mortem: explain plausible failure paths using current evidence or explicit assumptions.
+- Disconfirming evidence: name observations, tests, or metrics that would reject the approach.
+- Socratic critique: use `workflow/question-model.md` for decision-changing questions.
+
+Use the existing finding format: cite the affected claim or file, evidence and
+uncertainty, impact, and a proportionate correction. A hypothetical failure is not
+a demonstrated defect. Do not require a fixed number of flaws, an adversarial
+persona, extra approvals, or an interview before every implementation. State when
+no material issue is found. Keep reviews focused; link supporting detail instead
+of pasting long alternatives. Necessary evidence has no arbitrary length cap.
 
 ### Reviewed Content And Freshness
 
@@ -108,11 +104,10 @@ For `formal: true`, replace free-form findings with the canonical finding table 
 
 ## Step 3: Lead Consolidates
 
-Before consolidation, including on resume, the lead checks its own open review requests and looks for consultant
-`review` items referencing each request ID, even if its recipient queue is empty.
-Completed reviews use `status: done` and are intentionally absent from active
-queues; requests sent to `all` also exclude the sender. An empty recipient queue
-therefore does not establish that there is nothing to consolidate.
+Before consolidation, including on resume, inspect responses to the lead's open
+review requests with `collab_queue.py <agent> --refs REQUEST-ID`, then retrieve
+selected findings with `--id ITEM-ID`. Lookup includes completed and archived
+items; an empty active recipient queue does not establish review completion.
 
 When consultant responses are available and any human wait/proceed direction
 permits consolidation, the lead:
@@ -123,6 +118,12 @@ permits consolidation, the lead:
 4. Integrates adopted feedback into source-of-truth files.
 5. Posts a consolidation summary and marks the `review-request` done only when
    the requested review scope is complete and applicable completion gates pass.
+
+Before closing a consolidation, put any remaining required work in a separate
+`open` or `active` item addressed to its owner and link its ID in the summary.
+The consolidation may finish once review and disposition are complete; unfinished
+implementation must remain discoverable in a generated queue. Optional suggestions
+may stay deferred with a rationale instead of becoming mandatory tasks.
 
 If responses are still missing, record which reviewers remain and keep the
 request open; silence or elapsed time is not a completed review. Integrating
@@ -168,24 +169,18 @@ For `formal: true`, the lead additionally:
 
 A formal review may close only when reviewer accounting is complete, every processed finding maps exactly once, every canonical finding has a disposition, and lint reports zero errors. Informal reviews do not require this heavier gate.
 
----
-
-## Manual Activation Default
-
-| Step | User does |
-|------|-----------|
-| Lead finishes draft | Nothing — lead posts review-request |
-| Activate consultant reviews | Start, resume, or message each requested consultant; either order or parallel unless the request states a dependency |
-| Activate consolidation | Message or resume the lead to check responses if it is not already continuing; optionally identify responders and direct wait/proceed |
-
-The files carry review content, so the user need not relay findings or repeat
-review context between sessions. Authorized orchestration may replace manual
-activation, but does not replace required human decisions or file records.
+`collab_lint.py --check-completion` checks named reviewer responses and a
+consolidation from the requester, including numbered archives as evidence.
+Broadcast reviewer rosters, authorized skips, and exact finding-to-disposition
+mapping still require the lead's explicit check; a passing linter alone does not
+establish full formal completion. Superseded requests require no completion.
 
 ---
 
-## Triggering The Next Cycle
+## Continuing Work
 
-After consolidation, if more drafting is needed, the lead continues and posts another `review-request`. Consultants pick it up when their sessions next check for work under the activation rules above.
-
-After consolidation, if the stage is ready, the lead posts a stage-readiness `status` item. Consultants concur or raise blockers when their sessions next check for work. The user confirms the stage transition under `workflow/stages.md`; publishing the status item alone does not advance the stage.
+Session activation follows `workflow/agent-workflow.md#trigger-model`; posting a
+request never launches an agent or grants new write authority. A running lead
+can consolidate available responses without restarting. For another draft,
+post the next review request; for a stage transition, post readiness and obtain
+concurrence and user confirmation under `workflow/stages.md`.

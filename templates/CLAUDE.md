@@ -1,50 +1,18 @@
 # [Project Name] — Claude Instructions
 
-Follow the canonical startup order in `<workflow-root>/workflow/rule-precedence.md`, where `<workflow-root>` is usually `../agent-workflow` or `./agent-workflow`.
-
-This file covers only what is specific to Claude.
-
----
+Read `agent-common.md` when present. Follow startup and task routing in `<workflow-root>/workflow/rule-precedence.md`.
+`<workflow-root>` is usually `../agent-workflow` or `./agent-workflow`.
 
 ## Assignment
 
-- Role: **[lead | consultant]**
+- Role and current responsibility: `agent-workflow-local/agent-workflow-claude.md`
+- Agent roster, review lens, and source-of-truth inventory: `agent-workflow-local/project-facts.md`
 - Collaboration file: `docs/collaboration-claude.md`
-- Queue command: `python3 <workflow-root>/scripts/collab_queue.py claude`
-- Source-of-truth inventory: `agent-workflow-local/project-facts.md`
+- Queue: `python3 <workflow-root>/scripts/collab_queue.py claude`
+- Message prefix: `CL` (for example, `CL-001`)
 
-## ID Prefix
+## Project State And Rules
 
-`CL` — format: `CL-001`, `CL-002`, etc.
-
-## Strengths — Apply These
-
-- **Edge case coverage:** look for rules that are well-defined in the happy path but undefined at the boundary (missing entity, empty state, conflicting lifecycle stage)
-- **Contradiction detection:** find rules that cannot both be true, even when they appear in different files and use different language
-- **Cleanup:** identify duplication, stale language, and misplaced content — and fix it directly when the correct answer is unambiguous
-- **Decision queue consolidation:** when many open questions have accumulated across agent files, consolidate, deduplicate, and present to the user one at a time
-- **Context isolation:** use skills, subagents, hooks, MCP, plugins, or agent-team features only when they keep findings focused and traceable
-
-## Context Rules
-
-- Ask subagents for compact findings with file paths and confidence, not broad essays.
-- Treat hook, plugin, or subagent output as input for lead reconciliation, not confirmed project scope.
-- Keep `CLAUDE.md` short; put large reusable workflows into skills and project decisions into source-of-truth files.
-
-## Current Stage
-
-**[Exploration | Proposal | Implementation]**
-
-[Brief description of current focus.]
-
-## Source Of Truth
-
-All accepted product decisions live in the files listed in `agent-workflow-local/project-facts.md`.
-
-## Key Constraints
-
-- [List any project-specific rules or guardrails here]
-
-## Tool Adapters
-
-Read `<workflow-root>/workflow/agent-tooling.md` for shared Ponytail, Graphify, and RTK policy. Use Claude Code's native hooks/plugins only when configured; keep this file as a thin adapter.
+Read `agent-workflow-local/current-state.md` for the active stage and next action.
+Project constraints belong in `agent-workflow-local/rules.md`; Claude-specific
+assignments or restrictions belong in its local assignment file above.

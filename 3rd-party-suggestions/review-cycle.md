@@ -1,5 +1,7 @@
 # Review Cycle Protocol
 
+> External proposal, not active rules. Use `workflow/review-cycle.md`.
+
 The review cycle is the repeating loop between a draft and a consolidated update.
 The collaboration index and per-agent files carry all the state — agents self-direct from them on session start. The user's only action is starting each agent.
 

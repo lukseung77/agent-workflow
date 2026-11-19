@@ -1,5 +1,7 @@
 # Agent Workflow
 
+> External proposal, not active rules. Use `workflow/agent-workflow.md`.
+
 Shared defaults for all projects using `agent-workflow`.
 
 Project-specific overrides belong in `./agent-workflow-local/`.

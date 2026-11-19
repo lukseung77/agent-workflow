@@ -37,7 +37,7 @@ Projects with additional stage names may pass repeatable `--allowed-stage NAME` 
 - Put stable project decisions in source-of-truth files.
 - Put large examples, lessons, and source notes in references.
 - Prefer topic files over one giant product document.
-- Exclude `docs/legacy/`, archived collaboration files, `docs/change-log.md`, `docs/skill-recommendations.md`, `docs/consultant-invitation.md`, `docs/consultant-orientation.md`, and `user-agent-suggestions/` from normal startup reads unless the task-routing table in `workflow/rule-precedence.md` makes them relevant.
+- Exclude `docs/legacy/`, `3rd-party-suggestions/`, archived collaboration files, `docs/change-log.md`, `docs/project-evaluation.md`, `docs/skill-recommendations.md`, `docs/consultant-invitation.md`, `docs/consultant-orientation.md`, and `user-agent-suggestions/` from normal startup reads unless the task-routing table in `workflow/rule-precedence.md` makes them relevant.
 
 ## Handoff Summaries
 
@@ -59,7 +59,6 @@ Avoid restating entire specs. Link to the relevant source files instead.
 
 - Use generated queues for scan-first orientation when available.
 - Treat persistent indexes as optional compatibility files and do not require parallel updates when generated queues are in use.
-- Keep open items near the top.
 - Summarize long review threads before asking another agent to act on them.
 - Reconcile consultant feedback in one place so later agents do not repeat the same review.
 
@@ -67,10 +66,13 @@ Avoid restating entire specs. Link to the relevant source files instead.
 
 - Keep unresolved items in the live collaboration file regardless of age.
 - Archive resolved items by size, not by calendar period.
-- The default archive threshold is 50 KB of resolved content per live collaboration file.
+- The default archive threshold is 20 KB of resolved content per live collaboration file.
 - Use numbered per-agent files under `docs/collaboration-archives/`.
 - Archive and legacy files remain readable when referenced but are excluded from normal startup reads.
 - Use `scripts/collab_archive.py --dry-run` before writing archives.
+- Item and standing-section boundaries follow `workflow/collaboration-format.md#parser-boundaries`.
+- Completion validation reads numbered archives when resolving review evidence;
+  active queues continue to read live collaboration files only.
 
 ## When To Split Files
 

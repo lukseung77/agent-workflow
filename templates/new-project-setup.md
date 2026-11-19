@@ -13,7 +13,6 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Workflow root fetched or copied from `https://github.com/lukseung77/agent-workflow`
 - [ ] User interview complete (project title, purpose, primary user, core outcomes, platform, tools)
 - [ ] Local repository initialized or existing checkout selected; GitHub remote optional
-- [ ] `openspec/explorations/product-scope.md` created from interview answers
 
 ---
 
@@ -22,7 +21,7 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Identify who the other agents will be (names and roles)
 - [ ] Identify who the lead agent is and who the consultants are
 - [ ] Optionally assign consultant review lenses, such as fixed-reference/domain or architecture/breadth
-- [ ] Confirm source-of-truth root: `openspec/explorations/`
+- [ ] Record the source-of-truth root in project facts; default to `openspec/explorations/` for a new project and preserve an existing confirmed root
 
 ---
 
@@ -36,18 +35,12 @@ These must be done before this checklist begins (handled in `project-init.md`):
   - `<workflow-root>/skills/`
   - `./agent-workflow-local/`
 - [ ] Copy `templates/docs/collaboration-format.md` → `docs/collaboration-format.md`
-- [ ] Fill in the agent roles table in `docs/collaboration-format.md`:
-  - Agent name
-  - Role (lead or consultant)
-  - Which files they write to
-- [ ] Fill in the source-of-truth root or inventory pointer in `docs/collaboration-format.md`
+- [ ] Keep this file as a pointer only; record roles, write assignments, and source-of-truth inventory once in project facts
 
 ---
 
 ## 4. Create Project-Local Workflow Files
 
-- [ ] Create `agent-workflow-local/agent-workflow.md`
-  - project-wide workflow overrides only
 - [ ] Copy `templates/project-facts.md` -> `agent-workflow-local/project-facts.md`
   - stable local paths, roles, stage tracking, and source-of-truth inventory
 - [ ] Copy `templates/local-rules.md` -> `agent-workflow-local/rules.md`
@@ -63,6 +56,15 @@ These must be done before this checklist begins (handled in `project-init.md`):
 - [ ] Do not copy shared global workflow rules into `agent-workflow-local/`, `docs/`, or other project files; if vendoring is needed, keep the downstream copy contained in `./agent-workflow/`
 - [ ] Keep local workflow files short; move large project specifics into focused source-of-truth files
 - [ ] Keep the generated `AGENTS.md` tooling block as a pointer to `<workflow-root>/workflow/agent-tooling.md`; do not copy the shared policy into project-local rules
+
+### Install Agent Entry Files
+
+- [ ] Copy `templates/agent-common.md` to `agent-common.md`, preserving existing project instructions by merging changes rather than overwriting
+- [ ] For Codex, install `templates/CODEX.md` as `CODEX.md` and merge a startup pointer into `AGENTS.md`: `Read CODEX.md for project startup and assignment pointers.` Preserve existing instructions and any tooling-managed block
+- [ ] For Claude, install or merge `templates/CLAUDE.md` as `CLAUDE.md`
+- [ ] For Gemini, install or merge `templates/GEMINI.md` as `GEMINI.md`
+- [ ] Replace project name and workflow-root placeholders only for participating agents; verify their entry files reach the chosen workflow root and local assignment files
+
 
 ---
 
@@ -84,7 +86,7 @@ For each agent (including yourself):
 If starting from scratch (Exploration stage):
 
 - [ ] Create the source-of-truth directory (e.g. `openspec/explorations/` or `spec/`)
-- [ ] Create a top-level index or overview file (e.g. `product-scope.md`) with:
+- [ ] Create the initial scope/index file here, using the interview answers and the product-scope template in `templates/project-init.md`, with:
   - Project purpose
   - Primary user
   - Core outcomes
@@ -93,8 +95,8 @@ If starting from scratch (Exploration stage):
 
 If joining mid-project:
 
-- [ ] Read all existing source-of-truth files before writing anything
-- [ ] Note any gaps or conflicts in your collaboration file (do not edit source-of-truth yet)
+- [ ] Read the source-of-truth inventory and current state, then inspect files affected by the task and their relevant dependencies; expand reading when gaps or cross-file decisions require it
+- [ ] Record unresolved gaps or conflicts in your collaboration file; make updates only within your assigned write authority
 
 If importing existing source material:
 
@@ -116,13 +118,7 @@ In your own collaboration file (`docs/collaboration-[yourname].md`):
 - [ ] Note the current stage
 - [ ] Note any immediate open questions you spotted during setup
 
-After the workflow files and source-of-truth structure exist, initialize the
-optional agent tooling from the project root:
-
-- [ ] Run `python3 <workflow-root>/scripts/agent_workflow_env.py init --root . --workflow-root <workflow-root> --agents auto`
-- [ ] Record unavailable optional tools or unsupported agent integrations as warnings, not blockers
-- [ ] Obtain explicit approval before rerunning with `--install-missing --configure-hosts`
-- [ ] Run `python3 <workflow-root>/scripts/agent_workflow_env.py doctor --root . --agents auto`
+- [ ] Once project files exist, follow `docs/agent-tooling.md` for optional environment initialization and diagnostics; installation and host configuration require their existing explicit opt-ins
 
 ---
 
@@ -142,12 +138,12 @@ Write a short onboarding note in your collaboration file addressed `to: all` tha
 Before considering setup complete:
 
 - [ ] All collaboration files exist and are named correctly
-- [ ] `agent-workflow-local/` exists with project facts, local rules, shared override, per-agent, and current-state files
+- [ ] `agent-workflow-local/` exists with project facts, local rules, per-agent assignments, and current-state files; existing legacy shared overrides remain supported
 - [ ] `agent-workflow-local/references/reference.md` and `agent-workflow-local/references/markitdown/` exist
-- [ ] `python3 <workflow-root>/scripts/agent_workflow_env.py doctor --root . --agents auto` reports the detected agents, Ponytail rules, Graphify, Graphify index, and RTK without exposing secrets
+- [ ] Any optional environment diagnostics are recorded using the meanings in `docs/agent-tooling.md`; missing optional tools do not block setup
 - [ ] `agent-workflow-local/project-facts.md` has stable paths, roles, stage tracking, and source-of-truth inventory filled in
 - [ ] `agent-workflow-local/rules.md` contains only project-specific rules or says no local overrides are active
-- [ ] `docs/collaboration-format.md` has agent names, roles, and source-of-truth root or inventory pointer filled in
+- [ ] `docs/collaboration-format.md` points to the chosen workflow root, and participating agents have working host entry files
 - [ ] `docs/collaboration.md` correctly points to the shared workflow repo and local overrides
 - [ ] Large imported documents are linked or summarized rather than pasted into collaboration threads
 - [ ] Your own collaboration file has at least one `status` item logged
@@ -165,7 +161,7 @@ Success criteria:
 
 ## Notes
 
-- Do not start writing to source-of-truth files until this checklist is complete.
+- Create the initial scope/index during section 6. Begin substantive feature specifications and implementation only after setup is complete.
 - The user interview and repository creation happen in `project-init.md` before this checklist runs. Do not repeat those steps here.
 - If you are the lead agent, proceed directly to `project-init.md` Step 6 (begin exploration) after this checklist is done.
 - If you are a consultant agent doing the setup, notify the lead agent that setup is complete before beginning any review work.

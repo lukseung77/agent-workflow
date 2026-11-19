@@ -2,6 +2,9 @@
 
 The workflow has three stages. Each stage has a clear goal, a set of activities, and explicit gate criteria that must be met before moving forward. Agents must concur before a stage transition happens; the user confirms.
 
+`Setup` and `Complete` are administrative bookend states accepted in restart
+snapshots, not additional gated stages. They do not replace the three stage gates.
+
 ---
 
 ## Stage 1: Exploration
@@ -110,8 +113,8 @@ All of the following must be true before moving to Implementation:
 
 ## Stage Transition Protocol
 
-1. The agent closest to the work (usually the lead) assesses gate criteria
-2. That agent posts a `status` item in its collaboration file naming the gate outcome
+1. The lead agent assesses gate criteria
+2. The lead posts a `status` item in its collaboration file naming the gate outcome
 3. All other agents review and reply with concurrence or remaining blockers
 4. User confirms the transition
 5. Lead agent updates the project status in source-of-truth files

@@ -29,6 +29,7 @@ Use `workflow/rule-precedence.md` for read order, conflict precedence, and task-
 
 ## Review And Decision Model
 
+- Evaluate proposals against their goals, constraints, and evidence. Identify material unsupported assumptions, contradictions, and plausible failure modes; distinguish demonstrated defects from uncertainty and preference. Explain disagreement and suggest a proportionate correction. Do not invent objections to appear critical; say when no material issue is found.
 - Consultant feedback should identify the issue, why it matters, where it belongs, and the requested action or question.
 - On resume, the lead checks its own open review requests for referenced consultant responses, including `done` reviews omitted from active recipient queues.
 - The lead reconciles consultant feedback explicitly and writes accepted outcomes into source-of-truth files.

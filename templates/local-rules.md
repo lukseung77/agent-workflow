@@ -1,14 +1,10 @@
 # Local Rules
 
-Project-specific workflow rules. These rules supplement the shared workflow in `<workflow-root>/workflow/`, where `<workflow-root>` is recorded in `agent-workflow-local/project-facts.md`.
+Project-specific overrides to the workflow recorded in
+`agent-workflow-local/project-facts.md`. Use `workflow/local-project-files.md`
+for placement; do not copy shared rules here.
 
-## Source-Of-Truth Hygiene
+## Overrides
 
-- Keep product decisions in the files listed in `project-facts.md`.
-- Keep workflow rules in `rules.md` or focused future rule files under `agent-workflow-local/`.
-- Keep restart state, active blockers, and immediate next action in `current-state.md`.
-- Keep collaboration history and traceability in `docs/collaboration-*.md`.
-
-## Optional Local Overrides
-
-Add only project-specific rules here. When a local rule overrides a shared rule, state the shared rule name, the project-specific reason, and the replacement rule.
+No local overrides are active. Replace this line only when needed, naming the
+shared rule, the project-specific reason, and the replacement rule.

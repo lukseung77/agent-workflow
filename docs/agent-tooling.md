@@ -26,6 +26,34 @@ commands documented by each tool. It does not pipe a remote script into a
 shell. Ponytail's Claude Code install remains interactive because its official
 interface is the two `/plugin` prompts; the bootstrap reports that limitation.
 
+Default installation follows upstream releases. To select previously tested
+versions, add `--graphify-version VERSION --rtk-revision COMMIT` together with
+`--install-missing`. These selectors affect missing tools only; they do not
+upgrade or downgrade an installed tool. After testing a new version, record it
+in the project's tool inventory before updating those selectors. The repository
+does not claim an untested default pin.
+
+Optional commands have a five-minute timeout. An OS error, timeout, or nonzero
+exit becomes a warning so independent integrations can continue.
+
+## Diagnostic meaning
+
+`doctor` inspects the selected environment without writing project files.
+Unrequested agents display `not checked`; selected missing agents display `!`.
+The shared adapter indicator checks the managed instruction block, while the
+native Ponytail plugin is reported as unknown. The JSON `tools.ponytail` key
+is retained for compatibility and means shared adapter presence, not plugin
+installation. Missing optional tools do not change the command's success exit
+code; invalid arguments or unreadable configuration return a nonzero exit code.
+
+Reinitialization refreshes the workflow pointer inside the managed `AGENTS.md`
+block while preserving surrounding user text. Malformed markers are rejected
+without rewriting the file. Correct the block deliberately, then rerun.
+
+A project-local `RTK.md` does not establish that global agent hooks are installed.
+With `--configure-hosts`, the upstream RTK CLI still handles requested global
+configuration. Antigravity's existing project-scoped adapter can be reused.
+
 ## Compatibility
 
 | Tool | Codex | Claude Code | agy / Antigravity |

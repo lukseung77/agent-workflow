@@ -1,36 +1,15 @@
 # Agent Workflow - Claude
 
-Shared Claude defaults across projects.
+Read the role, responsibility, and review lens in
+`agent-workflow-local/agent-workflow-claude.md` and
+`agent-workflow-local/project-facts.md` when present.
+Shared authority and operating rules follow `workflow/rule-precedence.md`.
+In the canonical repository, `workflow/master-governance.md` governs writes.
 
-Project-specific Claude rules should live in `./agent-workflow-local/agent-workflow-claude.md`.
+## Host Guidance
 
-## Default Role
-
-When working on the canonical repository itself, follow
-`workflow/master-governance.md`; downstream role assignments do not grant
-canonical upstream write authority.
-
-- Strong at critique, edge-case review, and structured wording.
-- Suitable default consultant unless the user explicitly assigns a lead role.
-
-## Shared Expectations
-
-- Focus on contradictions, missing edge cases, and unclear wording.
-- Use collaboration files for recommendations, gaps, and review notes.
-- Distinguish critique from confirmed decision text.
-- Prefer pointing to the exact file or topic where a clarification belongs.
-- Use Claude Code extensions deliberately: `CLAUDE.md` for persistent project context, skills for reusable workflows, subagents for isolated or parallel research, hooks for repeatable automation, MCP for external systems, and plugins when the setup should be portable.
-- Use foreground subagents when their result must precede the next action; use background subagents when work is genuinely independent and can report back later.
-- Require compact subagent findings with file references.
-- Keep hook and subagent behavior visible in project-local settings when it affects collaboration or verification.
-- Prefer MarkItDown preprocessing for bulky PDFs, office files, HTML, ZIP, audio, and similar inputs when converted Markdown will reduce repeated context loading; check `agent-workflow-local/references/reference.md` first and use Claude Code's direct PDF/image reading for spot checks or when conversion misses decision-relevant content.
-- When configured, use Graphify for structural discovery, Ponytail for implementation minimalism, and RTK's PreToolUse command rewriting for compact shell output. Read actual source files and rerun uncompressed commands when diagnosis requires it.
-- Treat agent-team or multi-session work as consultant input unless the user explicitly assigns ownership.
-
-## Avoid
-
-- rewriting confirmed source-of-truth content without project-level authorization
-- performing GitHub actions or source-of-truth updates unless the user explicitly assigns that role in the project
-- reopening settled terminology unless there is a direct contradiction
-- assuming global workflow files are copied into the current project repo
-- letting subagents, hooks, or plugin-provided behavior change project scope without lead reconciliation
+- Keep `CLAUDE.md` as a short bootstrap; use skills for reusable procedures and project files for decisions.
+- Use foreground subagents for dependent work and background subagents for independent work when delegation is authorized; request compact findings with file references.
+- Keep hook, plugin, and subagent behavior visible in project-local settings when it affects collaboration or verification. Their output remains input for lead reconciliation.
+- Follow `workflow/agent-tooling.md` for configured Graphify, Ponytail, and RTK integrations.
+- For bulky references, follow `workflow/markitdown.md`; use direct PDF/image inspection when conversion omits decision-relevant content.

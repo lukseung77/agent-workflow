@@ -24,6 +24,7 @@ PONYTAIL_REPO = "DietrichGebert/ponytail"
 PONYTAIL_URL = "https://github.com/DietrichGebert/ponytail"
 GRAPHIFY_PACKAGE = "graphifyy"
 RTK_REPO = "https://github.com/rtk-ai/rtk"
+COMMAND_TIMEOUT_SECONDS = 300
 ADAPTER_START = "<!-- agent-workflow:tooling:start -->"
 ADAPTER_END = "<!-- agent-workflow:tooling:end -->"
 
@@ -51,6 +52,7 @@ class SubprocessRunner:
             text=True,
             capture_output=True,
             check=False,
+            timeout=COMMAND_TIMEOUT_SECONDS,
         )
         return CommandResult(result.returncode, result.stdout, result.stderr)
 
@@ -80,9 +82,15 @@ def _run(
     report: EnvironmentReport,
     description: str,
 ) -> bool:
-    result = runner.run(command, root)
+    try:
+        result = runner.run(command, root)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        report.warnings.append(f"{description} failed ({exc})")
+        return False
     if result.returncode == 0:
-        report.actions.append(f"{description}: ok")
+        action = f"{description}: ok"
+        if action not in report.actions:
+            report.actions.append(action)
         return True
     detail = result.stderr.strip() or result.stdout.strip()
     suffix = f" ({detail[-240:]})" if detail else ""
@@ -168,9 +176,20 @@ def _graphify_adapter_exists(root: Path, agent: str) -> bool:
 
 
 def _rtk_adapter_exists(root: Path, agent: str) -> bool:
-    if agent == "antigravity":
-        return (root / ".agents/rules/antigravity-rtk-rules.md").is_file()
-    return (root / "RTK.md").is_file()
+    # A local RTK.md does not prove that agent-wide hooks are configured.
+    return agent == "antigravity" and (root / ".agents/rules/antigravity-rtk-rules.md").is_file()
+
+
+def _adapter_span(content: str) -> tuple[int, int] | None:
+    if ADAPTER_START not in content and ADAPTER_END not in content:
+        return None
+    if content.count(ADAPTER_START) != 1 or content.count(ADAPTER_END) != 1:
+        raise ValueError("AGENTS.md has malformed tooling markers; repair the managed block first")
+    start = content.index(ADAPTER_START)
+    end = content.index(ADAPTER_END) + len(ADAPTER_END)
+    if end < start:
+        raise ValueError("AGENTS.md has reversed tooling markers")
+    return start, end
 
 
 def ensure_repository_adapter(root: Path, workflow_root: str) -> bool:
@@ -181,9 +200,6 @@ def ensure_repository_adapter(root: Path, workflow_root: str) -> bool:
         content = path.read_text(encoding="utf-8")
     else:
         content = ""
-    if ADAPTER_START in content:
-        return False
-
     block = f"""{ADAPTER_START}
 ## Agent Workflow Tooling
 
@@ -193,6 +209,14 @@ This is a thin adapter; OpenSpec, explicit project requirements, correctness,
 security, and tests take precedence.
 {ADAPTER_END}
 """
+    span = _adapter_span(content)
+    if span is not None:
+        start, end = span
+        updated = content[:start] + block.rstrip("\n") + content[end:]
+        if updated == content:
+            return False
+        path.write_text(updated, encoding="utf-8")
+        return True
     separator = "\n" if content and not content.endswith("\n") else ""
     path.write_text(content + separator + ("\n" if content else "") + block, encoding="utf-8")
     return True
@@ -205,10 +229,12 @@ def verify_tools(
     report: EnvironmentReport,
 ) -> None:
     agents_file = root / "AGENTS.md"
-    report.tools["ponytail"] = (
-        agents_file.is_file()
-        and ADAPTER_START in agents_file.read_text(encoding="utf-8")
-    )
+    content = agents_file.read_text(encoding="utf-8") if agents_file.is_file() else ""
+    try:
+        report.tools["ponytail"] = _adapter_span(content) is not None
+    except ValueError as exc:
+        report.tools["ponytail"] = False
+        report.warnings.append(str(exc))
 
     graphify_ok = _command_available("graphify", which)
     if graphify_ok:
@@ -227,6 +253,8 @@ def install_missing_tools(
     runner: SubprocessRunner,
     which: Callable[[str], str | None],
     report: EnvironmentReport,
+    graphify_version: str | None = None,
+    rtk_revision: str | None = None,
 ) -> None:
     """Install only with explicit --install-missing approval.
 
@@ -234,11 +262,12 @@ def install_missing_tools(
     shell script is piped into a shell.
     """
 
+    graphify_package = f"{GRAPHIFY_PACKAGE}=={graphify_version}" if graphify_version else GRAPHIFY_PACKAGE
     if not report.tools.get("graphify", False):
         if _command_available("uv", which):
-            _run(runner, ["uv", "tool", "install", GRAPHIFY_PACKAGE], root, report, "Graphify installation")
+            _run(runner, ["uv", "tool", "install", graphify_package], root, report, "Graphify installation")
         elif _command_available("pipx", which):
-            _run(runner, ["pipx", "install", GRAPHIFY_PACKAGE], root, report, "Graphify installation")
+            _run(runner, ["pipx", "install", graphify_package], root, report, "Graphify installation")
         else:
             report.warnings.append(
                 "Graphify is missing; install graphifyy with uv or pipx, then rerun initialization"
@@ -246,7 +275,10 @@ def install_missing_tools(
 
     if not report.tools.get("rtk", False):
         if _command_available("cargo", which):
-            _run(runner, ["cargo", "install", "--git", RTK_REPO], root, report, "RTK installation")
+            command = ["cargo", "install", "--git", RTK_REPO]
+            if rtk_revision:
+                command += ["--rev", rtk_revision]
+            _run(runner, command, root, report, "RTK installation")
         else:
             report.warnings.append(
                 "RTK is missing and cargo is unavailable; install Rust/cargo, then rerun initialization"
@@ -383,6 +415,8 @@ def initialize(
     configure_hosts: bool = False,
     runner: SubprocessRunner | None = None,
     which: Callable[[str], str | None] = shutil.which,
+    graphify_version: str | None = None,
+    rtk_revision: str | None = None,
 ) -> EnvironmentReport:
     runner = runner or SubprocessRunner()
     report = EnvironmentReport(
@@ -390,13 +424,13 @@ def initialize(
     )
 
     if ensure_repository_adapter(root, workflow_root):
-        report.actions.append("shared AGENTS.md adapter: created")
+        report.actions.append("shared AGENTS.md adapter: created or updated")
     else:
         report.actions.append("shared AGENTS.md adapter: already present")
 
     verify_tools(root, runner, which, report)
     if install_missing:
-        install_missing_tools(root, runner, which, report)
+        install_missing_tools(root, runner, which, report, graphify_version, rtk_revision)
         verify_tools(root, runner, which, report)
 
     if report.tools.get("graphify", False):
@@ -430,8 +464,10 @@ def print_report(report: EnvironmentReport) -> None:
 
     print("Agent Workflow Environment")
     for agent in KNOWN_AGENTS:
-        print(f"  {AGENT_LABELS[agent]:<16} {mark(report.agents.get(agent, False))}")
-    print(f"  {'Ponytail rules':<16} {mark(report.tools.get('ponytail', False))}")
+        state = mark(report.agents[agent]) if agent in report.agents else "not checked"
+        print(f"  {AGENT_LABELS[agent]:<16} {state}")
+    print(f"  {'Shared adapter':<16} {mark(report.tools.get('ponytail', False))}")
+    print("  Ponytail plugin  unknown (not inspected)")
     print(f"  {'Graphify':<16} {mark(report.tools.get('graphify', False))}")
     print(f"  {'Graphify index':<16} {mark(report.graph_index)}")
     print(f"  {'RTK':<16} {mark(report.tools.get('rtk', False))}")
@@ -460,6 +496,8 @@ def build_parser() -> argparse.ArgumentParser:
         help="explicitly permit agent-wide hooks/plugins; project adapters remain safe by default",
     )
     init.add_argument("--json", action="store_true")
+    init.add_argument("--graphify-version", help="Graphify version used only with --install-missing")
+    init.add_argument("--rtk-revision", help="RTK Git revision used only with --install-missing")
 
     check = subparsers.add_parser("doctor", help="verify the environment without writing")
     check.add_argument("--root", type=Path, default=Path.cwd())
@@ -480,9 +518,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 agents,
                 install_missing=args.install_missing,
                 configure_hosts=args.configure_hosts,
+                which=shutil.which,
+                graphify_version=args.graphify_version,
+                rtk_revision=args.rtk_revision,
             )
         else:
-            report = doctor(root, agents)
+            report = doctor(root, agents, which=shutil.which)
     except (OSError, ValueError) as exc:
         print(f"agent-workflow environment error: {exc}", file=sys.stderr)
         return 2

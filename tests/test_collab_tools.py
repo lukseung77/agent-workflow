@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from collab_common import parse_items  # noqa: E402
+from collab_archive import next_archive_path  # noqa: E402
 
 
 class CollaborationToolsTest(unittest.TestCase):
@@ -15,6 +20,7 @@ class CollaborationToolsTest(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.project = Path(self.temp.name)
         (self.project / "docs").mkdir()
+        (self.project / "docs/collaboration-gemini.md").write_text("# Gemini\n", encoding="utf-8")
         (self.project / "docs" / "collaboration-codex.md").write_text(
             """# Collaboration: Codex
 
@@ -74,6 +80,129 @@ class CollaborationToolsTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertEqual(json.loads(result.stdout)["id"], "CX-001")
 
+    def test_lookup_reads_completed_unaddressed_and_archived_items(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        path.write_text(path.read_text(encoding="utf-8").replace("- `status`: active", "- `status`: done"), encoding="utf-8")
+        result = self.run_script("collab_queue.py", "claude", "--id", "cx-002", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["status"], "done")
+        archived = self.run_script("collab_archive.py", "--threshold-bytes", "1")
+        self.assertEqual(archived.returncode, 0, archived.stderr)
+        result = self.run_script("collab_queue.py", "codex", "--id", "CX-002", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("collaboration-archives", json.loads(result.stdout)["source"])
+        queue = self.run_script("collab_queue.py", "gemini", "--json")
+        self.assertNotIn("CX-002", [item["id"] for item in json.loads(queue.stdout)])
+
+    def test_refs_lookup_uses_exact_ids_across_live_and_archived_items(self) -> None:
+        directory = self.project / "docs/collaboration-archives"
+        directory.mkdir()
+        (directory / "gemini-001.md").write_text(
+            "### [GM-010] Completed review\n- `date`: 2026-06-07\n"
+            "- `from`: gemini\n- `to`: codex\n- `type`: review\n"
+            "- `status`: done\n- `refs`: `[CX-001]`, spec.md\n",
+            encoding="utf-8",
+        )
+        path = self.project / "docs/collaboration-codex.md"
+        with path.open("a", encoding="utf-8") as output:
+            output.write("\n### [CX-004] Follow-up\n- `date`: 2026-06-07\n"
+                         "- `from`: codex\n- `to`: claude\n- `type`: status\n"
+                         "- `status`: done\n- `refs`: CX-001\n")
+            output.write("\n### [CX-005] Unrelated\n- `date`: 2026-06-07\n"
+                         "- `from`: codex\n- `to`: all\n- `type`: status\n"
+                         "- `status`: done\n- `refs`: CX-0010\n")
+        result = self.run_script("collab_queue.py", "claude", "--refs", "cx-001", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({item["id"] for item in json.loads(result.stdout)}, {"GM-010", "CX-004"})
+
+    def test_lookup_rejects_duplicate_live_and_archived_ids(self) -> None:
+        directory = self.project / "docs/collaboration-archives"
+        directory.mkdir()
+        (directory / "codex-001.md").write_text("### [CX-001] Duplicate\n", encoding="utf-8")
+        result = self.run_script("collab_queue.py", "gemini", "--id", "CX-001")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("found 2", result.stderr)
+
+    def test_default_archive_threshold_is_twenty_kilobytes(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        with path.open("a", encoding="utf-8") as output:
+            output.write("\n### [CX-004] Resolved body\n- `date`: 2026-06-07\n"
+                         "- `from`: codex\n- `to`: all\n- `type`: status\n"
+                         "- `status`: done\n\n" + "x" * 21_000 + "\n")
+        result = self.run_script("collab_archive.py", "--dry-run")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("codex-001.md", result.stdout)
+        self.assertIn("CX-004", path.read_text(encoding="utf-8"))
+
+    def test_queue_compares_actual_instants_and_accepts_alias(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        content = path.read_text(encoding="utf-8")
+        content = content.replace(
+            "### [CX-002] Broadcast\n", "### [CX-002] Broadcast\n- `created_at`: 2026-06-07T02:00:00Z\n"
+        )
+        path.write_text(content, encoding="utf-8")
+        result = self.run_script("collab_queue.py", "agy", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual([item["id"] for item in json.loads(result.stdout)], ["CX-002", "CX-001", "CX-003"])
+
+    def test_fences_comments_and_body_fields_do_not_change_metadata(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        header = path.read_text(encoding="utf-8").split("### [CX-002]")[0]
+        for fence in ("```", "~~~~", "  ````"):
+            with self.subTest(fence=fence):
+                body = (
+                    "<!--\n- `status`: done\n### [HIDDEN] Comment\n-->\n"
+                    f"{fence}md\n### [FAKE] Example\n- `status`: done\n<!-- literal\n{fence}\n"
+                    "Body text.\n- `status`: done\n#### Detail\nStill inside the item.\n"
+                )
+                path.write_text(header + body + "## Standing notes\nKeep this.\n", encoding="utf-8")
+                items = parse_items(path)
+                self.assertEqual([item.item_id for item in items], ["CX-001"])
+                self.assertEqual(items[0].status, "open")
+                self.assertIn("### [FAKE] Example", items[0].raw)
+                self.assertNotIn("## Standing notes", items[0].raw)
+                self.assertIn("#### Detail", items[0].body)
+
+    def test_archive_preserves_fenced_body_and_standing_section(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        header = path.read_text(encoding="utf-8").split("### [CX-002]")[0]
+        header = header.replace("- `status`: open", "- `status`: done")
+        body = "```md\n### [FAKE] Example\n- `status`: open\n```\n"
+        note = "## Standing notes\nKeep this.\n"
+        path.write_text(header + body + note, encoding="utf-8")
+        result = self.run_script("collab_archive.py", "--threshold-bytes", "1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        archive = self.project / "docs/collaboration-archives/codex-001.md"
+        archived = parse_items(archive)
+        self.assertEqual([item.item_id for item in archived], ["CX-001"])
+        self.assertIn(body, archive.read_text(encoding="utf-8"))
+        self.assertIn(note, path.read_text(encoding="utf-8"))
+        self.assertNotIn("FAKE", path.read_text(encoding="utf-8"))
+
+    def test_archive_numbering_crosses_999_without_overwriting(self) -> None:
+        directory = self.project / "docs/collaboration-archives"
+        directory.mkdir()
+        for name in ("codex-999.md", "codex-1000.md", "codex-notes.md"):
+            (directory / name).write_text("keep\n", encoding="utf-8")
+        path = self.project / "docs/collaboration-codex.md"
+        self.assertEqual(next_archive_path(self.project, path).name, "codex-1001.md")
+
+    def test_lint_unknown_agent_is_a_warning_with_explicit_override(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        path.write_text(path.read_text(encoding="utf-8").replace("gemini", "cluade"), encoding="utf-8")
+        result = self.run_script("collab_lint.py", "--json")
+        self.assertEqual(result.returncode, 0)
+        self.assertTrue(any("cluade" in warning for warning in json.loads(result.stdout)["warnings"]))
+        allowed = self.run_script("collab_lint.py", "--allowed-agent", "cluade", "--json")
+        self.assertEqual(json.loads(allowed.stdout)["warnings"], [])
+
+    def test_lint_rejects_empty_required_field(self) -> None:
+        path = self.project / "docs/collaboration-codex.md"
+        path.write_text(path.read_text(encoding="utf-8").replace("- `to`: gemini", "- `to`: "), encoding="utf-8")
+        result = self.run_script("collab_lint.py")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("missing fields: to", result.stdout)
+
     def test_lint_accepts_current_schema(self) -> None:
         result = self.run_script("collab_lint.py")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -125,6 +254,20 @@ class CollaborationToolsTest(unittest.TestCase):
         result = self.run_script("collab_lint.py", "--strict-state")
         self.assertEqual(result.returncode, 1)
         self.assertIn("is not allowed", result.stdout)
+
+    def test_restart_artifact_allows_project_directories_but_not_parent_paths(self) -> None:
+        directory = self.project / "agent-workflow-local"
+        directory.mkdir()
+        for artifact, code in (("docs", 0), ("..", 1)):
+            with self.subTest(artifact=artifact):
+                (directory / "current-state.md").write_text(
+                    "- `updated`: 2026-06-07\n- `current_stage`: Proposal\n"
+                    f"- `current_artifact`: {artifact}\n"
+                    "- `next_lead_action`: Review\n- `active_blockers`: None\n",
+                    encoding="utf-8",
+                )
+                result = self.run_script("collab_lint.py", "--strict-state")
+                self.assertEqual(result.returncode, code, result.stdout)
 
     def test_archive_dry_run_reports_threshold_match(self) -> None:
         path = self.project / "docs" / "collaboration-codex.md"
@@ -291,6 +434,14 @@ class FormalCompletionTest(unittest.TestCase):
 - `refs`: CL-001
 """,
         )
+        result = self.run_lint()
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+        # Moving only the review evidence must not invalidate the live request.
+        directory = self.project / "docs/collaboration-archives"
+        directory.mkdir()
+        live_review = self.project / "docs/collaboration-gemini.md"
+        live_review.rename(directory / "gemini-001.md")
         result = self.run_lint()
         self.assertEqual(result.returncode, 0, result.stdout)
 
