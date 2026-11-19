@@ -7,7 +7,7 @@ A generic invitation alone does not authorize an unrequested review.
 ## Invitation
 
 Review this `agent-workflow` checkout as a consultant. Treat its root as `.` and
-start with `docs/consultant-orientation.md`. Use `workflow/master-governance.md`
+start with `docs/consultant-orientation.md`. Use `agent-workflow-local/maintainer-governance.md`
 for write authority and agent-file mapping. Record findings only in your own
 `docs/collaboration-<agent>.md`, addressed to Codex and linked to the request or
 human instruction. Codex owns project changes, integration, and GitHub actions.

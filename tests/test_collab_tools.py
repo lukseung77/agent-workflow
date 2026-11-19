@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "agent-workflow-foundation" / "scripts"))
 
 from collab_common import parse_items  # noqa: E402
 from collab_archive import next_archive_path  # noqa: E402
@@ -58,7 +58,7 @@ class CollaborationToolsTest(unittest.TestCase):
 
     def run_script(self, name: str, *args: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
-            ["python3", str(ROOT / "scripts" / name), *args, "--root", str(self.project)],
+            ["python3", str(ROOT / "agent-workflow-foundation" / "scripts" / name), *args, "--root", str(self.project)],
             text=True,
             capture_output=True,
             check=False,
@@ -382,7 +382,7 @@ class FormalCompletionTest(unittest.TestCase):
         return subprocess.run(
             [
                 "python3",
-                str(ROOT / "scripts" / "collab_lint.py"),
+                str(ROOT / "agent-workflow-foundation" / "scripts" / "collab_lint.py"),
                 "--check-completion",
                 "--root",
                 str(self.project),

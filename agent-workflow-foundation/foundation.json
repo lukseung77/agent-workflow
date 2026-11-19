@@ -1,0 +1,8 @@
+{
+  "name": "agent-workflow-foundation",
+  "schema_version": 1,
+  "distribution": ["README.md", "foundation.json", "workflow", "templates", "scripts", "skills", "third-party", "docs"],
+  "local_templates": "templates/agent-workflow-local",
+  "third_party_origins": "third-party/origins.json",
+  "upstream_repository": "https://github.com/lukseung77/agent-workflow"
+}

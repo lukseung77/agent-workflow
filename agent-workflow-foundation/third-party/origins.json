@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "policy": "Install selected capabilities from official origins; resolve current compatible stable versions at setup and record the actual result locally. No third-party implementations are bundled.",
+  "tools": {
+    "ponytail": {
+      "origin": "https://github.com/DietrichGebert/ponytail",
+      "capability": "Implementation minimalism and reuse guidance",
+      "optional": true,
+      "installation": "Follow the current official host plugin or extension instructions; native plugin state requires host verification. Shared foundation guidance is the fallback.",
+      "host_configuration_opt_in": true
+    },
+    "graphify": {
+      "origin": "https://github.com/Graphify-Labs/graphify",
+      "capability": "Repository discovery and structural indexing",
+      "package": "graphifyy",
+      "optional": true,
+      "installation": "Use the current supported uv/pipx package installation and host integration instructions at the origin.",
+      "verification": ["graphify", "--version"]
+    },
+    "rtk": {
+      "origin": "https://github.com/rtk-ai/rtk",
+      "capability": "Compact command output with full diagnostic fallback",
+      "optional": true,
+      "installation": "Use the current official release or Cargo installation. Verify this is Rust Token Killer before configuring host hooks.",
+      "verification": ["rtk", "--version"],
+      "host_configuration_opt_in": true
+    },
+    "markitdown": {
+      "origin": "https://github.com/microsoft/markitdown",
+      "capability": "External document conversion",
+      "package": "markitdown",
+      "optional": true,
+      "installation": "Use the supported package installer with only the document extras needed by the project.",
+      "verification": ["markitdown", "--version"]
+    },
+    "openspec": {
+      "origin": "https://github.com/Fission-AI/OpenSpec",
+      "capability": "Specification and change lifecycle",
+      "package": "@fission-ai/openspec",
+      "optional": true,
+      "installation": "Use the current supported npm package installation from the official documentation.",
+      "verification": ["openspec", "--version"]
+    }
+  }
+}

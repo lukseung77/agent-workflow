@@ -1,14 +1,14 @@
 # Consultant Orientation
 
 This is the canonical upstream repository. Codex maintains project files under
-`workflow/master-governance.md`; consultants write only their own collaboration
+`agent-workflow-local/maintainer-governance.md`; consultants write only their own collaboration
 file. All paths below are relative to this repository, not a downstream project.
 
 ## Start And Select Work
 
-1. Read `workflow/master-governance.md`, then the normal startup and task routing
-   in `workflow/rule-precedence.md`. Skip absent downstream bootstrap/local files.
-2. Find an addressed request with `python3 scripts/collab_queue.py <agent>` and
+1. Read `agent-workflow-local/maintainer-governance.md`, then the normal startup and task routing
+   in `agent-workflow-foundation/workflow/rule-precedence.md`. Read this project's own local configuration like any other foundation consumer.
+2. Find an addressed request with `python3 agent-workflow-foundation/scripts/collab_queue.py <agent>` and
    read it with `--id ITEM-ID`. Scope, lens, and reviewed content come from that
    request, not from an old refactor description or this onboarding document.
 3. An explicit human assessment request is also valid. Record its origin, date,
@@ -30,7 +30,7 @@ Read-only Git inspection and focused searches are normally sufficient. Follow
 the assigned scope for checks; report any checks not performed. Do not generate
 project files outside your own collaboration file or install dependencies.
 
-Use the format in `workflow/review-cycle.md` and reference the request ID. For a
+Use the format in `agent-workflow-foundation/workflow/review-cycle.md` and reference the request ID. For a
 human-origin request, quote that instruction and identify it as the origin.
 Provide exact locations, concrete triggers, evidence and uncertainty, impact,
 and the smallest supported correction. Distinguish defects from optional

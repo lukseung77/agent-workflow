@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "agent-workflow-foundation" / "scripts"))
 
 import agent_workflow_env as env  # noqa: E402
 
@@ -27,6 +27,8 @@ class FakeRunner:
         self.commands.append(command)
         if any(tuple(command[: len(prefix)]) == prefix for prefix in self.fail_prefixes):
             return env.CommandResult(1, stderr="simulated failure")
+        if command[:4] == ["git", "ls-remote", "--tags", "--refs"]:
+            return env.CommandResult(0, stdout="abc refs/tags/v0.1.0\ndef refs/tags/v0.2.0\nghi refs/tags/v9.0.0-rc1\n")
 
         if command[:2] == ["graphify", "install"] or command[:3] == ["graphify", "antigravity", "install"]:
             agent = "antigravity"
@@ -98,6 +100,34 @@ class AgentWorkflowEnvironmentTest(unittest.TestCase):
         self.assertFalse(report.graph_index)
         self.assertTrue(report.warnings)
         self.assertTrue((self.root / "AGENTS.md").exists())
+
+    def test_verification_runs_once_without_changes_and_at_most_twice_with_changes(self) -> None:
+        for tools, expected in ((('rtk',), 1), (('graphify', 'rtk'), 2)):
+            with self.subTest(tools=tools):
+                runner = FakeRunner()
+                env.initialize(self.root, '../agent-workflow', [], runner=runner, which=installed_tools(*tools))
+                self.assertEqual(runner.commands.count(['rtk', 'gain']), expected)
+                if 'graphify' in tools:
+                    self.assertEqual(runner.commands.count(['graphify', '--version']), expected)
+
+    def test_newly_installed_tools_are_used_and_verified_only_at_the_end(self) -> None:
+        runner = FakeRunner()
+
+        def which(name):
+            available = name in {'uv', 'cargo'}
+            if name == 'graphify':
+                available = ['uv', 'tool', 'install', env.GRAPHIFY_PACKAGE] in runner.commands
+            if name == 'rtk':
+                available = any(command[:4] == ['cargo', 'install', '--git', env.RTK_REPO] for command in runner.commands)
+            return f'/fake/{name}' if available else None
+
+        report = env.initialize(self.root, '../agent-workflow', ['codex'], install_missing=True, runner=runner, which=which)
+        self.assertTrue(report.graph_index)
+        self.assertTrue(report.tools['graphify'])
+        self.assertTrue(report.tools['rtk'])
+        self.assertEqual(runner.commands.count(['graphify', '--version']), 1)
+        self.assertEqual(runner.commands.count(['rtk', 'gain']), 1)
+        self.assertLess(runner.commands.index(['graphify', '.']), runner.commands.index(['graphify', '--version']))
 
     def test_unsupported_agent_only_receives_requested_adapter(self) -> None:
         runner = FakeRunner()
@@ -234,6 +264,34 @@ class AgentWorkflowEnvironmentTest(unittest.TestCase):
         self.assertTrue(initialize.call_args.kwargs["configure_hosts"])
         self.assertEqual(initialize.call_args.kwargs["graphify_version"], "1.2.3")
         self.assertEqual(initialize.call_args.kwargs["rtk_revision"], "abc123")
+
+    def test_registry_installs_latest_stable_tag_and_records_versions_locally(self) -> None:
+        runner = FakeRunner()
+        report = env.initialize(self.root, './agent-workflow-foundation', [], install_missing=True, runner=runner, which=installed_tools('cargo'))
+        self.assertIn(['cargo', 'install', '--git', env.ORIGINS['rtk']['origin'], '--tag', 'v0.2.0'], runner.commands)
+        self.assertFalse(any('v9.0.0-rc1' in command for command in runner.commands))
+        inventory = json.loads((self.root / 'agent-workflow-local/tooling.json').read_text())
+        self.assertEqual(inventory['tools']['rtk']['origin'], env.ORIGINS['rtk']['origin'])
+        self.assertIsNone(inventory['tools']['rtk']['version'])
+
+    def test_inventory_preserves_manual_plugin_verification_and_other_tools(self) -> None:
+        path = self.root / 'agent-workflow-local/tooling.json'
+        path.parent.mkdir()
+        path.write_text(json.dumps({'custom': 'preserved', 'tools': {'ponytail': {'native_state': 'verified', 'version': 'reviewed'}, 'other': {'version': '1'}}}))
+        env.initialize(self.root, './agent-workflow-foundation', [], runner=FakeRunner(), which=installed_tools('graphify', 'rtk'))
+        inventory = json.loads(path.read_text())
+        self.assertEqual(inventory['custom'], 'preserved')
+        self.assertEqual(inventory['tools']['ponytail']['native_state'], 'verified')
+        self.assertEqual(inventory['tools']['ponytail']['version'], 'reviewed')
+        self.assertEqual(inventory['tools']['other']['version'], '1')
+        self.assertEqual(inventory['tools']['graphify']['version'], 'ok')
+        self.assertEqual(inventory['tools']['rtk']['version'], 'ok')
+
+    def test_unresolved_stable_release_does_not_install_development_head(self) -> None:
+        runner = FakeRunner(fail_prefixes=(('git', 'ls-remote'),))
+        report = env.initialize(self.root, './agent-workflow-foundation', [], install_missing=True, runner=runner, which=installed_tools('cargo'))
+        self.assertFalse(any(command[:2] == ['cargo', 'install'] for command in runner.commands))
+        self.assertTrue(any('stable release could not be resolved' in warning for warning in report.warnings))
 
     def test_local_rtk_file_does_not_suppress_requested_global_configuration(self) -> None:
         (self.root / "RTK.md").write_text("Local instructions only\n", encoding="utf-8")

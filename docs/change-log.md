@@ -4,6 +4,23 @@ The master-agent records canonical `agent-workflow` updates here when they are n
 
 Keep entries compact. Use this file for rollback orientation and downstream update notes, not detailed design discussion.
 
+## 2026-11-19 - Foundation Product And Self-Consumer Structure
+
+- `request`: implement the agreed foundation product model, self-consuming local scaffold, official third-party origin references, then sync GitHub
+- `summary`: moved reusable content under agent-workflow-foundation; created this project's own local instance and host entries through the common installer; added distribution/export, local/Git source acquisition, update review/apply, customization merges, stable release resolution, and local tool inventory
+- `decisions and evidence`: `docs/collaboration-codex.md` CX-013; accepted requirements in `openspec/specs/foundation-consumers/spec.md`, change history under `openspec/changes/archive/2026-11-19-separate-foundation-and-consumer/`
+- `validation`: 59 tests passed, clean collaboration lint, 47-file product boundary/self-consumer check, both main specs and change valid, and standalone consumer install from the exported package verified
+- `migration`: new product paths start at agent-workflow-foundation; local-template sources are templates/agent-workflow-local inside it; root scripts/validate.py remains maintenance-only. Historical reviewed paths remain in archives as evidence; existing downstream copies migrate deliberately rather than being overwritten
+- `rollback`: selective restore from `/private/tmp/agent-workflow-before-foundation-r1e1p2b6.tgz` or the prior tracked baseline while preserving later user edits; publication is separately authorized by the human in this session
+
+## 2026-11-19 - Final Claude Follow-Up And Queue Cleanup
+
+- `request`: follow up Claude's evaluation and clear remaining collaboration queues; CL-009 records approval to combine review/gate concurrence, defer scaffolding, and the already completed local commit
+- `decisions`: `docs/collaboration-archives/codex-001.md` CX-012 is the full disposition record for CL-007, CL-008, CL-009 and the retired unanswered question; retrieve it with `collab_queue.py codex --id CX-012`
+- `summary`: combined review/concurrence rounds, one host entry file per agent, authoritative roles in project facts, consolidated message/session rules, direct intake links, fewer verification probes, PR-only branch validation with npm caching, promoted main OpenSpec specs, and archived resolved collaboration records
+- `downstream note`: preserve existing wrappers; new Codex setup installs CODEX template content directly into AGENTS.md; role restrictions do not override roster assignments; no setup scaffold or missing-concurrence waiver was introduced
+- `rollback`: restore only this follow-up's changes from commit `130975cd76daf06c908f434c362b7d8f94b722db`, preserving subsequent user edits; OpenSpec and collaboration history remain in their archive directories
+
 ## 2026-11-19 - Critical Review And CL-006 Reconciliation
 
 - `request`: human approved evidence-based critique guidance and asked to check and incorporate Claude's latest suggestions
