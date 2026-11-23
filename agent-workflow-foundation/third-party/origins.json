@@ -5,41 +5,439 @@
     "ponytail": {
       "origin": "https://github.com/DietrichGebert/ponytail",
       "capability": "Implementation minimalism and reuse guidance",
-      "optional": true,
       "installation": "Follow the current official host plugin or extension instructions; native plugin state requires host verification. Shared foundation guidance is the fallback.",
-      "host_configuration_opt_in": true
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/engineering.md"
     },
     "graphify": {
       "origin": "https://github.com/Graphify-Labs/graphify",
       "capability": "Repository discovery and structural indexing",
       "package": "graphifyy",
-      "optional": true,
       "installation": "Use the current supported uv/pipx package installation and host integration instructions at the origin.",
-      "verification": ["graphify", "--version"]
+      "verification": [
+        "graphify",
+        "--version"
+      ],
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/engineering.md",
+      "bootstrap_install_supported": true
     },
     "rtk": {
       "origin": "https://github.com/rtk-ai/rtk",
       "capability": "Compact command output with full diagnostic fallback",
-      "optional": true,
       "installation": "Use the current official release or Cargo installation. Verify this is Rust Token Killer before configuring host hooks.",
-      "verification": ["rtk", "--version"],
-      "host_configuration_opt_in": true
+      "verification": [
+        "rtk",
+        "--version"
+      ],
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/efficiency.md",
+      "bootstrap_install_supported": true
     },
     "markitdown": {
       "origin": "https://github.com/microsoft/markitdown",
       "capability": "External document conversion",
       "package": "markitdown",
-      "optional": true,
       "installation": "Use the supported package installer with only the document extras needed by the project.",
-      "verification": ["markitdown", "--version"]
+      "verification": [
+        "markitdown",
+        "--version"
+      ],
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/references.md"
     },
     "openspec": {
       "origin": "https://github.com/Fission-AI/OpenSpec",
       "capability": "Specification and change lifecycle",
       "package": "@fission-ai/openspec",
-      "optional": true,
       "installation": "Use the current supported npm package installation from the official documentation.",
-      "verification": ["openspec", "--version"]
+      "verification": [
+        "openspec",
+        "--version"
+      ],
+      "integration_status": "foundation-supported",
+      "integration": "guides/tooling-operations.md"
+    },
+    "security-audit": {
+      "origin": "https://github.com/cloudflare/security-audit-skill",
+      "capability": "Source-based security review",
+      "kind": "skill",
+      "disposition": "recommended",
+      "activate_when": "Authentication, authorization, untrusted input, sensitive data, or an explicit audit request",
+      "considerations": "Use guidance mode for focused review; full audit needs explicit scope and upstream sandbox/subagent prerequisites.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/security-audit",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/security.md"
+    },
+    "wireflow-review": {
+      "origin": "https://github.com/JeongK7998/wireflow-review",
+      "capability": "Clickable product flow review",
+      "kind": "skill",
+      "disposition": "recommended",
+      "activate_when": "A multi-screen product has unsettled navigation, recovery, or state retention",
+      "considerations": "Review the wireflow before visual polish; reconcile accepted decisions into project specs.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": ".agents/skills/wireflow-review",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/product-ui.md"
+    },
+    "floorplan": {
+      "origin": "https://github.com/haydenschmitty/floorplan",
+      "capability": "Interactive plain-language application map",
+      "kind": "plugin",
+      "disposition": "conditional",
+      "activate_when": "An existing application needs architecture explanation or onboarding",
+      "considerations": "Alternative to Graphify for human-facing maps; verify map claims against source.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/engineering.md"
+    },
+    "astryx": {
+      "origin": "https://github.com/meta/astryx",
+      "capability": "Reusable React design system",
+      "kind": "library",
+      "disposition": "conditional",
+      "activate_when": "A React 19+ product needs a component system and accepts the current beta maturity",
+      "considerations": "Evaluate against existing components and bundle/design constraints; do not migrate an established system by default.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/product-ui.md"
+    },
+    "anatomy": {
+      "origin": "https://github.com/wheresryan22/anatomy",
+      "capability": "Interactive isometric technical illustrations",
+      "kind": "skill",
+      "disposition": "specialist",
+      "activate_when": "The product needs an explanatory machine or system illustration",
+      "considerations": "Use only for a requested visual deliverable; inspect exported assets and rendering dependencies.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "catalog-only"
+    },
+    "diorama": {
+      "origin": "https://github.com/sloemo01/diorama",
+      "capability": "Rotatable Three.js scenes",
+      "kind": "skill",
+      "disposition": "specialist",
+      "activate_when": "A product explicitly needs an interactive 3D scene",
+      "considerations": "Three.js is the relevant library; review GPU/mobile cost, asset rights, and a usable fallback.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "catalog-only"
+    },
+    "ecc": {
+      "origin": "https://github.com/affaan-m/ECC",
+      "capability": "Engineering skills and agent harness integrations",
+      "kind": "collection",
+      "disposition": "conditional",
+      "activate_when": "A specific missing engineering capability is identified",
+      "considerations": "Select individual components; do not replace foundation authority, memory, hooks, or review lifecycle with the whole harness.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/engineering.md"
+    },
+    "line-art-animation": {
+      "origin": "https://github.com/JDhruv14/line-art-animation",
+      "capability": "Animated SVG line illustrations",
+      "kind": "skill-library",
+      "disposition": "specialist",
+      "activate_when": "A product brief calls for line-art motion",
+      "considerations": "Check reduced motion, performance, and framework compatibility.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "catalog-only"
+    },
+    "grill-me": {
+      "origin": "https://github.com/mattpocock/skills",
+      "capability": "Plan interrogation",
+      "kind": "skill",
+      "disposition": "recommended",
+      "activate_when": "The user requests a deeper assumption interview beyond the existing question model",
+      "considerations": "Foundation-supported interview integration in workflow/grill-me.md preserves one-question pacing and existing authority. The wrapper depends on grilling; both remain separately installed upstream skills.",
+      "installation": "Follow workflow/grill-me.md: install grill-me and grilling from the same reviewed upstream revision into the consuming project using its supported host installer; verify discovery and record actual results locally.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/productivity/grill-me",
+      "required_skills": [
+        "skills/productivity/grilling"
+      ],
+      "integration": "workflow/grill-me.md",
+      "integration_status": "foundation-supported"
+    },
+    "caveman": {
+      "origin": "https://github.com/JuliusBrussee/caveman",
+      "capability": "Short responses and compact tool output",
+      "kind": "skill-proxy",
+      "disposition": "deferred",
+      "activate_when": "Measured context/output cost persists after concise prompts or RTK",
+      "considerations": "Proxy and host changes need separate configuration opt-in; preserve exact diagnostics, code, contracts, and original output access.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/efficiency.md"
+    },
+    "agent-browser": {
+      "origin": "https://github.com/vercel-labs/agent-browser",
+      "capability": "Agent-driven browser interaction",
+      "kind": "cli",
+      "disposition": "conditional",
+      "activate_when": "Interactive inspection needs a browser and an existing host browser tool is insufficient",
+      "considerations": "Choose one interactive driver; it complements rather than replaces repeatable application tests.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/browser.md"
+    },
+    "playwright": {
+      "origin": "https://github.com/microsoft/playwright",
+      "capability": "Repeatable browser acceptance tests",
+      "kind": "test-framework",
+      "disposition": "recommended",
+      "activate_when": "A web product has critical user journeys to verify",
+      "considerations": "Use project test dependencies and current browser/system prerequisites; record passing runs, not merely screenshots.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/browser.md"
+    },
+    "find-skills": {
+      "origin": "https://github.com/vercel-labs/skills",
+      "capability": "Discover missing agent capabilities",
+      "kind": "skill-cli",
+      "disposition": "conditional",
+      "activate_when": "The curated catalog and existing host capabilities do not meet a concrete task",
+      "considerations": "Discovery is not an installation instruction; inspect the selected upstream skill and its dependencies.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/find-skills",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/references.md"
+    },
+    "anti-ui-slop": {
+      "origin": "https://github.com/uizze/uizze",
+      "capability": "Product-grounded interface design review",
+      "kind": "skill",
+      "disposition": "conditional",
+      "activate_when": "A UI needs design direction or finish review",
+      "considerations": "free skills and optional authenticated/paid MCP are separate choices. Choose this or unslop as primary aesthetic guidance.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/anti-ui-slop",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/product-ui.md"
+    },
+    "unslop": {
+      "origin": "https://github.com/heydamir/unslop",
+      "capability": "Improve generic interface drafts",
+      "kind": "skill",
+      "disposition": "conditional",
+      "activate_when": "An existing interface needs a focused design refinement",
+      "considerations": "Alternative to anti-ui-slop; retain brand, usability, and accessibility. Check attribution terms and optional image/video dependencies.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/unslop",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/product-ui.md"
+    },
+    "web-design-guidelines": {
+      "origin": "https://github.com/vercel-labs/agent-skills",
+      "capability": "Review web interface implementation",
+      "kind": "skill",
+      "disposition": "recommended",
+      "activate_when": "A web UI is implemented or changed",
+      "considerations": "Use alongside rendered keyboard, responsive, and error-state checks; a source review alone does not prove accessibility.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/web-design-guidelines",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/product-ui.md"
+    },
+    "canvas-design": {
+      "origin": "https://github.com/anthropics/skills",
+      "capability": "Static PNG/PDF visual composition",
+      "kind": "skill",
+      "disposition": "specialist",
+      "activate_when": "A product needs a poster, static artwork, or supporting visual asset",
+      "considerations": "Static deliverables only; this is not an interactive app layout or HTML canvas implementation tool.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "skill_path": "skills/canvas-design",
+      "integration_status": "catalog-only"
+    },
+    "openseo": {
+      "origin": "https://github.com/every-app/open-seo",
+      "capability": "SEO research and reporting",
+      "kind": "application",
+      "disposition": "needs-confirmation",
+      "activate_when": "A public indexable product has an SEO research requirement",
+      "considerations": "Candidate identity only: OpenSEO names several projects. Confirm the intended origin and API/hosting costs before installing.",
+      "source_checked": "2026-11-23",
+      "source_status": "candidate-identity",
+      "integration_status": "catalog-only"
+    },
+    "openproject": {
+      "origin": "https://github.com/opf/openproject",
+      "capability": "Team project and portfolio management",
+      "kind": "application",
+      "disposition": "specialist",
+      "activate_when": "The team already uses OpenProject or explicitly needs its planning capabilities",
+      "considerations": "Define integration and source-of-truth ownership; do not create an automatically competing task queue.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/workspaces.md"
+    },
+    "voicestudio": {
+      "origin": "https://github.com/debpalash/VoiceStudio",
+      "capability": "Local voice and audio production",
+      "kind": "application",
+      "disposition": "needs-confirmation",
+      "activate_when": "A product needs voice, transcription, dubbing, or audio assets",
+      "considerations": "Candidate identity only: confirm intended project; evaluate model licenses, storage, hardware, and deployment fit.",
+      "source_checked": "2026-11-23",
+      "source_status": "candidate-identity",
+      "integration_status": "catalog-only"
+    },
+    "appflowy": {
+      "origin": "https://github.com/AppFlowy-IO/AppFlowy",
+      "capability": "Collaborative workspace and documentation",
+      "kind": "application",
+      "disposition": "specialist",
+      "activate_when": "The team uses AppFlowy for shared knowledge",
+      "considerations": "Treat as a workspace integration; define which records remain authoritative in Git.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/workspaces.md"
+    },
+    "skillspector": {
+      "origin": "https://github.com/NVIDIA/SkillSpector",
+      "capability": "Inspect third-party agent skills before activation",
+      "kind": "scanner",
+      "disposition": "recommended",
+      "activate_when": "A new or changed external skill bundle is being considered",
+      "considerations": "Use inspection without executing candidate code; choose static versus model-backed analysis deliberately. Scanner findings require triage and do not certify safety.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/security.md"
+    },
+    "hookify": {
+      "origin": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/hookify",
+      "capability": "Project-specific behavior hooks",
+      "kind": "claude-plugin",
+      "disposition": "conditional",
+      "activate_when": "Repeated concrete behavior needs deterministic enforcement in Claude Code",
+      "considerations": "Review event scope, test expected and nonmatching cases, preserve existing hooks, and provide disable instructions; not a portable hook engine.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/host-automation.md"
+    },
+    "claude-code-setup": {
+      "origin": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup",
+      "capability": "Read-only Claude automation recommendations",
+      "kind": "claude-plugin",
+      "disposition": "conditional",
+      "activate_when": "A Claude Code project needs tailored setup advice",
+      "considerations": "Recommendations do not authorize configuration. For Codex and agy use foundation setup and current native host capabilities instead of inventing equivalent plugins.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/host-automation.md"
+    },
+    "ralph-loop": {
+      "origin": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop",
+      "capability": "Iterative agent development loop",
+      "kind": "claude-plugin",
+      "disposition": "deferred",
+      "activate_when": "A bounded implementation task has objective checks and benefits from repeated repair",
+      "considerations": "Require finite iteration/time/cost limits, cancellation, and stagnation handling. A completion phrase is not test evidence; never default to unlimited loops.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/host-automation.md"
+    },
+    "commit-commands": {
+      "origin": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/commit-commands",
+      "capability": "Git workflow convenience commands",
+      "kind": "claude-plugin",
+      "disposition": "conditional",
+      "activate_when": "A Claude Code user requests commit or publication automation",
+      "considerations": "Native git/gh remain the portable fallback; committing, pushing, PR creation, and branch/worktree cleanup have separate scopes of authorization.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/host-automation.md"
+    },
+    "addy-agent-skills": {
+      "origin": "https://github.com/addyosmani/agent-skills",
+      "capability": "Focused software engineering techniques",
+      "kind": "collection",
+      "disposition": "recommended",
+      "activate_when": "A task needs a particular review, debugging, testing, or interview capability",
+      "considerations": "Select one relevant skill and dependencies; avoid bulk-loading the collection or duplicating existing foundation policies.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/engineering.md"
+    },
+    "context7": {
+      "origin": "https://github.com/upstash/context7",
+      "capability": "Current version-specific library documentation",
+      "kind": "mcp-service",
+      "disposition": "recommended",
+      "activate_when": "A dependency API is uncertain or has changed",
+      "considerations": "Match the actual dependency version, inspect cited docs, and fall back to official documentation if unavailable; review current service access limits.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/references.md"
+    },
+    "21st-mcp": {
+      "origin": "https://github.com/21st-dev/magic-mcp",
+      "capability": "UI component discovery and generation",
+      "kind": "mcp-service",
+      "disposition": "conditional",
+      "activate_when": "A compatible frontend needs component references or generated components",
+      "considerations": "Use current 21st MCP setup linked by the origin, rather than a new legacy Magic proxy installation; check credentials, service cost, component terms and fit.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "host_configuration_opt_in": true,
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/product-ui.md"
+    },
+    "strix": {
+      "origin": "https://github.com/usestrix/strix",
+      "capability": "Dynamic penetration testing",
+      "kind": "security-agent",
+      "disposition": "specialist",
+      "activate_when": "An explicit security test needs executable validation on an authorized target",
+      "considerations": "Specify target and permitted actions, isolated environment, resource/model budget, and exclusions; source review does not authorize live exploitation.",
+      "source_checked": "2026-11-23",
+      "source_status": "primary-docs-reviewed",
+      "integration_status": "foundation-supported",
+      "integration": "guides/integrations/security.md"
     }
+  },
+  "defaults": {
+    "optional": true,
+    "auto_install": false,
+    "installation": "Follow the entry integration guide and current official upstream installer; verify and record actual results locally."
   }
 }

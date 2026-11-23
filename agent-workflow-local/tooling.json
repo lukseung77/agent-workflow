@@ -1,3 +1,40 @@
 {
-  "tools": {}
+  "tools": {
+    "grill-me": {
+      "origin": "https://github.com/mattpocock/skills",
+      "revision": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "selected": true,
+      "installed": true,
+      "scope": "project",
+      "host": "codex",
+      "paths": [
+        ".agents/skills/grill-me",
+        ".agents/skills/grilling"
+      ],
+      "upstream_paths": [
+        "skills/productivity/grill-me",
+        "skills/productivity/grilling"
+      ],
+      "required_skills": [
+        "grilling"
+      ],
+      "checked_at": "2026-11-23T03:57:44.261280+00:00",
+      "verification": {
+        "files_present": true,
+        "dependency_present": true,
+        "sha256": {
+          ".agents/skills/grill-me/SKILL.md": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
+          ".agents/skills/grill-me/agents/openai.yaml": "c061e39c3e0f9d865fb1b97556d485704af2a8a58f4b8221a8917a5c2074a32b",
+          ".agents/skills/grilling/SKILL.md": "a146842ed93ca43d833550fa9adf02e58cb63c83fea9d4b4522995b82242d4e2",
+          ".agents/skills/grilling/agents/openai.yaml": "1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b"
+        },
+        "invocation": "pending-next-turn",
+        "skillspector_scan": "not-run"
+      },
+      "adaptation": "agent-workflow-local/rules.md#grill-me",
+      "configuration": "Project-local skill discovery; no global hooks or MCP configuration.",
+      "disable": "Move both installed skill directories outside the project skill search path; remove the Grill Me local-rule section and inventory entry if retiring the integration.",
+      "uninstall": "Remove only .agents/skills/grill-me and .agents/skills/grilling after checking for local edits; shared grilling may be retained if another skill needs it."
+    }
+  }
 }

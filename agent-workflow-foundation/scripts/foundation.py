@@ -236,16 +236,18 @@ def main() -> int:
     export = commands.add_parser("export", help="Package only the distributable foundation")
     export.add_argument("--source", default=str(Path(__file__).resolve().parents[1]))
     export.add_argument("--output", type=Path, required=True)
-    for name in ("init", "update"):
+    for name in ("init", "update", "migrate"):
         command = commands.add_parser(name)
         command.add_argument("--project", type=Path, default=Path.cwd())
         command.add_argument("--source", help="Local foundation/repository path or explicit Git URL")
-        if name == "init":
+        if name in {"init", "migrate"}:
             command.add_argument("--project-name")
             command.add_argument("--foundation-path", default="agent-workflow-foundation")
             command.add_argument("--source-root", default="openspec/explorations")
             command.add_argument("--agents", default="codex")
             command.add_argument("--lead", default="codex")
+            if name == "migrate":
+                command.add_argument("--apply", action="store_true", help="Apply reviewed mechanical migration; preserve semantic review items")
         else:
             command.add_argument("--apply", action="store_true", help="Apply a reviewed conflict-free plan")
             command.add_argument("--keep-local", action="append", default=[], help="Explicitly retain a conflicting path shown in the plan")
@@ -263,7 +265,7 @@ def main() -> int:
             print(json.dumps({"status": "exported", "output": str(args.output), "files": len(files)}))
             return 0
         project = args.project.resolve()
-        if args.command == "init":
+        if args.command in {"init", "migrate"}:
             agents = list(dict.fromkeys("gemini" if value.strip() == "agy" else value.strip() for value in args.agents.lower().split(",")))
             if not agents or any(agent not in HOSTS for agent in agents) or args.lead not in agents:
                 raise ValueError("Choose codex/claude/gemini agents and a lead from that roster")
@@ -271,7 +273,11 @@ def main() -> int:
             inside(project, args.source_root)
             context = {"project_name": args.project_name or project.name, "foundation_root": args.foundation_path, "source_root": args.source_root, "agents": agents, "lead": args.lead, "consultants": ", ".join(agent for agent in agents if agent != args.lead) or "none", "today": date.today().isoformat()}
             with source_tree(source, Path.cwd()) as origin:
-                result = initialize(project, origin, source, context)
+                if args.command == "migrate":
+                    from foundation_migration import migrate
+                    result = migrate(project, origin, source, context, args.apply)
+                else:
+                    result = initialize(project, origin, source, context)
         else:
             state = json.loads(inside(project, STATE).read_text())
             source = args.source or state["source"]

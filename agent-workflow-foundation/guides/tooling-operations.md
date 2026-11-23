@@ -44,3 +44,18 @@ Optional commands have bounded timeouts and warning-based failure handling.
 Verification runs initially and after actual install/configuration/indexing
 commands; the final inventory also obtains RTK's installed version. Normal
 workflow operation does not require every optional integration.
+
+## OpenSpec Integration
+
+When the consumer selects OpenSpec for specifications and change tracking,
+install the official package from the registry origin using its currently
+supported Node/package environment. Inspect existing specs and host configuration
+before initializing or updating generated integrations; preserve local files.
+Verify the actual CLI version and run validation on the project's own specs or
+a disposable example before recording it as verified. Use the existing stage
+and approval rules; installing OpenSpec does not advance a project stage.
+Record version, configuration paths, and validation evidence in local inventory.
+If unavailable, maintain the accepted project specification files directly and
+report any required CLI check as unavailable. Retiring the CLI must not delete
+accepted specifications or change history. Other supported tools are routed by
+`workflow/tooling.md`.

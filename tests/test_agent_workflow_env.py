@@ -326,7 +326,7 @@ class AgentWorkflowEnvironmentTest(unittest.TestCase):
         content = path.read_text(encoding="utf-8")
         self.assertIn("# Existing\n", content)
         self.assertIn("Keep this footer.", content)
-        self.assertIn("./agent-workflow/workflow/agent-tooling.md", content)
+        self.assertIn("./agent-workflow/workflow/tooling.md", content)
         self.assertNotIn("../old-workflow", content)
         self.assertFalse(env.ensure_repository_adapter(self.root, "./agent-workflow"))
 

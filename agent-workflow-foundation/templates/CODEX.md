@@ -7,5 +7,5 @@ Follow `<foundation-root>/workflow/rule-precedence.md` for startup and task rout
 - Stage and next action: `agent-workflow-local/current-state.md`
 - Optional additional restrictions: `agent-workflow-local/agent-workflow-codex.md`
 - Collaboration file: `docs/collaboration-codex.md`
-- Queue: `python3 <foundation-root>/scripts/collab_queue.py codex`
+- Queue: `python3 <foundation-root>/scripts/collab_queue.py codex --startup`
 - Message prefix: `CX` (for example, `CX-001`)

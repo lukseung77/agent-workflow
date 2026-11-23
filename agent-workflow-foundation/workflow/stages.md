@@ -1,5 +1,9 @@
 # Workflow Stages
 
+All stage gate criteria below are additional to the common review/concurrence
+requirements in the Stage Transition Protocol; those requirements apply at every
+transition and need not be repeated in each stage checklist.
+
 The workflow has three stages. Each stage has a clear goal, a set of activities, and explicit gate criteria that must be met before moving forward. Agents must concur before a stage transition happens; the user confirms.
 
 `Setup` and `Complete` are administrative bookend states accepted in restart
@@ -39,7 +43,6 @@ All of the following must be true before moving to Proposal:
 - [ ] No direct conflicts between exploration files
 - [ ] All core domain terms defined and agreed by all agents
 - [ ] All blocking user questions answered
-- [ ] All agents have independently reviewed and concurred readiness
 - [ ] Carry-forward risks documented explicitly (these travel into Proposal as guardrails)
 
 ### Carry-forward risks
@@ -80,7 +83,6 @@ All of the following must be true before moving to Implementation:
 
 - [ ] Proposal covers only scope settled in Exploration
 - [ ] No open conflicts between proposal and exploration files
-- [ ] All consultant agents have reviewed the draft
 - [ ] User has explicitly accepted the proposal
 - [ ] Out-of-scope items are listed explicitly in the proposal
 
@@ -118,8 +120,9 @@ All of the following must be true before moving to Implementation:
 3. All other assigned agents provide explicit concurrence or remaining blockers; a response to a combined review-and-gate request can satisfy this step
 4. User confirms the transition
 5. Lead agent updates the project status in source-of-truth files
-6. Each agent checks its role in `agent-workflow-local/project-facts.md` and any optional per-agent restrictions before acting in the new stage
-7. Lead agent briefly reminds the user of each active agent's role and review lens for the new stage
+6. The lead follows `workflow/tooling-review.md` for this confirmed transition, using its unique collaboration ID.
+7. Each agent checks its role in `agent-workflow-local/project-facts.md` and any optional per-agent restrictions before acting in the new stage
+8. Lead agent briefly reminds the user of each active agent's role and review lens for the new stage, including material tooling recommendations or review limitations
 
 Transitions should never be silent. If a stage transition happens without explicit agent concurrence and user confirmation, the project carries hidden ambiguity into the next stage.
 

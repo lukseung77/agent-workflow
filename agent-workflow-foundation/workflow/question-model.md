@@ -36,6 +36,8 @@ Do not dump background context. If the user wants more context, they will ask.
 
 ## Decision Fatigue Guardrails
 
+For the supported Grill Me installation/host adapter, use `workflow/grill-me.md`.
+
 For an assumption-challenging interview (for example, a "grill-me" style review),
 start with the highest-impact unresolved decision: desired outcome, compatibility,
 scope, evidence, or failure behavior. Inspect project files first, state a concrete

@@ -166,6 +166,9 @@ Partially adopted:
 
 Not adopted:
 - [finding] from [agent] → [reason]
+
+Deferred:
+- [finding] from [agent] → [reason; owner or re-evaluation trigger]
 ```
 
 ## Formal Review Consolidation

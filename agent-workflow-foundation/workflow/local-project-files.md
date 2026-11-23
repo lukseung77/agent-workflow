@@ -7,7 +7,6 @@ The source templates are in `templates/agent-workflow-local/`. This file defines
 - `agent-workflow-local/project-facts.md` - stable local facts: paths, authoritative roles/review lenses, stage tracking, and source-of-truth inventory.
 - `agent-workflow-local/rules.md` - project-specific workflow rules and explicit overrides.
 - `agent-workflow-local/current-state.md` - compact restart snapshot: current stage, current artifact, next lead action, blockers, and update date.
-- `agent-workflow-local/agent-workflow.md` - legacy shared override, read only if an existing project uses it; new shared overrides go in `rules.md`. Existing precedence remains supported.
 - `agent-workflow-local/agent-workflow-{agent}.md` - optional agent-specific restrictions; roles and review lenses remain in `project-facts.md`.
 - `agent-workflow-local/references/reference.md` - external reference registry.
 - `agent-workflow-local/references/markitdown/` - converted Markdown outputs for bulky external references.

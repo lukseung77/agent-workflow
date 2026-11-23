@@ -4,6 +4,68 @@ The master-agent records canonical `agent-workflow` updates here when they are n
 
 Keep entries compact. Use this file for rollback orientation and downstream update notes, not detailed design discussion.
 
+## 2026-11-23 - Foundation GitHub Publication
+
+- `request`: sync the foundation to GitHub and establish it as the basis of the agent-workflow repository
+- `summary`: publish the accumulated foundation integrations, tooling-review refinements, Claude follow-up, migration support, and this repository's development evidence; README explicitly identifies foundation as the delivered product
+- `target`: lukseung77/agent-workflow default master; fast-forward from the existing working branch, preserving remote history; synchronize the working branch too
+- `validation`: 71 tests, three main specifications, clean collaboration lint, and boundary/self-consumer validation passed before publication; publication result and remote CI are verified after the publishing commit
+- `boundary`: third-party installed skill directories remain ignored; consumer export still includes only foundation product source, excluding this project's local state and history
+- `rollback`: use a reviewed revert of the publishing change on master; do not force-push or reset shared history
+
+## 2026-11-23 - Claude CL-010 / CL-011 Follow-Up
+
+- `request`: review and accept Claude's suggestions, including its recorded human decisions about existing-project legacy support and stage/manual tooling-review triggers
+- `summary`: consolidated tooling and registry defaults; renamed reusable docs to guides; unified setup and lead startup; isolated migration with read-only preview/apply; removed dead wrappers; corrected gates, review labels, deferral format, and duplication
+- `decisions`: `docs/evaluations/claude-follow-up-2026-11-23.md` dispositions all findings; retained safe template merge bases and conservative semantic migration review rather than adopting destructive or lossy interpretations
+- `validation`: 71 tests, three main specs, zero lint errors/warnings, 53-file boundary/self-consumer check; literal paths, supported registry pointers, fresh export/install, and exported migration CLI preview/apply/lint verified
+- `consumer impact`: product docs paths now use guides; tooling policy is workflow/tooling.md; setup is templates/new-project-setup.md; tooling review accepts manual/stage-change only. This instance applied the shared update without conflicts. Historic evidence and installed tools are preserved
+- `rollback`: selectively restore this follow-up's paths/policy/scripts/tests from a reviewed prior snapshot and apply the shared lifecycle update; do not revert unrelated uncommitted work or later consumer history. No GitHub sync performed
+
+## 2026-11-23 - Setup And Stage Tooling Freshness Reviews
+
+- `request`: check current tools/plugins/skills during new-project setup and automatically invoke the same process on OpenSpec stage changes
+- `summary`: added the agent-run upstream/discovery review procedure, read-only due checker and evidence recorder, local review-history scaffold, setup/transition invocation, and resume recovery; recommendations remain separate from installations
+- `decisions and evidence`: `docs/collaboration-codex.md` CX-018; `agent-workflow-foundation/workflow/tooling-review.md`; actual local findings in `agent-workflow-local/tooling-reviews.json`
+- `validation`: 65 tests including six tooling-review cases, three specs, clean collaboration lint, 61-file self-consumer/boundary validation, and exported fresh-consumer setup review check passed
+- `initial findings`: Grill Me revision matches current upstream; GitHub stable OpenSpec v2.1.1 is newer than installed/CI-pinned 1.3.1, retained pending focused compatibility review. No upgrade performed
+- `distribution and rollback`: only the empty review-history template is distributed; agent sessions perform online checks, not a background daemon. Revert CX-018 source/process changes and review/apply the lifecycle update if retiring the feature; preserve actual review evidence and installed tools
+
+## 2026-11-23 - Supported Foundation Tool Integrations
+
+- `request`: incorporate all listed optional tools into master/foundation except SEO/voice and visual assets/animation
+- `summary`: added a capability router and eight focused setup/use adapters for engineering, efficiency, references, UI, browser, security, host automation, and workspaces; 29 total registry entries now have supported integration pointers including the existing Grill Me and OpenSpec integrations
+- `decisions and evidence`: `docs/collaboration-codex.md` CX-017; `agent-workflow-foundation/workflow/tool-integrations.md`
+- `validation`: 59 tests, three specs, clean collaboration lint, 58-file boundary/self-consumer validation, complete integration-pointer/exclusion checks, and export-to-fresh-consumer smoke check passed
+- `distribution`: origins and first-party adapters only; consumer installation stays selective. Six excluded entries remain catalog-only. No third-party installation, live provider calls, global host changes, external deployment, or GitHub publication was performed
+- `rollback`: selectively revert CX-017 product adapters, routing, and registry fields, then review/apply the foundation lifecycle update; preserve consumer installations and unrelated earlier changes
+
+## 2026-11-23 - Foundation Grill Me Integration
+
+- `request`: incorporate Grill Me into the master/foundation as well as this local consumer
+- `summary`: added a shared Grill Me setup/invocation adapter, promoted its catalog recommendation, routed interviews to it, and included it in new-project setup guidance; replaced the local duplicate with the shared integration
+- `decisions and evidence`: `docs/collaboration-codex.md` CX-016; `agent-workflow-foundation/workflow/grill-me.md`
+- `validation`: 59 tests, three specs, clean collaboration lint, 49-file boundary/self-consumer validation, and fresh-consumer setup smoke check passed
+- `distribution`: foundation delivers first-party integration and official origin/dependency guidance; consumers install both upstream skills separately. No third-party prompts bundled, automatic downloads, or GitHub publication added
+- `rollback`: revert the CX-016 integration edits and review/apply the foundation lifecycle update; retain this consumer's installed upstream pair and provenance unless separately retired
+
+## 2026-11-23 - Project-Local Grill Me Installation
+
+- `request`: human requested having the Grill Me skill available
+- `summary`: used skill-installer to install mattpocock/skills Grill Me and its grilling dependency at revision abeeaf95660ba9e8b7c753eb38f441ca707a8823 into this consumer's .agents/skills; preserved upstream files and recorded local question-pacing/authority adaptations
+- `decisions and evidence`: `docs/collaboration-codex.md` CX-015; file hashes, provenance, and lifecycle instructions in `agent-workflow-local/tooling.json`
+- `distribution`: installed files are Git-ignored and outside foundation; no global host settings or foundation default installation changed
+- `rollback`: remove the selected local integration rules/inventory and installed directories after checking for edits and other users of grilling; retain history and upstream origin catalog
+
+## 2026-11-23 - Product Capability Selection Catalog
+
+- `request`: evaluate 28 named tools/plugins/skills, incorporate useful capabilities, and prepare others for future product needs
+- `summary`: added a routed product-selection guide and 30 optional origin entries covering all requests and alternatives; setup selects by product need, keeps tools inactive until chosen, and records actual consumer installation/verification rather than vendoring third parties
+- `decisions and evidence`: `docs/collaboration-codex.md` CX-014; detailed evaluations and primary-source links in `agent-workflow-foundation/docs/tool-selection.md`
+- `validation`: 59 tests, three OpenSpec specs, clean collaboration lint, 48-file distribution/self-consumer check, and catalog coverage/inactive-default checks passed
+- `downstream note`: this instance applied the shared lifecycle update with no actions/conflicts; new catalog entries do not add automatic installers or enable tools. OpenSEO/VoiceStudio candidate identities need confirmation. No third-party package or host/service configuration was installed or runtime-certified
+- `rollback`: selectively revert the CX-014 product and documentation changes, then review/apply the shared foundation update to refresh this instance's baseline; preserve unrelated consumer customizations
+
 ## 2026-11-19 - Foundation Product And Self-Consumer Structure
 
 - `request`: implement the agreed foundation product model, self-consuming local scaffold, official third-party origin references, then sync GitHub

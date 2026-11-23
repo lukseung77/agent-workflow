@@ -7,5 +7,5 @@ Follow `<foundation-root>/workflow/rule-precedence.md` for startup and task rout
 - Stage and next action: `agent-workflow-local/current-state.md`
 - Optional additional restrictions: `agent-workflow-local/agent-workflow-gemini.md`
 - Collaboration file: `docs/collaboration-gemini.md`
-- Queue: `python3 <foundation-root>/scripts/collab_queue.py gemini`
+- Queue: `python3 <foundation-root>/scripts/collab_queue.py gemini --startup`
 - Message prefix: `GM` (for example, `GM-001`)

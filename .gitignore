@@ -1,3 +1,7 @@
 __pycache__/
 *.py[cod]
 .DS_Store
+
+# Project-installed upstream skills; origins/revisions are recorded in local inventory.
+/.agents/skills/grill-me/
+/.agents/skills/grilling/

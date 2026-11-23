@@ -24,3 +24,10 @@ before making it a product default.
 No missing-concurrence waiver or defined-term formatting change has been adopted.
 Foundation and scaffold updates use the same lifecycle tool as other consumers,
 with review and merges preserving this instance's local customizations.
+
+## Grill Me
+
+Grill Me and grilling are installed in this project's `.agents/skills/`.
+Use the foundation's `workflow/grill-me.md` integration and question pacing;
+this instance needs no additional interview override. Installed revision and
+verification evidence remain in `agent-workflow-local/tooling.json`.

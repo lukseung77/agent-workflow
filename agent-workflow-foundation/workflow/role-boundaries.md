@@ -13,13 +13,18 @@ additional restrictions and cannot independently redefine those roles.
 - Declares stage readiness and records stage transitions after user confirmation.
 - Keeps `agent-workflow-local/project-facts.md` and `agent-workflow-local/current-state.md` accurate enough for another lead session to resume from files.
 
+Run `scripts/collab_queue.py <agent> --startup` for the combined active queue,
+user decisions, and responses to your open review requests. Read referenced
+responses before consolidating; surface unresolved user decisions in the closing
+message. The startup command performs no online tooling review.
+
 ## Consultant Agents
 
-- Write only to their own `docs/collaboration-[agent].md`, except for allowed downstream external-reference registry updates.
+- Write only to their own `docs/collaboration-[agent].md`; operational-reference exceptions are owned by `workflow/markitdown.md` and may be restricted locally.
 - Surface gaps, conflicts, risks, review findings, and non-blocking suggestions.
 - Request source-of-truth or GitHub changes from the lead through collaboration files.
 - Do not edit source-of-truth files, run GitHub sync commands, declare stage transitions, or edit another agent's collaboration file unless the user explicitly authorizes that specific action.
-- Requests to change or submit feedback to the upstream foundation follow `workflow/upstream-feedback.md`; local project authority does not grant upstream write access.
+- Requests to change or submit feedback to the upstream foundation follow `workflow/upstream-feedback.md`; authority is defined there.
 
 ## Phase Review Lenses
 
@@ -71,6 +76,6 @@ work. Do not silently substitute for an explicitly required tool or skill.
   escalation to broader access.
 
 - A consultant may challenge a lead decision by logging a `gap` item, but the challenge is not a stage or source-of-truth change by itself.
-- A user may temporarily authorize a consultant for a specific downstream project write or GitHub action. Record that authorization in collaboration files. This does not authorize upstream foundation changes.
-- Do not let decisions remain only in collaboration files; accepted decisions must flow into source-of-truth files.
-- Downstream project lead authority does not include authority to change the upstream foundation repository.
+- A user may temporarily authorize a consultant for a specific downstream project write or GitHub action. Record that authorization in collaboration files.
+- Decision promotion follows `workflow/decision-protocol.md#recording-decisions`.
+- Upstream authority follows `workflow/upstream-feedback.md`.

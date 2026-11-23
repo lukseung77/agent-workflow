@@ -4,9 +4,9 @@ This file defines the standard message format for per-agent collaboration files.
 
 ## Rules
 
-1. Each agent writes only to its own collaboration file, except for allowed downstream operational updates to `agent-workflow-local/references/reference.md`. Project-specific restrictions are defined in local rules.
+1. Write authority follows `workflow/role-boundaries.md`; reference-registry exceptions follow `workflow/markitdown.md` and local restrictions.
 2. Cross-agent messages must name the target agent explicitly.
-3. Durable decisions do not belong here — put them in the source-of-truth files.
+3. Promote decisions under `workflow/decision-protocol.md#recording-decisions`.
 4. Work discovery uses `status: open|active` plus `to: <agent>|all`. Message `type` controls handling, not visibility.
 5. `to: all` means every agent except the sender. Name the sender explicitly when self-addressing is intentional.
 6. Lifecycle status and finding disposition are separate:
@@ -161,7 +161,6 @@ Lint warns on sender/recipient names not represented by a collaboration file
 participants without a file. Warnings preserve compatibility; inspect them before
 relying on a queue because a misspelled recipient can hide work.
 
-Projects that cannot run the script may retain persistent index files as a compatibility fallback. Such indexes should contain active items only.
 
 ## Defined Terms
 

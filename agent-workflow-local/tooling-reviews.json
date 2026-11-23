@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "reviews": [
+    {
+      "context": {
+        "stage": "Implementation",
+        "artifact": "agent-workflow-foundation"
+      },
+      "transition_id": null,
+      "checked_at": "2026-11-23T04:12:49.030056+00:00",
+      "tools": {
+        "grill-me": {
+          "status": "current",
+          "source": "https://github.com/mattpocock/skills/commit/abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+          "observed": "Upstream main abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+          "decision": "retain",
+          "summary": "GitHub commits API matches the installed revision; local file hashes match inventory. Host interview invocation remains separately unverified."
+        },
+        "openspec": {
+          "status": "update-available",
+          "source": "https://github.com/Fission-AI/OpenSpec/releases/tag/v2.1.1",
+          "observed": "Latest GitHub stable release v2.1.1; installed CLI 1.3.1",
+          "decision": "defer",
+          "summary": "Retain installed and CI-pinned 1.3.1. Reviewed latest release notes; cross-major migration compatibility needs a focused review before upgrade. This request authorizes the freshness process, not automatic migration."
+        }
+      },
+      "discovery": {
+        "status": "checked",
+        "sources": [
+          "https://github.com/mattpocock/skills",
+          "https://github.com/vercel-labs/skills",
+          "https://github.com/addyosmani/agent-skills"
+        ],
+        "summary": "Reviewed primary capability/discovery collections against this workflow-maintenance task. Existing supported sources cover current needs; no additional skill selected. Excluded SEO/voice and visual-generation categories remain excluded."
+      },
+      "event": "resume",
+      "status": "completed",
+      "recorded_at": "2026-11-23T04:12:49.075637+00:00"
+    }
+  ]
+}

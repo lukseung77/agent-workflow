@@ -7,25 +7,20 @@ collaboration history and no vendored third-party implementations.
 
 ## Start
 
-Use `templates/project-init.md` for guided setup and
+Use `templates/new-project-setup.md` for guided setup and
 `workflow/foundation-lifecycle.md` for install, customization, and update review.
 Normal startup and focused rules are routed by `workflow/rule-precedence.md`.
 A project uses its own `agent-workflow-local/`, host entry files, and `docs/`.
 
-```sh
-python3 scripts/foundation.py init --project PROJECT_PATH --source SOURCE --project-name NAME --agents codex --lead codex
-python3 scripts/foundation.py update --project PROJECT_PATH --source SOURCE
-python3 scripts/foundation.py update --project PROJECT_PATH --source SOURCE --apply
-```
-
-Commands above are invoked from this directory; from elsewhere use the actual
-foundation script path. Python 3.9+ is required. Git is needed for Git sources
-and automatic three-way merging; without it conflicting local edits stay
-blocked for manual review. The foundation repository consumes these same tools.
+Python 3.9+ is required. Git supports remote sources and three-way merges.
+Use the linked setup and lifecycle guides for commands. Existing consumers
+upgrading from the old layout follow `workflow/migration.md`; new projects use
+only the current setup.
 
 ## Third Parties
 
-`third-party/origins.json` identifies optional capabilities and official sources.
-Install only selected tools from current upstream instructions, then record the
-actual versions and configuration in the consuming project's local inventory.
-First-party workflow rules and scripts remain part of the foundation product.
+`third-party/origins.json` is the capability catalog. `workflow/tooling.md` owns
+selection and lifecycle policy and routes the focused adapters in `guides/`.
+Freshness review timing and evidence are defined in `workflow/tooling-review.md`.
+No third-party implementation or consuming project's installation evidence is
+bundled.

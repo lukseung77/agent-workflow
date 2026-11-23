@@ -8,6 +8,6 @@ Follow `agent-workflow-foundation/workflow/rule-precedence.md` for startup and t
 - Stage and next action: `agent-workflow-local/current-state.md`
 - Optional additional restrictions: `agent-workflow-local/agent-workflow-claude.md`
 - Collaboration file: `docs/collaboration-claude.md`
-- Queue: `python3 agent-workflow-foundation/scripts/collab_queue.py claude`
+- Queue: `python3 agent-workflow-foundation/scripts/collab_queue.py claude --startup`
 - Message prefix: `CL` (for example, `CL-001`)
 <!-- agent-workflow:startup:end -->

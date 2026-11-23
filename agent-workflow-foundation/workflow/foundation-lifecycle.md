@@ -12,11 +12,8 @@ foundation or its repository URL; a fresh agent needs that source location or
 an installed entry skill to discover the product. A repository source exports
 only its `agent-workflow-foundation/` child, never its project state or history.
 
-Run the first-party lifecycle tool from an existing foundation:
-
-```sh
-python3 <foundation-root>/scripts/foundation.py init --project . --source SOURCE --project-name NAME --agents codex,claude,gemini --lead codex
-```
+Follow `templates/new-project-setup.md` for the single initialization command
+and guided setup.
 
 SOURCE can be a foundation directory, its containing repository, or an explicit
 HTTPS/SSH Git URL. Local paths copy actual working-tree contents, including unpublished
@@ -64,11 +61,11 @@ Review affected behavior, run the consumer's collaboration lint and relevant
 checks, and record adopted/deferred changes and rollback information in its own
 collaboration history. The foundation repository follows this same process.
 
-## Third-Party Capabilities
+## Existing Local Files And Migration
 
-Use `third-party/origins.json`, then the current official installation guidance,
-to select the latest compatible stable versions of capabilities actually needed.
-The registry contains origins and guidance, not vendored tool/skill code. Keep
-exact installed versions, origin, verification, and host configuration in
-`agent-workflow-local/tooling.json`. Unknown plugin state must stay unknown.
-Package installation and host changes use the existing explicit opt-ins.
+Pre-existing local files are preserved as deliberate customizations. Their merge
+base is the incoming template, not the local content: using local content as the
+base could overwrite those customizations on a later template update. A migrated
+consumer must review its first update, and overlapping template edits may require
+manual reconciliation. Existing-layout inventory and mechanical migration are in
+`workflow/migration.md`. Third-party lifecycle is owned by `workflow/tooling.md`.

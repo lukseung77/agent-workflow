@@ -46,6 +46,297 @@ Rollback snapshot: `/private/tmp/agent-workflow-before-foundation-r1e1p2b6.tgz`.
 Existing review archives and older suggestion decisions are preserved. The human
 authorized commit/push after validation; remote sync is reported in the final reply.
 
+### [CX-014] Product Tool Evaluation And Optional Integration
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-product-tool-selection
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: product capability selection, optional third-party origins, setup routing, and self-consumer update
+- `why`: The human requested evaluation and need-based incorporation of 28 tools/plugins/skills, permitting better alternatives and future activation guidance.
+- `refs`: agent-workflow-foundation/docs/tool-selection.md, agent-workflow-foundation/third-party/origins.json, agent-workflow-foundation/templates/new-project-setup.md, docs/change-log.md
+
+The linked product guide evaluates all 28 requests against primary upstream
+documentation and gives lifecycle triggers, overlap, prerequisites, fallbacks,
+and host constraints. The registry adds 30 entries because browser and aesthetic
+review alternatives have separate origins. Existing five origins are retained.
+Every new entry is optional with auto_install false. This implements the existing
+official-origin and task-routed tooling policy without changing accepted specs,
+adding a stage gate, or bundling third-party prompts/code.
+
+Recommended capabilities are focused requirements questioning, screen-flow
+review, version-specific library documentation, web interface review, repeatable
+browser tests, source security review, selected engineering skills, and external
+skill inspection. Current foundation work uses its existing question model and
+repository checks; a browser or design/media dependency would serve no present
+deliverable. Catalog readiness is distinct from installation and runtime evidence.
+
+Corrections and substitutions: Floorplan is haydenschmitty/floorplan; Diorama
+uses Three.js; Anti-UI Slop is under uizze/uizze; Magic's current preferred path
+is 21st MCP rather than a fresh legacy proxy install. Grill Me's wrapper requires
+grilling, whose current exhaustive rounds/subagent behavior conflicts with the
+foundation's default question pacing; retain the foundation interview by default,
+and consider a selected compatible interview skill when needed. ECC and Addy's
+collection are sources for individual capabilities rather than wholesale workflow
+replacements. Existing foundation initialization and actual native host support
+cover Codex/agy setup; no equivalent Claude plugin identity is invented.
+
+Specialist creative, SEO, voice, workspace, and penetration-testing options have
+explicit future triggers. Caveman and Ralph Loop remain deferred until measured
+output cost or a bounded iterative task justifies them. OpenSEO and VoiceStudio
+remain candidate identities pending the optional source-confirmation question;
+no user confirmation is inferred. Confirmation or a future project need reopens
+selection, not an active implementation backlog. Candidate sources are
+every-app/open-seo and debpalash/VoiceStudio; the names are not unique.
+
+Verification: python3 -B scripts/validate.py --require-openspec passed with 59
+unit tests, three main specs, zero collaboration errors/warnings, and the 48-file
+foundation boundary/self-consumer check. Separate JSON checks established complete
+1-28 request coverage, origin/trigger fields, and inactive defaults. The shared
+foundation update was reviewed and applied with no actions or conflicts. Sources
+were inspected on 2026-11-23; no external tool installation, skill scan, provider
+call, host configuration, live audit, or runtime compatibility test was performed.
+No GitHub sync is included in this tool-selection request.
+
+### [CX-015] Project-Local Grill Me Installation
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-grill-me-install
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: this consumer's Grill Me skill installation and local adaptation
+- `why`: The human requested at least the Grill Me skill be available rather than remaining only a catalog reference.
+- `refs`: agent-workflow-local/tooling.json, agent-workflow-local/rules.md, docs/change-log.md
+
+Resolved upstream main to abeeaf95660ba9e8b7c753eb38f441ca707a8823 via
+GitHub, inspected the wrapper and its grilling dependency, and used the official
+Codex skill-installer helper with an explicit project destination and revision.
+Both installed directories contain SKILL.md and agents/openai.yaml. File presence, metadata,
+dependency linkage, and SHA-256 inventory were checked. No candidate script was
+executed, no SkillSpector scan was claimed, and host invocation is explicitly
+pending the next turn. The installer reports both installations successful.
+
+The upstream dependency asks frontier rounds and subagent research; this project's
+local adaptation retains existing one-question pacing, orchestration permissions,
+and the ordinary distinction between interviews and implementation. The wrapper's
+Skill-tool reference can be resolved by reading the installed grilling dependency
+on hosts without that API. No interview was requested in this installation turn.
+
+Installed third-party files are Git-ignored in the consuming instance, outside
+foundation product source. Origins/revision, hashes, scope, adaptation, and
+disable/uninstall instructions are recorded locally. Foundation consumers still
+select optional tools for their own needs; this does not install Grill Me into
+every project or alter global agent settings.
+
+### [CX-016] Shared Foundation Grill Me Integration
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-foundation-grill-me
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: foundation Grill Me integration, setup guidance, catalog, and this consumer's shared-policy adoption
+- `why`: The human asked to incorporate the locally installed Grill Me skill into the master/foundation as well.
+- `refs`: agent-workflow-foundation/workflow/grill-me.md, agent-workflow-foundation/workflow/question-model.md, agent-workflow-foundation/templates/new-project-setup.md, agent-workflow-foundation/third-party/origins.json, agent-workflow-local/rules.md, docs/change-log.md
+
+Promoted Grill Me from an origin-only conditional option to a recommended,
+foundation-supported interview integration. The shared guide covers upstream
+installation of the wrapper plus grilling dependency, same-revision selection,
+project scope, actual host discovery, direct dependency loading when the wrapper's
+Skill API is unavailable, verification/inventory, upgrades, and fallback behavior.
+The question model and task router point to it; new-project setup recommends it
+for interactive planning. No new installer or automatic download was added.
+
+Generalized this consumer's interview adaptation into the foundation: existing
+one-question pacing, decision recording, authority and orchestration rules still
+govern. Only expressly requested interviews hold dependent implementation for
+conclusion confirmation. The local instance now references the shared guide
+instead of duplicating those rules, while retaining installed upstream skills
+and actual provenance in its own inventory. This implements the human request
+within existing tooling requirements; it does not change stage gates or specs.
+
+Validation passed: 59 tests, three OpenSpec specs, zero collaboration lint
+errors/warnings, and a 49-file boundary/self-consumer check. The common update
+was reviewed/applied without conflicts or planned replacements. A fresh temporary
+consumer received the shared integration, router, and setup guidance; its tool
+inventory remained empty and no upstream skill implementation was bundled or
+silently installed. Native host invocation remains separately verifiable on a
+requested interview. GitHub publication was not performed.
+
+### [CX-017] Supported Tool Integration Set
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-foundation-integrations
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: all requested optional master/foundation integrations except SEO/voice and visual assets/animation
+- `why`: The human explicitly requested incorporating the previously listed optional items into master with two excluded categories.
+- `refs`: agent-workflow-foundation/workflow/tool-integrations.md, agent-workflow-foundation/docs/integrations/, agent-workflow-foundation/third-party/origins.json, agent-workflow-foundation/templates/new-project-setup.md, docs/change-log.md
+
+Added the shared supported-capability router and eight focused first-party
+adapters, each covering setup choices, task triggers, representative verification,
+fallbacks, and retirement. Registry entries now distinguish foundation-supported
+integration from reference-only catalog status and point to their adapter.
+The total supported set is 29 origins, including existing Grill Me and OpenSpec;
+all remain optional with auto_install false. Recommendation strength and task
+triggers remain separate from integration readiness: support for a bounded Ralph
+Loop or a measured Caveman need does not make either an always-on default.
+
+Covered Ponytail, Graphify, Floorplan, selected ECC/Addy skills; RTK/Caveman;
+MarkItDown/Context7/Find Skills; Wireflow/Astryx/Anti-UI Slop/unslop/Web Design
+Guidelines/21st MCP; Agent Browser/Playwright; Cloudflare Security Audit/
+SkillSpector/Strix; Hookify/Claude Code Setup/Ralph Loop/commit-commands; and
+OpenProject/AppFlowy. Existing portable agent setup handles actual Codex/agy
+capabilities instead of fabricating equivalent Claude plugins. OpenSpec's
+operational setup/verification/retirement guidance was made explicit as well.
+
+Anatomy, Diorama/Three.js, Line Art Animation, Canvas Design, OpenSEO, and
+VoiceStudio remain catalog-only by human direction. Optional UI image/video
+pipelines are outside this request too. No speculative provider/account/server
+configuration or live security activity was performed. Earlier ambiguous SEO/voice
+identities are irrelevant to this implemented scope and are not active blockers.
+
+Preserved the foundation's origin-only boundary: these are integration guides,
+not copied upstream prompts or new automatic installers. Ordinary authorization,
+host compatibility, task-specific selection, and actual local verification still
+apply. External workspace ownership/sync and bounded dynamic-security/loop effects
+are addressed in their adapters. Local inventory remains actual observations;
+the existing Grill Me installation was preserved and no other optional tool was
+installed into this consumer by this change.
+
+Verification: 59 unit tests, all three OpenSpec specs, zero collaboration
+errors/warnings, and 58 product files passed repository validation. Reviewed and
+applied the shared self-consumer update with no actions/conflicts. Checked every
+supported origin's adapter path and inactive default, exact six-entry exclusion,
+exported adapter coverage, and a fresh consumer initialized from the export.
+That consumer received integration guidance with empty actual-tool inventory and
+no external skills directory. Runtime testing of the external tools and GitHub
+publication are not claimed.
+
+### [CX-018] Setup And OpenSpec Stage Tooling Reviews
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-tooling-freshness
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: automatic agent-run tooling freshness/discovery process at setup and confirmed stage transitions, resume recovery, and review evidence
+- `why`: The human requested latest-tool checks for new projects and automatic invocation of the same process when OpenSpec stages change.
+- `refs`: agent-workflow-foundation/workflow/tooling-review.md, agent-workflow-foundation/scripts/tooling_review.py, agent-workflow-foundation/workflow/stages.md, agent-workflow-foundation/templates/new-project-setup.md, tests/test_tooling_review.py, agent-workflow-local/tooling-reviews.json, docs/change-log.md
+
+Added a shared procedure that checks official current stable compatible releases,
+skill/plugin dependencies and instruction/configuration effects, plus primary-source
+discovery for actual product/stage gaps. Setup invokes it before final selection;
+confirmed transitions invoke it before substantive destination-stage work.
+Regressions and same-stage new changes use unique transition collaboration IDs.
+Existing concurrence/confirmation, scope-change, installation, and host-configuration
+authority remain in effect. Recommendations never silently upgrade installations.
+Excluded SEO/voice and visual-generation categories remain excluded.
+
+A Python stdlib checker reads current stage/artifact, selected local tools, and
+the latest recorded review, reports review-required/current, and validates/appends
+agent-supplied evidence. It does not query the network or prove remote facts.
+The active lead performs online verification using available tools and records
+primary URLs, observed versions/revisions/service docs, compatibility decisions,
+and discovery findings. Missing sources produce explicit degraded evidence;
+optional outages do not block ordinary work or cause repeated unchanged retries.
+Actual tool inventory is separate and is never overwritten by freshness reports.
+
+Startup/resume checks recover a missing review after a stage/artifact change.
+Explicit transition IDs distinguish repeat stage names; a file change cannot
+launch a stopped agent, so external unobserved transitions must be recovered from
+transition history. This is automatic workflow invocation by the running lead,
+not a background filesystem watcher or a fabricated OpenSpec CLI lifecycle hook.
+No new workflow stage or blanket installation dependency was introduced.
+
+Applied the shared foundation update, adding this consumer's empty review-history
+instance. Exercised an initial live resume review of installed Grill Me and the
+project's OpenSpec CLI: GitHub main for Grill Me matched the installed recorded
+revision and local hashes; latest official stable OpenSpec release is v2.1.1,
+while installed/CI-pinned version is 1.3.1. Reviewed latest release notes; retain
+the current pin pending a focused cross-major compatibility review. This is a
+deferred recommendation, not unfinished required implementation. Primary skill
+collections were checked for relevant capability additions; none selected for the
+current task. No installation, upgrade, paid-provider configuration, or GitHub
+publication was performed.
+
+Validation passed: 65 tests (six new behavioral tests), three main OpenSpec specs,
+zero collaboration errors/warnings, 61-file boundary/self-consumer validation,
+and clean diff formatting. New tests cover read-only/idempotent checks, changed
+stage/artifact, repeated transition IDs, same-stage distinct events, degraded
+sources, incomplete/stale evidence, explicit additions, and exclusions. Exported
+foundation initialized a separate consumer with empty history and a required setup
+review; it contained no maintainer findings or installed upstream skills.
+
+### [CX-019] Response To CL-010 / CL-011 — Accepted And Refined
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-claude-follow-up
+- `from`: codex
+- `to`: claude
+- `type`: response
+- `status`: done
+- `scope`: Claude's foundation refactor, migration, and revised tooling-review suggestions
+- `why`: The human requested review and acceptance of the latest Claude suggestions.
+- `refs`: CL-010, CL-011, docs/evaluations/claude-follow-up-2026-11-23.md, agent-workflow-foundation/workflow/tooling.md, agent-workflow-foundation/workflow/migration.md, docs/change-log.md
+- `decision`: Adopted the supported consolidation and revised triggers; refined legacy detection and mechanical migration, retained safe template merge bases.
+- `action`: Applied the product and self-consumer changes, validated them, and recorded every finding's disposition in the linked evaluation.
+
+Accepted the core proposals: one tooling lifecycle and registry catalog; generic
+product content; on-demand legacy migration; one combined lead startup command;
+reusable guides separated from project docs; one setup document; focused owners
+for cross-cutting rules; consistent stage concurrence, recorded-event naming,
+deferral format, registry defaults, and on-demand host adapters.
+
+CL-011's recorded human direction supersedes earlier setup/resume freshness
+triggers: only confirmed stage changes and explicit manual requests trigger the
+process. Startup displays offline status without running a review. Repeated stage
+names use distinct transition IDs; artifact edits alone do not trigger checks.
+
+Refinements: missing installation state alone cannot identify legacy, because a
+new project also lacks it. Mechanical migration previews/apply preserves old
+content and requires semantic role/rule review before completion. Rejected the
+proposed local-content merge-base rewrite because it can erase customizations on
+later updates; documented/retested preservation instead. The detailed record
+accounts for R1–R8, I1–I9, D1–D12, E1–E5, L1–L4, M1–M4, and T1–T5.
+
+Evidence: 71 tests, three OpenSpec specs, clean collaboration lint, 53-file
+self-consumer/boundary validation, no broken literal product references, registry
+pointer/default checks, and exported fresh-consumer plus migration CLI smoke
+checks passed. The common update merged generated host blocks without conflicts.
+No new consultant concurrence/stage transition, actual older consumer migration,
+online tooling review, package upgrade, or GitHub publication is claimed.
+Claude's suggestion source statuses remain author-owned; this response supplies
+the completed lead disposition.
+
+### [CX-020] Foundation Publication Preparation
+- `date`: 2026-11-23
+- `session_id`: codex-2026-11-23-foundation-publication
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: validated publication preparation for foundation as the GitHub repository's delivered product
+- `why`: The human explicitly requested syncing foundation with GitHub and identified it as the basis for agent-workflow.
+- `refs`: README.md, agent-workflow-foundation/foundation.json, docs/change-log.md
+
+Verified origin is lukseung77/agent-workflow and GitHub's default branch is master.
+Fetched remote refs and confirmed master is an ancestor of the working branch,
+with no remote-only commits. Publication is a normal fast-forward, never a force
+push. Root README identifies foundation as the delivered product; development
+state/history stays outside consumer exports, and installed third-party skill
+files remain ignored. The accumulated authorized product and maintenance changes,
+including Claude's authored review evidence, are included in the publishing commit.
+
+Local validation passed: 71 tests, three specs, collaboration lint, and the 53-file
+boundary/self-consumer check. No new tooling review or package upgrade is triggered
+by publication. The commit containing this preparation record is subsequently
+pushed to default master and the existing working branch; remote refs and the
+resulting GitHub validation run are checked after that push and reported in the
+final reply. This item records preparation, not a fabricated remote CI outcome.
+
 ## Resolved History
 
 Resolved items are preserved in [numbered archives](collaboration-archives/).

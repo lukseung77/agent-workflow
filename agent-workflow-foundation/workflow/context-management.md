@@ -30,14 +30,9 @@ Projects with additional stage names may pass repeatable `--allowed-stage NAME` 
 
 ## File Shape
 
-- Keep bootstrap files short enough to read every session.
-- Put durable policy in shared workflow files.
-- Put project-local facts, rules, and overrides according to `workflow/local-project-files.md`.
-- Put current project state in `current-state.md`.
-- Put stable project decisions in source-of-truth files.
-- Put large examples, lessons, and source notes in references.
-- Prefer topic files over one giant product document.
-- Exclude operational installation/tool inventory, archived collaboration history, project-maintenance records, and raw external proposals from routine startup; load them only when the selected task needs them.
+Use `workflow/local-project-files.md` for placement. Keep operational inventory,
+archives, and raw reviews out of routine startup reads; load them for a selected
+task. Put large examples and evidence in focused references rather than startup.
 
 ## Handoff Summaries
 
@@ -56,7 +51,6 @@ Avoid restating entire specs. Link to the relevant source files instead.
 ## Collaboration Thread Hygiene
 
 - Use generated queues for scan-first orientation when available.
-- Treat persistent indexes as optional compatibility files and do not require parallel updates when generated queues are in use.
 - Summarize long review threads before asking another agent to act on them.
 - Reconcile consultant feedback in one place so later agents do not repeat the same review.
 

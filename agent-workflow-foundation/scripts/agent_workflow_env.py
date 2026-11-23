@@ -213,7 +213,7 @@ def ensure_repository_adapter(root: Path, workflow_root: str) -> bool:
     block = f"""{ADAPTER_START}
 ## Agent Workflow Tooling
 
-Read `{workflow_root}/workflow/agent-tooling.md` when repository discovery,
+Read `{workflow_root}/workflow/tooling.md` when repository discovery,
 implementation, validation, or verbose CLI execution needs tool guidance.
 This is a thin adapter; OpenSpec, explicit project requirements, correctness,
 security, and tests take precedence.

@@ -80,6 +80,27 @@ class CollaborationToolsTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertEqual(json.loads(result.stdout)["id"], "CX-001")
 
+    def test_lead_startup_includes_user_and_archived_responses_without_online_review(self) -> None:
+        local = self.project / "agent-workflow-local"
+        local.mkdir()
+        (local / "project-facts.md").write_text("- Lead: codex\n")
+        archive = self.project / "docs/collaboration-archives"
+        archive.mkdir()
+        (archive / "gemini-001.md").write_text(
+            "### [GM-010] Review\n- `from`: gemini\n- `to`: codex\n"
+            "- `type`: review\n- `status`: done\n- `refs`: CX-001\n")
+        with (self.project / "docs/collaboration-codex.md").open("a") as output:
+            output.write("\n### [CX-009] Decision\n- `from`: codex\n- `to`: user\n- `status`: open\n")
+        result = self.run_script("collab_queue.py", "codex", "--startup", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        data = json.loads(result.stdout)
+        self.assertEqual([item["id"] for item in data["user"]], ["CX-009"])
+        self.assertEqual([item["id"] for item in data["responses"]["CX-001"]], ["GM-010"])
+        self.assertIn("No review recorded", data["tooling"])
+        self.assertFalse((local / "tooling-reviews.json").exists())
+        consultant = json.loads(self.run_script("collab_queue.py", "gemini", "--startup", "--json").stdout)
+        self.assertNotIn("user", consultant)
+
     def test_lookup_reads_completed_unaddressed_and_archived_items(self) -> None:
         path = self.project / "docs/collaboration-codex.md"
         path.write_text(path.read_text(encoding="utf-8").replace("- `status`: active", "- `status`: done"), encoding="utf-8")

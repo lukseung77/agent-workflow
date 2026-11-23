@@ -1,8 +1,11 @@
 # Agent Workflow
 
-The delivered product is **agent-workflow-foundation**, or **foundation**:
+This GitHub repository develops and publishes **agent-workflow-foundation**, or
+**foundation**, as its delivered product:
 reusable workflow rules, project-local templates, first-party scripts and skills,
 and references to third-party origins. This repository is also its first consumer.
+Consumers install or export `agent-workflow-foundation/`; the root local instance,
+reviews, specifications, and tests support development of that product.
 
 ```text
 agent-workflow-foundation/       # Product copied or exported to consumers
@@ -12,7 +15,7 @@ agent-workflow-foundation/       # Product copied or exported to consumers
   scripts/                      # First-party lifecycle/collaboration tooling
   skills/                       # First-party skill only
   third-party/origins.json       # Origins, not vendored third-party code
-  docs/                         # Reusable operating guidance
+  guides/                       # Reusable operating guidance
 agent-workflow-local/           # This project's instantiated and customized instance
 docs/                          # This project's collaboration and maintenance history
 openspec/                      # This project's product specs and change records
@@ -24,13 +27,9 @@ scripts/validate.py             # Repository maintenance validator
 
 Start an agent in the chosen project folder and identify this foundation's local
 path or source repository. Follow the foundation's
-[`templates/project-init.md`](agent-workflow-foundation/templates/project-init.md).
+[`templates/new-project-setup.md`](agent-workflow-foundation/templates/new-project-setup.md).
 An agent needs that source location or an installed entry skill; an empty folder
 cannot identify the foundation by itself.
-
-```sh
-python3 SOURCE/agent-workflow-foundation/scripts/foundation.py init --project . --source SOURCE --project-name NAME --agents codex --lead codex
-```
 
 Use the actual participating agents and lead. A local source copies current
 product files; a Git URL uses committed source. The project folder stays the
@@ -45,7 +44,9 @@ python3 agent-workflow-foundation/scripts/foundation.py update --project . --sou
 ```
 
 See the [lifecycle procedure](agent-workflow-foundation/workflow/foundation-lifecycle.md)
-for merging customizations and resolving conflicts. Third-party capabilities are
+for merging customizations and resolving conflicts. Existing projects using the
+pre-foundation layout must follow the [migration guide](agent-workflow-foundation/workflow/migration.md);
+old startup pointers are not a supported new-project path. Third-party capabilities are
 selected from their [origin registry](agent-workflow-foundation/third-party/origins.json),
 installed from current official guidance when authorized, and recorded locally.
 No third-party tool or skill implementation is bundled in the foundation.

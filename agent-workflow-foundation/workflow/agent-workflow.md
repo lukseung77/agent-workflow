@@ -23,10 +23,8 @@ Use `workflow/rule-precedence.md` for read order, conflict precedence, and task-
 ## State Model
 
 - Generate active work from collaboration files by recipient and lifecycle status when scripts are available.
-- Treat persistent collaboration indexes as compatibility fallbacks only.
 - Keep `agent-workflow-local/current-state.md` as a compact restart snapshot, not a task queue.
 - On resume, rebuild context from files: startup path, current state, generated queue, selected item, and focused source files.
-- As lead, also check `collab_queue.py user` at session start and surface unresolved user decisions in the closing message; retired or deferred questions must not be presented as answered.
 
 ## Review And Decision Model
 
