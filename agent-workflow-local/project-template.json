@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "legacy-unselected",
+  "project_type": null,
+  "template_id": null,
+  "workflow": "agent-workflow-foundation/workflow/legacy-stages.md",
+  "source_root": "agent-workflow-foundation",
+  "stages": [
+    "Exploration",
+    "Proposal",
+    "Implementation"
+  ],
+  "required_tools": [
+    "grill-me"
+  ],
+  "manual_requirements": [],
+  "handoff": "existing-project",
+  "stage_tooling_review": true,
+  "installation": "guided",
+  "capability_status": "not-verified"
+}

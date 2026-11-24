@@ -1,39 +1,57 @@
 # New Project Setup
 
-Use the same foundation installer for every project, including the repository
-that develops the foundation. Keep the user's chosen project folder as root. Use the supplied source path or
-repository URL; ask for its location only if unknown. The running agent is setup
-lead unless assigned otherwise. Establish missing purpose, users, outcomes, and
-platform through `workflow/question-model.md` before implementation choices.
-If GitHub creation is requested, connect it to this chosen folder within the
-authorized visibility/publication scope; do not relocate the project.
+Keep the user's chosen project folder as root. Use the supplied foundation
+source or ask for its location if unknown. The running agent is setup lead
+unless assigned otherwise. Establish missing purpose, users, outcomes, and
+constraints through `workflow/question-model.md`; core Grill-Me is available
+for an explicitly requested deeper interview.
 
-1. Select the foundation source, project name, participating agents, lead, and
-   source-of-truth root from supplied context; ask only for missing decisions.
-2. From the chosen project folder, run:
+1. Ask for the **project type**, then its **template**, one question at a time.
+   Reuse explicit answers already supplied; confirm even a sole template choice.
+   Read `workflow/project-templates.md`. List the actual source's choices with:
 
    ```sh
-   python3 <foundation-root>/scripts/foundation.py init --project . --source SOURCE --project-name NAME --agents codex,claude,gemini --lead codex
+   python3 <foundation-root>/scripts/foundation.py templates --source SOURCE
    ```
 
-   Use the actual roster and lead, and `--source-root PATH` when the project
-   uses a different source-of-truth location. Existing local configuration and
-   host text are preserved. The default installed directory is
-   `agent-workflow-foundation/`; it contains product source only.
-3. Review the generated project facts, local rules, state, host entry files,
-   and optional restrictions. Roles and lenses are authoritative in project facts.
-4. For a new project, create the initial scope/index from interview answers in
-   the recorded source root. For an existing project, inspect the inventory and
-   affected files; retain its stage, accepted decisions, and collaboration history.
-5. Select candidate capabilities from `third-party/origins.json` for the product
-   and follow `workflow/tooling.md` for installation, verification, and local
-   inventory. Consider Grill Me for an explicitly requested planning interview;
-   its dependency/host adapter is `workflow/grill-me.md`. Freshness review timing
-   is defined only in `workflow/tooling-review.md`; setup is not a trigger.
-6. Run foundation collaboration lint with `--root . --strict-state`, verify the
-   project queues, and log setup completion and any unresolved gaps in the
-   current project's own collaboration file.
+   Initial choices are SW Development / `openspec-github` and Proposal PT Making /
+   `chatgpt-claude-manual`. Templates choose process, stages, gates, and tools;
+   the communication core and Grill-Me apply to both.
+2. Establish project name, actual participating agents, lead, and source root.
+   The template defaults to `openspec/` for SW or `proposal/` for Proposal PT.
+   From the chosen folder run (replace TYPE, TEMPLATE, and the roster):
 
-See `workflow/foundation-lifecycle.md` for source acquisition, compatibility,
-customization, update review, conflict handling, and rollback. Existing projects on an
-older layout use `workflow/migration.md`; new projects have no legacy startup.
+   ```sh
+   python3 <foundation-root>/scripts/foundation.py init --project . --source SOURCE --project-name NAME --project-type TYPE --template TEMPLATE --agents codex,claude,gemini --lead codex
+   ```
+
+   Use `--source-root PATH` for a deliberate source-root override. Missing or
+   mismatched type/template choices fail before writes. The agent conducts the
+   interview; the CLI records explicit choices without blocking on terminal input.
+   Repeating init on an initialized project remains a no-op.
+3. Review generated facts, rules, state, host files, and
+   `agent-workflow-local/project-template.json`. Follow its workflow path and
+   requirements. Create the initial scope/index in the source root from confirmed
+   answers. For an existing project, retain its stage, decisions, and history.
+4. **Guide capability setup.** Inspect existing capabilities; record selected,
+   installed, configured, and verified states separately in local tooling inventory.
+   Every template requires Grill-Me and its grilling dependency. The SW template
+   additionally requires OpenSpec and a GitHub repository; the Proposal PT template
+   requires MarkItDown, ChatGPT planning, and the user's Claude PowerPoint plugin.
+   Identify the exact plugin and official origin before guiding its host setup.
+   Guide missing installations under `workflow/tooling.md`; selecting a template
+   does not install packages, authenticate, configure hosts, or publish a repository.
+   Ask for missing visibility/publication decisions only when repository creation
+   is actually requested. Record unresolved prerequisites and continue independent
+   work. Select additional capabilities only for concrete project needs.
+5. Proposal PT uses manual ChatGPT/Claude handoffs and the template's slide-brief
+   format, including TOC, titles, key messages, content, and drawing/layout prompts.
+   Follow its analysis, planning, production, and final review gates. No cross-app
+   automation is configured. SW follows OpenSpec and its own review/transition gates.
+6. Run collaboration lint with `--root . --strict-state`, verify queues, and record
+   setup completion and unresolved gaps in the project's collaboration file. Template
+   stages are loaded automatically; setup is not an online tooling-review trigger.
+
+Use `workflow/foundation-lifecycle.md` for acquisition, updates, and rollback.
+Existing pre-foundation layouts use `workflow/migration.md`. Updates and migration
+preserve existing workflows; they never silently select a type/template.

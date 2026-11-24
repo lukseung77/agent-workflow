@@ -3,6 +3,9 @@
 ## Identity And Paths
 
 - Project: agent-workflow
+- Project type: Existing project (type not selected)
+- Project template: `legacy-unselected`
+- Selected workflow and requirements: `agent-workflow-local/project-template.json`
 - Foundation root: `agent-workflow-foundation`
 - Source-of-truth root: `agent-workflow-foundation`
 - Reference registry: `agent-workflow-local/references/reference.md`
@@ -18,8 +21,9 @@
 ## Stage Tracking
 
 Use `agent-workflow-local/current-state.md` for the active stage and next action.
-Transitions follow `agent-workflow-foundation/workflow/stages.md` unless local rules
-explicitly override a gate.
+Resolve template-specific stages and gates through
+`agent-workflow-foundation/workflow/stages.md` and the selected workflow record.
+Local rules may explicitly override a gate.
 
 ## Source-Of-Truth Inventory
 

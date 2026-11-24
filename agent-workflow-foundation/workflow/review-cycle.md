@@ -21,7 +21,8 @@ the request; this protocol does not require a fixed Codex/Claude/Gemini order.
 
 ## Step 1: Lead Posts Review Request
 
-After completing any draft, the lead posts a `review-request` in its collaboration file:
+When the selected template, project rules, or user calls for agent review, the
+lead posts a `review-request` in its collaboration file after completing the draft:
 
 ```md
 ### [XX-NNN] Review Request — [Topic]
@@ -53,7 +54,7 @@ counts only after its conditions are resolved and current evidence supports
 retaining that concurrence. Apply the freshness rules below to substantive
 changes; request focused re-review when needed. Do not repeat a consultant
 concurrence round merely because the same review also served as a gate check.
-The human still confirms the transition. This changes the number of review
+The selected template defines human transition confirmation. This changes the number of review
 rounds, not stage criteria, reviewer authority, or missing-response requirements.
 
 ---
@@ -202,5 +203,6 @@ establish full formal completion. Superseded requests require no completion.
 Session activation follows `workflow/agent-workflow.md#trigger-model`; posting a
 request never launches an agent or grants new write authority. A running lead
 can consolidate available responses without restarting. For another draft,
-post the next review request; for a stage transition, post readiness and obtain
-concurrence and user confirmation under `workflow/stages.md`.
+post the next review request; for a stage transition, communicate readiness and
+follow the selected template's concurrence and approval rules through
+`workflow/stages.md`. The communication core does not add universal stage gates.

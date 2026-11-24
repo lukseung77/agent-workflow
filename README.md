@@ -12,6 +12,8 @@ agent-workflow-foundation/       # Product copied or exported to consumers
   workflow/                     # Shared rules and lifecycle guidance
   templates/agent-workflow-local/ # Source of every project's local configuration
   templates/                    # Host entry and collaboration templates
+  templates/project-types.json  # Project types and template requirements
+  templates/project-types/      # Template-specific workflows and handoff formats
   scripts/                      # First-party lifecycle/collaboration tooling
   skills/                       # First-party skill only
   third-party/origins.json       # Origins, not vendored third-party code
@@ -35,6 +37,12 @@ Use the actual participating agents and lead. A local source copies current
 product files; a Git URL uses committed source. The project folder stays the
 project root. Setup copies only the foundation, instantiates its local templates,
 and preserves existing configuration and collaboration history.
+
+The core handles agent/user communication and includes Grill-Me. New setup asks
+for a project type and template: initially SW Development (OpenSpec and GitHub),
+or Proposal PT Making (MarkItDown, ChatGPT planning, and manual handoff to Claude
+for PowerPoint production and review). Templates own stages and gates. Setup
+guides installations; selecting a template does not silently install or publish.
 
 For updates, review the plan before applying it under the authorized request:
 

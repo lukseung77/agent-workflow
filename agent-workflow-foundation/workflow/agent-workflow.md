@@ -6,11 +6,19 @@ Use `workflow/rule-precedence.md` for read order, conflict precedence, and task-
 
 ## Core Model
 
+- The core handles communication between agents and the user, including
+  clarification, decision records, review messages, and handoffs. Grill-Me is a
+  core capability for requested interviews under `workflow/grill-me.md`.
+- Project types and templates own process, stages, gates, and optional tool
+  selection under `workflow/project-templates.md`; OpenSpec and GitHub are
+  requirements of the initial SW template, not universal core dependencies.
 - One agent leads each phase; other agents consult unless the user explicitly changes ownership.
 - Durable project files are the source of truth, not chat history.
 - Project-specific facts, rules, current state, and per-agent assignments belong in `agent-workflow-local/`.
 - Collaboration files carry communication and review history; accepted decisions must flow into source-of-truth files.
-- The lead agent owns source-of-truth updates and GitHub sync by default unless project-local rules or the user explicitly delegate a specific downstream action.
+- The lead agent owns source-of-truth updates unless project-local rules or the
+  user explicitly delegate a specific downstream action. Repository operations
+  follow the selected template and actual publication authorization.
 
 ## Trigger Model
 
@@ -37,9 +45,11 @@ Use `workflow/rule-precedence.md` for read order, conflict precedence, and task-
 ## Sync And Scope Model
 
 - Prefer local repository state before extra Git operations when files are already available.
-- Withhold GitHub sync unless the user asks, project rules require it, or no reasonable local-only path completes the task.
-- Do not let multiple agents push or sync concurrently unless deliberately coordinated.
-- During Implementation, scope changes go through a mini-proposal cycle before changing accepted specs.
+- External sync follows actual project authorization and the selected template;
+  template selection does not itself authorize publication. Coordinate concurrent
+  writes to external destinations.
+- Scope changes follow the selected template's change process before altering
+  accepted requirements or deliverables.
 
 ## Topic Rules
 

@@ -4,6 +4,11 @@ Use `third-party/origins.json` as the source directory for third-party tools and
 skills. Consult each official origin's current instructions before setup; the
 foundation carries no vendored implementations or copied skill prompts.
 
+The selected template identifies requirements; selection is separate from actual
+installation. Setup guides missing prerequisites without silently installing or
+configuring them. Grill-Me is core; OpenSpec/GitHub are required by the initial
+SW template, and MarkItDown by the initial Proposal PT template.
+
 The first-party adapter remains optional:
 
 ```sh
@@ -44,6 +49,18 @@ Optional commands have bounded timeouts and warning-based failure handling.
 Verification runs initially and after actual install/configuration/indexing
 commands; the final inventory also obtains RTK's installed version. Normal
 workflow operation does not require every optional integration.
+
+## GitHub Repository Setup
+
+For the SW template, inspect the local repository and existing remote before
+guiding setup. Confirm the intended account/repository, visibility, and publication
+scope when creation or publication is requested. Reuse the available connector,
+Git client, or official host workflow; do not require a specific CLI merely to use
+GitHub. Verify the actual repository identity and access before recording it as
+configured. Record repository/service evidence rather than inventing a package
+version. Never store credentials in local inventory. The lead coordinates
+authorized publication; template selection alone creates no remote repository
+and grants no authority to upload project files.
 
 ## OpenSpec Integration
 

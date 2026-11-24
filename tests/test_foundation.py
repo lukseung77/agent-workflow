@@ -169,10 +169,112 @@ class FoundationLifecycleTest(unittest.TestCase):
         self.assertFalse((self.project / lifecycle.STATE).exists())
 
     def test_cli_initialization_records_a_reusable_local_source(self):
-        result = subprocess.run([sys.executable, str(FOUNDATION / "scripts/foundation.py"), "init", "--project", str(self.project), "--source", str(self.source.parent), "--project-name", "CLI project", "--agents", "codex"], capture_output=True, text=True)
+        result = subprocess.run([sys.executable, str(FOUNDATION / "scripts/foundation.py"), "init", "--project", str(self.project), "--source", str(self.source.parent), "--project-name", "CLI project", "--agents", "codex", "--project-type", "sw-development", "--template", "openspec-github"], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("CLI project", (self.project / "AGENTS.md").read_text())
         self.assertEqual(json.loads((self.project / lifecycle.STATE).read_text())["source"], str(self.source.resolve()))
+
+    def cli(self, *args):
+        return subprocess.run([sys.executable, "-B", str(FOUNDATION / "scripts/foundation.py"),
+                               *args, "--source", str(self.source), "--project", str(self.project)],
+                              capture_output=True, text=True)
+
+    def test_missing_or_mismatched_selection_fails_without_writes(self):
+        for args in ((), ("--project-type", "sw-development"),
+                     ("--project-type", "sw-development", "--template", "chatgpt-claude-manual"),
+                     ("--project-type", "unknown", "--template", "openspec-github")):
+            with self.subTest(args=args):
+                result = self.cli("init", *args)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertFalse(self.project.exists())
+
+    def test_each_template_records_its_process_and_unverified_requirements(self):
+        for kind, template, source_root, requirements in (
+            ("sw-development", "openspec-github", "openspec", {"grill-me", "openspec", "github"}),
+            ("proposal-pt-making", "chatgpt-claude-manual", "proposal", {"grill-me", "markitdown"}),
+        ):
+            with self.subTest(kind=kind):
+                self.project = self.root / kind
+                result = self.cli("init", "--project-type", kind, "--template", template)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                profile = json.loads((self.project / "agent-workflow-local/project-template.json").read_text())
+                self.assertEqual(profile["source_root"], source_root)
+                self.assertEqual(set(profile["required_tools"]), requirements)
+                self.assertEqual(profile["installation"], "guided")
+                self.assertEqual(profile["capability_status"], "not-verified")
+                self.assertTrue((self.project / profile["workflow"]).exists())
+                facts = (self.project / "agent-workflow-local/project-facts.md").read_text()
+                self.assertIn(template, facts)
+                self.assertNotIn("{{", facts)
+                self.assertFalse((self.project / source_root).exists())  # No external tool bootstrap.
+                before = (self.project / lifecycle.STATE).read_bytes()
+                self.assertEqual(self.cli("init").returncode, 0)
+                self.assertEqual((self.project / lifecycle.STATE).read_bytes(), before)
+
+    def test_proposal_stages_validate_and_sw_stages_are_rejected(self):
+        result = self.cli("init", "--project-type", "proposal-pt-making", "--template", "chatgpt-claude-manual")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        state = self.project / "agent-workflow-local/current-state.md"
+        original = state.read_text()
+        for stage, expected in (("RFP Analysis", 0), ("TOC Planning", 0), ("Slide Creation", 0),
+                                ("Final Review", 0), ("Implementation", 1)):
+            state.write_text(original.replace("Setup", stage))
+            lint = subprocess.run([sys.executable, "-B", str(FOUNDATION / "scripts/collab_lint.py"),
+                                   "--root", str(self.project), "--strict-state"], capture_output=True, text=True)
+            self.assertEqual(lint.returncode, expected, lint.stdout + lint.stderr)
+
+    def test_update_old_consumer_adds_compatibility_record_without_choosing_type(self):
+        self.install()
+        # Model an installation made before template selection was introduced.
+        state_path = self.project / lifecycle.STATE
+        state = json.loads(state_path.read_text())
+        state["project_bases"].pop("agent-workflow-local/project-template.json")
+        (self.project / "agent-workflow-local/project-template.json").unlink()
+        state_path.write_text(json.dumps(state))
+        local_state = self.project / "agent-workflow-local/current-state.md"
+        local_state.write_text(local_state.read_text().replace("Setup", "Implementation"))
+        before = local_state.read_bytes()
+        result = lifecycle.update(self.project, self.source, str(self.source), apply=True)
+        self.assertEqual(result["status"], "applied", result)
+        profile = json.loads((self.project / "agent-workflow-local/project-template.json").read_text())
+        self.assertEqual(profile["status"], "legacy-unselected")
+        self.assertIsNone(profile["project_type"])
+        self.assertEqual(profile["source_root"], "spec")
+        self.assertEqual(local_state.read_bytes(), before)
+
+    def test_multiple_templates_and_explicit_source_root_survive_update(self):
+        path = self.source / "templates/project-types.json"
+        data = json.loads(path.read_text())
+        templates = data["project_types"]["sw-development"]["templates"]
+        templates["second-template"] = {**templates["openspec-github"], "name": "Second SW choice"}
+        path.write_text(json.dumps(data))
+        result = self.cli("init", "--project-type", "sw-development", "--template", "second-template", "--source-root", "custom-spec")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        templates["second-template"]["stages"].append("Delivery")
+        path.write_text(json.dumps(data))
+        result = lifecycle.update(self.project, self.source, str(self.source), apply=True)
+        self.assertEqual(result["status"], "applied", result)
+        profile = json.loads((self.project / "agent-workflow-local/project-template.json").read_text())
+        self.assertEqual(profile["template_id"], "second-template")
+        self.assertEqual(profile["source_root"], "custom-spec")
+        self.assertIn("Delivery", profile["stages"])
+
+    def test_selection_customization_conflict_keeps_all_update_files_unchanged(self):
+        result = self.cli("init", "--project-type", "proposal-pt-making", "--template", "chatgpt-claude-manual")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        local = self.project / "agent-workflow-local/project-template.json"
+        profile = json.loads(local.read_text())
+        profile["handoff"] = "local-custom-handoff"
+        local.write_text(json.dumps(profile, indent=2) + "\n")
+        catalog_path = self.source / "templates/project-types.json"
+        data = json.loads(catalog_path.read_text())
+        data["project_types"]["proposal-pt-making"]["templates"]["chatgpt-claude-manual"]["handoff"] = "different-upstream-handoff"
+        catalog_path.write_text(json.dumps(data))
+        before = (self.project / lifecycle.STATE).read_bytes()
+        result = lifecycle.update(self.project, self.source, str(self.source), apply=True)
+        self.assertIn("project/agent-workflow-local/project-template.json", result["conflicts"])
+        self.assertEqual((self.project / lifecycle.STATE).read_bytes(), before)
+        self.assertEqual(json.loads(local.read_text())["handoff"], "local-custom-handoff")
 
 
 if __name__ == "__main__":

@@ -51,5 +51,7 @@ authorized work while a question is pending. An unanswered optional question is
 not approval for a scope expansion.
 
 - Do not re-ask a question that has already been answered; check collaboration and source-of-truth files first.
-- Do not ask for implementation preferences during Exploration; defer those to Proposal or Implementation.
+- Follow the selected template's separation of discovery, planning, and execution;
+  avoid asking downstream implementation preferences before their prerequisites
+  are settled. In the SW template, defer those from Exploration to Proposal or Implementation.
 - Batch related cleanup into one agent action, not one question per line.

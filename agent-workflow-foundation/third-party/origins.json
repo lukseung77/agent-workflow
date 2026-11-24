@@ -2,6 +2,13 @@
   "schema_version": 1,
   "policy": "Install selected capabilities from official origins; resolve current compatible stable versions at setup and record the actual result locally. No third-party implementations are bundled.",
   "tools": {
+    "github": {
+      "origin": "https://docs.github.com/",
+      "capability": "Project repository hosting and collaboration",
+      "installation": "Use the project's existing GitHub access or guide account, repository, and client setup; confirm visibility and publication scope before creating or publishing.",
+      "integration_status": "foundation-supported",
+      "integration": "guides/tooling-operations.md"
+    },
     "ponytail": {
       "origin": "https://github.com/DietrichGebert/ponytail",
       "capability": "Implementation minimalism and reuse guidance",
@@ -160,8 +167,8 @@
       "origin": "https://github.com/mattpocock/skills",
       "capability": "Plan interrogation",
       "kind": "skill",
-      "disposition": "recommended",
-      "activate_when": "The user requests a deeper assumption interview beyond the existing question model",
+      "disposition": "core-required",
+      "activate_when": "Core capability across all project templates; invoke when the user requests an assumption-challenging interview",
       "considerations": "Foundation-supported interview integration in workflow/grill-me.md preserves one-question pacing and existing authority. The wrapper depends on grilling; both remain separately installed upstream skills.",
       "installation": "Follow workflow/grill-me.md: install grill-me and grilling from the same reviewed upstream revision into the consuming project using its supported host installer; verify discovery and record actual results locally.",
       "source_checked": "2026-11-23",

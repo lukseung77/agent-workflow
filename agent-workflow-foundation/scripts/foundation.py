@@ -15,6 +15,8 @@ from contextlib import contextmanager
 from datetime import date
 from pathlib import Path
 
+from project_profiles import SELECTION, catalog, selection
+
 
 STATE = "agent-workflow-local/foundation-state.json"
 HOSTS = {"codex": "AGENTS.md", "claude": "CLAUDE.md", "gemini": "GEMINI.md"}
@@ -81,6 +83,9 @@ def render(text: str, context: dict) -> str:
 
 
 def project_templates(files: dict[str, bytes], context: dict) -> dict[str, str]:
+    profile = selection(files, context)
+    context = {**context, "project_type": profile.get("project_type_name", "Existing project (type not selected)"),
+               "template_id": profile["template_id"] or "legacy-unselected"}
     result = {}
     prefix = "templates/agent-workflow-local/"
     for name, data in files.items():
@@ -90,6 +95,7 @@ def project_templates(files: dict[str, bytes], context: dict) -> dict[str, str]:
         body = files[f"templates/{agent.upper()}.md"].decode()
         body = render(body, context).replace("[Project Name]", context["project_name"]).replace("<foundation-root>", context["foundation_root"])
         result[HOSTS[agent]] = START + "\n" + body.rstrip() + "\n" + END + "\n"
+    result[SELECTION] = json.dumps(profile, indent=2) + "\n"
     return result
 
 
@@ -233,6 +239,8 @@ def update(project: Path, source: Path, source_label: str, apply: bool = False, 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    templates = commands.add_parser("templates", help="List project types and their templates without writes")
+    templates.add_argument("--source", default=str(Path(__file__).resolve().parents[1]))
     export = commands.add_parser("export", help="Package only the distributable foundation")
     export.add_argument("--source", default=str(Path(__file__).resolve().parents[1]))
     export.add_argument("--output", type=Path, required=True)
@@ -243,7 +251,9 @@ def main() -> int:
         if name in {"init", "migrate"}:
             command.add_argument("--project-name")
             command.add_argument("--foundation-path", default="agent-workflow-foundation")
-            command.add_argument("--source-root", default="openspec/explorations")
+            command.add_argument("--source-root", help="Override the selected template's source root")
+            command.add_argument("--project-type", help="Project type ID from the templates command")
+            command.add_argument("--template", dest="template_id", help="Template ID belonging to the chosen project type")
             command.add_argument("--agents", default="codex")
             command.add_argument("--lead", default="codex")
             if name == "migrate":
@@ -253,6 +263,10 @@ def main() -> int:
             command.add_argument("--keep-local", action="append", default=[], help="Explicitly retain a conflicting path shown in the plan")
     args = parser.parse_args()
     try:
+        if args.command == "templates":
+            with source_tree(args.source, Path.cwd()) as origin:
+                print(json.dumps(catalog(snapshot(origin)), indent=2))
+            return 0
         if args.command == "export":
             with source_tree(args.source, Path.cwd()) as origin:
                 if args.output.resolve().is_relative_to(origin.resolve()):
@@ -266,13 +280,25 @@ def main() -> int:
             return 0
         project = args.project.resolve()
         if args.command in {"init", "migrate"}:
+            if args.command == "init" and (project / STATE).exists():
+                print(json.dumps({"status": "already initialized", "state": STATE}))
+                return 0
+            if args.command == "init" and (not args.project_type or not args.template_id):
+                raise ValueError("Ask the user for a project type and template, then pass --project-type and --template; use templates to list choices")
             agents = list(dict.fromkeys("gemini" if value.strip() == "agy" else value.strip() for value in args.agents.lower().split(",")))
             if not agents or any(agent not in HOSTS for agent in agents) or args.lead not in agents:
                 raise ValueError("Choose codex/claude/gemini agents and a lead from that roster")
             source = args.source or str(Path(__file__).resolve().parents[1])
-            inside(project, args.source_root)
             context = {"project_name": args.project_name or project.name, "foundation_root": args.foundation_path, "source_root": args.source_root, "agents": agents, "lead": args.lead, "consultants": ", ".join(agent for agent in agents if agent != args.lead) or "none", "today": date.today().isoformat()}
+            if args.project_type or args.template_id:
+                context.update(project_type=args.project_type, template_id=args.template_id)
             with source_tree(source, Path.cwd()) as origin:
+                files = snapshot(origin)
+                if not context.get("project_type") and not context.get("template_id"):
+                    context["source_root"] = context["source_root"] or "openspec/explorations"
+                profile = selection(files, context)
+                context["source_root"] = profile["source_root"]
+                inside(project, context["source_root"])
                 if args.command == "migrate":
                     from foundation_migration import migrate
                     result = migrate(project, origin, source, context, args.apply)

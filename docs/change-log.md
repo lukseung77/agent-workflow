@@ -4,6 +4,17 @@ The master-agent records canonical `agent-workflow` updates here when they are n
 
 Keep entries compact. Use this file for rollback orientation and downstream update notes, not detailed design discussion.
 
+## 2026-11-24 - Communication Core And Project Templates
+
+- `request`: evaluate and clarify the communication core, Grill-Me, project types/templates, and guided setup before restructuring foundation
+- `summary`: core handles agent/user communication; templates own processes, stages/gates, and requirements. Added SW Development (OpenSpec/GitHub) and full Proposal PT Making (MarkItDown, ChatGPT planning, manual Claude PowerPoint handoff/review)
+- `decisions and evidence`: CX-021/CX-022; `docs/evaluations/core-project-templates-2026-11-24.md`
+- `validation`: 78 tests, three specs, clean collaboration lint, 61-file boundary/self-consumer check, and exported initialization/lint/no-op-update smoke checks for both types
+- `consumer impact`: new CLI init requires type/template; guided installation stays separate; selected stages validate automatically. Existing consumers retain local process and receive a legacy-unselected record. This instance applied its conflict-free scaffold update
+- `limits`: Claude plugin identity remains a guided setup prerequisite; no external installation, cross-app automation, consultant concurrence, or publication claimed
+- `publication follow-up`: human requested GitHub sync after consultant review consolidation; CX-028 records verified fast-forward publication preparation. Review corrections remain open in CX-027 and are not represented as implemented
+- `rollback`: restore this update's product/spec paths from a reviewed snapshot and reconcile lifecycle baselines; preserve consumer artifacts/history/tool evidence. Detailed rollback guidance is in the linked evaluation
+
 ## 2026-11-23 - Foundation GitHub Publication
 
 - `request`: sync the foundation to GitHub and establish it as the basis of the agent-workflow repository

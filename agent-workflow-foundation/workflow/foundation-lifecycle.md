@@ -15,6 +15,11 @@ only its `agent-workflow-foundation/` child, never its project state or history.
 Follow `templates/new-project-setup.md` for the single initialization command
 and guided setup.
 
+New setup asks for a project type and its template before initialization. The
+selection records process, stages/gates, required capabilities, and handoff mode;
+see `workflow/project-templates.md`. Installation is guided, not triggered by
+template selection. Core communication and Grill-Me apply to every type.
+
 SOURCE can be a foundation directory, its containing repository, or an explicit
 HTTPS/SSH Git URL. Local paths copy actual working-tree contents, including unpublished
 product changes; Git URLs retrieve committed content. The content fingerprint in
@@ -56,6 +61,11 @@ bases. Back up the consumer or use its version control before applying an update
 individual writes are atomic, but a multi-file update is not a crash-atomic
 transaction. Preserve this metadata for later comparisons. Do not reset project
 state or rerun scope interviews just because the foundation was updated.
+
+Existing consumers without a selected type/template retain their current process
+and receive an explicit `legacy-unselected` workflow record. Updates do not infer
+a type, reset stages, or add OpenSpec/GitHub to a non-development project. Changing
+type/template requires a separately reviewed local workflow decision.
 
 Review affected behavior, run the consumer's collaboration lint and relevant
 checks, and record adopted/deferred changes and rollback information in its own

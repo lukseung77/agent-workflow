@@ -337,6 +337,324 @@ pushed to default master and the existing working branch; remote refs and the
 resulting GitHub validation run are checked after that push and reported in the
 final reply. This item records preparation, not a fabricated remote CI outcome.
 
+### [CX-021] Core And Project Template Design Clarification
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-project-templates
+- `from`: codex
+- `to`: codex
+- `type`: status
+- `status`: done
+- `scope`: proposed core communication boundary, project types, templates, and setup selection
+- `why`: The human requested evaluation and clarification before changing foundation source.
+- `refs`: agent-workflow-foundation/templates/new-project-setup.md, agent-workflow-foundation/workflow/agent-workflow.md, agent-workflow-foundation/workflow/grill-me.md
+- `action`: Preserve confirmed user decisions here; finish clarification before dependent product changes.
+
+Confirmed user instructions (verbatim, recorded 2026-11-24):
+
+> 1. Leave core feature which is to help communicate between agents
+> 2. Other tools/plugins/skills inluding OpenSpec and github as an option depending on project type
+> 3. There could be one or more templates per project type which determines what tools/plugins/skills to use
+> 4. when setting up a new project, ask a project type and template
+
+> also, I would like to use Grill-Me skill in the core.
+
+> 1. the core handles communication between agents and user
+> 2. project types considering for now is one for "SW Development" and "Proposal PT Making"
+> 3. a template for "SW Development" project type shall use OpenSpec as overall development process, also use GitHub for a repository.  and other necessary tools/skills/plugins to make better outcome.
+> 4. a template for "Proposal PT Making" shall use MarkItDown for RFP and other data read-in and so on.
+
+> yes Proposal PT Making covers the full scope.  At the moment, don't know exactly how to do but use chatgpt to RFP analysis, TOC planniing(inc. TOC, per slide title, per slide key message, per slide contents drawing prompt for claude and so on and use ppt claude plugin to actually making slides.
+
+> yes. at the moment, manual handoff btw chatgpt and claude for Proposal PT Making
+
+Evaluation: the installer currently defaults the source root to
+`openspec/explorations`; shared rules prescribe a universal three-stage workflow
+and mention GitHub ownership. Project types/template selection do not yet exist.
+Separate communication rules from template-owned process and integration choices.
+Keep capability selection distinct from installation and verification.
+
+Confirmed Proposal PT Making scope includes input extraction, RFP analysis,
+TOC and per-slide planning in ChatGPT, structured instructions for Claude,
+PowerPoint production through the user's Claude plugin, and final review/revision.
+The exact plugin identity and production procedure remain unverified; manual
+handoff is the confirmed initial approach, with no cross-app automation assumed.
+
+Setup clarification (2026-11-24): asked whether template selection should install
+required tools where supported or record requirements and guide installation;
+recommended guided installation first because some plugins require host-app setup.
+The human answered verbatim: "yes". This accepts the recommended guided setup:
+record template requirements, inspect available capabilities, and guide missing
+installations without treating template selection as installation authorization.
+
+Stage ownership clarification (2026-11-24): asked "Should stages and review gates
+be defined by each template, rather than universally in the core?" and recommended
+yes, with OpenSpec for SW and the proposal production process for Proposal PT.
+The human answered verbatim: "yes pls". This confirms template-owned stages and
+gates and authorizes the discussed structural implementation after clarification.
+
+Implementation/evaluation and validation evidence are tracked in CX-022 and
+`docs/evaluations/core-project-templates-2026-11-24.md`. No actual project stage
+transition or consultant concurrence is claimed by this design clarification.
+
+### [CX-022] Core And Project Templates Implemented
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-project-templates
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: confirmed structural implementation, template-guided setup, and backward-compatible consumer update
+- `why`: The human resolved the design questions in CX-021, including template-owned stages and review gates.
+- `refs`: CX-021, docs/evaluations/core-project-templates-2026-11-24.md, docs/change-log.md, openspec/specs/foundation-consumers/spec.md
+- `action`: Implemented the accepted design, applied the conflict-free self-consumer update, and validated the delivered product locally. Independent review remains in CX-023.
+
+Core now owns agent/user communication and Grill-Me integration. Project type
+and template selection determine process, stages/gates, requirements, and handoff
+mode. The two initial templates cover OpenSpec/GitHub SW Development and the full
+MarkItDown/ChatGPT/manual-Claude proposal presentation workflow. Proposal briefs
+include TOC, slide titles/messages/contents, and drawing/layout prompts. The exact
+Claude PowerPoint plugin remains an explicit unverified setup prerequisite.
+
+Evidence: 78 unit tests, three accepted specifications, zero collaboration lint
+errors/warnings, and a 61-file distribution/self-consumer check passed via
+`python3 -B scripts/validate.py --require-openspec`. Both exported template setups
+passed strict-state lint, custom foundation-directory initialization, and no-op
+update checks. New tests exercise invalid selection without writes, multiple
+templates, per-template stage validation, customization conflicts, old-consumer
+preservation, source-root overrides, and tooling-review triggers.
+
+The update preserved this instance's source root, stage, consultant lenses,
+rules, and history without automatically choosing a new type. No third-party
+installation, host configuration, cross-app automation, live plugin test, stage
+transition, consultant concurrence, Git commit, or publication is claimed.
+
+### [CX-023] Review Core And Project Template Structure
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-project-templates
+- `from`: codex
+- `to`: claude, gemini
+- `type`: review-request
+- `status`: done
+- `formal`: false
+- `scope`: structural consistency, logical flaws, refactoring opportunities, and focused rule files for efficient agent context use
+- `why`: The human explicitly requested briefing other agents and evaluating the recent structural change for inconsistencies, logical flaws, refactoring, and rule atomization to improve memory efficiency.
+- `request`: Claude and Gemini independently review the current working tree against the confirmed design and the four evaluation areas below. Write findings only in your own collaboration file referencing CX-023; evaluate and recommend changes without editing product source. Claude emphasizes authority/rule consistency; Gemini emphasizes architecture, context efficiency, and feasibility. Both cover all four areas. This is not a stage-transition concurrence request.
+- `refs`: CX-021, CX-022, CX-025, docs/handovers/core-project-templates-2026-11-24.md, docs/evaluations/core-project-templates-2026-11-24.md, agent-workflow-foundation/workflow/project-templates.md, agent-workflow-foundation/templates/project-types.json, agent-workflow-foundation/scripts/project_profiles.py, agent-workflow-foundation/scripts/foundation.py, tests/test_foundation.py, tests/test_tooling_review.py, openspec/specs/foundation-consumers/spec.md
+
+Human-directed scope expansion, 2026-11-24 (verbatim):
+
+> please brief recent structural change to other agents and ask them to evaluate changes for inconsistency, logical flaw, possible refactoring and atomizing rules per file to make memory use efficient.
+
+#### Structural Change Brief
+
+The accepted design separates agent/user communication from project process.
+Core covers roles, questions, decisions, review messages, queues, handoffs, and
+Grill-Me with its grilling dependency. Templates own process, stages, gates,
+source-root defaults, required integrations, and handoff mode. Each project type
+can have multiple templates. Setup asks type then template and guides installation;
+selection never means a capability has been installed or verified.
+
+Initial types/templates:
+
+- SW Development / `openspec-github`: OpenSpec overall process, GitHub repository,
+  and project-specific additional capabilities. Existing SW stage/gate definitions
+  moved under its template; default source root is `openspec/`.
+- Proposal PT Making / `chatgpt-claude-manual`: MarkItDown read-in, ChatGPT RFP
+  analysis and TOC/per-slide planning, manual user transfer to Claude's PowerPoint
+  plugin, deck production, return, and final review/revision. Slide briefs contain
+  title, key message, contents, drawing/layout prompts, and source references.
+  Default source root is `proposal/`. Plugin identity remains explicitly unresolved.
+
+The catalog and `project_profiles.py` resolve selection. Fresh CLI init requires
+a valid type/template pair and generates local `project-template.json`; lint uses
+its stages. Existing consumers remain `legacy-unselected`, retaining source roots,
+stages, local overrides, and history. This repository applied its conflict-free
+self-consumer update without silently adopting a new project type. Tool-review
+stage triggers are template-specific. No remote publication or live plugin test
+is claimed. Previous validation: 78 tests, three specs, clean lint, a 61-file
+boundary/self-consumer check, and exported setup/update smoke checks for both types.
+
+#### Requested Evaluation
+
+1. **Inconsistency:** compare accepted requirements, core rules, template rules,
+   setup guidance, executable behavior, and local compatibility. Check authority,
+   duplicated ownership, stale SW assumptions, and conflicting review or tooling
+   triggers. Identify a canonical owner for any duplicated rule.
+2. **Logical flaws:** trace fresh setup, selection validation, required capability
+   handling, template updates/conflicts, legacy preservation, and manual proposal
+   handoffs. Look for unreachable or misleading states, silent process changes,
+   unsupported success claims, and gaps in meaningful behavioral tests.
+3. **Refactoring:** propose proportionate simplifications to policy routing,
+   catalog/selection schemas, installer responsibilities, and compatibility code.
+   Explain the benefit, migration impact, and risk; preserve settled product scope.
+4. **Rule atomization and context efficiency:** inspect actual startup and focused
+   task read paths. Identify mixed-responsibility or repeatedly loaded files and
+   recommend concrete split/merge/move/reference changes. Give a proposed file map
+   with one canonical owner per rule and explicit load triggers. Compare current
+   and proposed context loading for startup, SW setup/stage work, and proposal
+   planning/manual handoff. Use file sizes or word counts when useful and label
+   token estimates as estimates. Account for extra lookups, tiny-file overhead,
+   discoverability, and precedence; splitting every paragraph is not the objective.
+
+Inspect the focused source first, then follow necessary cross-references. Do not
+load every integration adapter or historical thread solely to be exhaustive.
+Use the handover's exact changed-file inventory for scope and the fingerprint
+below for content identity; expand to unchanged files where dependencies require it.
+
+#### Expected Response
+
+Post one `review` item with `status: done` in your own collaboration file and
+reference CX-023. Identify reviewed content and any verification performed.
+For each material finding, provide a stable finding ID, severity/priority, exact
+file/line or section, evidence, impact, and a concrete correction. Distinguish
+demonstrated defects from uncertain risks and optional improvements. Include a
+specific rule-file/routing proposal and prioritized refactoring recommendations
+where supported; explain when retaining the current structure is preferable.
+No fixed finding quota applies. State when an area has no material findings.
+
+The lead will reconcile both responses and record dispositions. Keep accepted
+decisions intact; identify new scope questions rather than resolving them silently.
+
+Read affected core routing, stage/review/tooling guidance, template workflows,
+and the self-consumer update as needed. No agent session is launched by this file.
+Review the working tree rather than assuming HEAD includes this implementation;
+scope identity and validation are in the linked evaluation and CX-022.
+
+Review snapshot SHA-256:
+`6c6f7b8f7d9d3aa9e403192845a7fffdbf37fb299384c95bcb65ae241aa14d85`.
+Computed over repository-relative Python `Path` objects sorted component-wise
+with `sorted(paths)`, rather than lexical string sorting, for all foundation files (excluding
+`__pycache__`/`.pyc`), `tests/test_foundation.py`, `tests/test_tooling_review.py`,
+and `openspec/specs/foundation-consumers/spec.md`, concatenating each path, NUL,
+file bytes, and NUL. Operational history/state are outside that source snapshot.
+
+### [CX-024] Core And Project Templates Handover
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-project-templates
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: next-session handover for the structural update
+- `why`: The human requested a handover note.
+- `refs`: CX-021, CX-022, CX-023, docs/handovers/core-project-templates-2026-11-24.md
+- `action`: Saved the accepted decisions, implementation map, validation evidence, exact changed-file inventory, review snapshot, and remaining actions; linked the handover from current state.
+
+CX-023 has no responses at handover. Independent review remains the next action;
+the implementation stays uncommitted and unpublished. This handover changes only
+operational documentation and does not alter the product review snapshot.
+
+### [CX-025] Consultant Brief And Expanded Evaluation Request
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-project-templates
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: human-requested briefing and independent evaluation of the structural update
+- `why`: The human asked other agents to evaluate inconsistency, logical flaws, refactoring, and context-efficient rule atomization.
+- `refs`: CX-023, docs/handovers/core-project-templates-2026-11-24.md
+- `action`: Expanded the existing open request CX-023 with the structural brief, four evaluation areas, role lenses, response requirements, and progressive source-reading guidance; retained one request for both consultants.
+
+Claude and Gemini should respond in their own collaboration files referencing
+CX-023. The product source snapshot is unchanged. The request remains open;
+this status records briefing/request delivery through files, not completed reviews
+or activation of external agent sessions.
+
+### [CX-026] Consolidation Of Structural Review
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-review-consolidation
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: reconciliation of both independent structural reviews and context-efficiency proposals
+- `why`: The human reported both responses and asked the lead to check them.
+- `refs`: CX-023, CL-012, GM-005, CX-027, docs/evaluations/core-project-templates-review-2026-11-24.md
+- `action`: Read both completed reviews, checked the source, independently reproduced material findings in disposable consumers, and dispositioned all 24 numbered source findings into 16 consolidated groups.
+
+Adopted for follow-up: process-change guards, source-root preservation, selection
+validation, clearer proposal roles/records, requirement ownership, shared loading,
+production gates/revision rules, targeted contract tests, and operational metadata
+deduplication. Required implementation remains open in CX-027; no product code or
+accepted scope was changed by this consolidation.
+
+Partially adopted: selection/adoption lifecycle needs correction, but a new
+adoption command needs a scoped decision; retain guided installation as static
+policy while removing misleading verification state; split formal review details
+only where distinct load triggers justify it. Keep routine parser invariants
+visible and preserve prior intentional selections when designing retirement.
+
+Deferred decisions: legacy Grill-Me requirements versus compatibility guarantees,
+native-skill availability versus disclosed fallback, and adoption-command scope.
+Codex owns clarification before dependent changes. The proposal's manual handoff
+is settled, but file authority and record ownership must be explicit.
+
+Resolved: both source fingerprints match the current 64-file snapshot. The
+original used Path-component sorting (`6c6f7b8f...`), while consultants used lexical
+sorting (`489e7d7f...`); the original method description was ambiguous. CX-023 now
+states the sorting method explicitly. Review source content remains current.
+
+Independent reproduction confirmed: stage rename update succeeds then invalidates
+current-stage lint; initialized init ignores changed selection flags with exit 0;
+missing workflow passes lint; migration defaults to an OpenSpec root for the
+existing specs fixture. Full-suite evidence remains the consultants' fresh
+78-test/three-spec passing runs. Targeted reproductions do not replace missing
+regression tests. Context-saving percentages remain projections, not measurements.
+
+CX-023 is closed because both reviews and dispositions are complete. This is
+not implementation completion, concurrence on a stage transition, or publication.
+
+### [CX-027] Structural Review Corrections And Focused Refactoring
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-review-consolidation
+- `from`: codex
+- `to`: codex
+- `type`: gap
+- `status`: open
+- `scope`: correction plan resulting from CX-023 consultant reviews
+- `why`: Review found lifecycle defects and rule/authority ambiguities not covered by the passing test suite.
+- `refs`: CX-026, CL-012, GM-005, docs/evaluations/core-project-templates-review-2026-11-24.md
+- `request`: Use the consolidation's prioritized dispositions for the next correction pass; resolve dependent product choices before changing behavior and preserve the original accepted core/template design.
+
+Prioritize guarded process updates, selection/adoption behavior, migration source
+roots, and explicit manual-participant/record authority. Then consolidate profile
+validation and runtime evidence ownership, fix requirement defaults and proposal
+gates, and add meaningful contract regressions. Follow with focused file/routing
+refactoring and comparable before/after context measurements. Do not silently
+select a type for this existing consumer or turn proposal handoffs into automation.
+
+The present human request was to check the responses. This item records required
+follow-up without claiming that the fixes or additional feature scope are applied.
+
+### [CX-028] Core And Project Template GitHub Publication Preparation
+- `date`: 2026-11-24
+- `session_id`: codex-2026-11-24-template-publication
+- `from`: codex
+- `to`: all
+- `type`: status
+- `status`: done
+- `scope`: authorized GitHub sync of the structural update, handover, and independent review records
+- `why`: The human explicitly requested "update github please" after reviewing the consolidated findings.
+- `refs`: CX-022, CX-026, CX-027, docs/change-log.md, docs/evaluations/core-project-templates-review-2026-11-24.md
+- `action`: Verified publication target and remote ancestry, reran required local validation, and prepared the structural implementation and review evidence for a normal fast-forward push.
+
+Origin is `lukseung77/agent-workflow`, public, default branch `master`. After
+fetch, both remote master and the working branch matched local base
+`80428a9b940f1896e88ab3e8898b43def8c5fdc5`; neither had remote-only commits.
+Publication includes the foundation source, accepted requirements, tests,
+self-consumer scaffold update, consultant-authored reviews, consolidation, and
+handover. No installed third-party implementation is included.
+
+Required local validation passed immediately before preparation: 78 tests,
+three specifications, the 61-file boundary/self-consumer check, zero
+collaboration lint errors/warnings, and `git diff --check`. CX-027 remains open;
+publication does not imply its findings are fixed or that a stage gate passed.
+
+This item records preparation. The following commit is pushed to default master
+and `codex/template-guidance-refactor`; remote SHA and GitHub validation results
+are checked after push and reported to the user. It does not pre-claim remote CI.
+
 ## Resolved History
 
 Resolved items are preserved in [numbered archives](collaboration-archives/).

@@ -8,7 +8,9 @@ an entry overrides them. Support does not mean installed or runtime-verified.
 Project requirements, accepted architecture, correctness, security, accessibility,
 and required checks govern tool preferences. Source wins over a stale graph.
 Compression must preserve access to full diagnostics; minimalism cannot remove
-required behavior. Capability activities fit the existing three project stages.
+required behavior. Capability activities follow the selected template's process.
+Grill-Me (including grilling) is a core capability; other requirements come from
+the selected template. Additional integrations remain project-specific choices.
 
 ## Capability Routing
 
@@ -24,6 +26,7 @@ required behavior. Capability activities fit the existing three project stages.
 | Host setup, hooks, iteration, and Git convenience | Hookify, Claude Code Setup, Ralph Loop, commit-commands | `guides/integrations/host-automation.md` |
 | Team planning and shared knowledge | OpenProject, AppFlowy | `guides/integrations/workspaces.md` |
 | Specifications and changes | OpenSpec | `guides/tooling-operations.md`; current official origin |
+| Project repository hosting | GitHub | `guides/tooling-operations.md` |
 
 Only load the focused adapter relevant to the current task. Existing topic
 rules, accepted specs, project roles, and local overrides retain precedence.
@@ -32,7 +35,9 @@ set of governing workflow instructions.
 
 ## Installation Lifecycle
 
-1. During setup or a capability-gap review, select tools for actual product
+1. During setup, load core and selected template requirements from
+   `agent-workflow-local/project-template.json`. Guide installation; selection
+   does not silently install or configure anything. During setup or a capability-gap review, select additional tools for actual product
    needs. Reuse available capabilities and choose a primary tool where roles
    overlap. The adapters explain when an additional tool has a distinct role.
 2. Read the selected official origin, current install/license instructions,

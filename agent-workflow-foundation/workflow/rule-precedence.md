@@ -13,7 +13,9 @@ project root. Local configuration resolves from that same project root.
 
 1. Read the host entry and this file plus `workflow/agent-workflow.md`.
 2. Read local `project-facts.md`, `rules.md`, and `current-state.md`.
-3. Read optional `agent-workflow-local/agent-workflow-{agent}.md` restrictions.
+3. Read `agent-workflow-local/project-template.json` when present to resolve the
+   selected workflow, and optional `agent-workflow-local/agent-workflow-{agent}.md`
+   restrictions. Load the focused template workflow when its process is relevant.
 4. Run `scripts/collab_queue.py <agent> --startup`, select work, and load only
    affected source files and routed topic rules.
 
@@ -35,14 +37,15 @@ over generic summaries and agent adapters. Load only rows relevant to the task.
 | Host-specific guidance when needed | `workflow/agent-workflow-{agent}.md` |
 | Upstream improvement suggestions | `workflow/upstream-feedback.md` |
 | Project setup | `templates/new-project-setup.md`, `workflow/local-project-files.md` |
+| Project types, template selection, and capability requirements | `workflow/project-templates.md`; catalog in `templates/project-types.json` |
 | Local files, overrides, source-of-truth placement | `workflow/local-project-files.md` |
 | Roles, review lenses, capability mapping | `workflow/role-boundaries.md` |
 | Collaboration schema, recipients, IDs, queues | `workflow/collaboration-format.md` |
-| Stage gates and transitions | `workflow/stages.md`, `workflow/role-boundaries.md` |
+| Stage gates and transitions | `workflow/stages.md`, selected template workflow, `workflow/role-boundaries.md` |
 | Decision classification and conflicts | `workflow/decision-protocol.md` |
 | User questions and assumption interviews | `workflow/question-model.md`, `workflow/decision-protocol.md` |
 | Grill Me installation or explicitly requested grilling interview | `workflow/grill-me.md`; interview pacing in `workflow/question-model.md` |
-| Tool freshness on OpenSpec/stage transition or manual request | `workflow/tooling-review.md` |
+| Tool freshness on template-enabled stage transitions or manual request | `workflow/tooling-review.md` |
 | Reviews, critical evaluation, consolidation | `workflow/review-cycle.md`, `workflow/collaboration-format.md` |
 | Defined domain-term formatting | `workflow/defined-terms.md` |
 | Context, restart, handoff, archives | `workflow/context-management.md` |
@@ -63,6 +66,9 @@ overrides apply from highest to lowest:
 4. `<foundation-root>/workflow/agent-workflow.md`
 
 Use focused topic rules over summaries at the same authority. An accepted
+project-template process governs its stages and gates; generic topic guidance
+must not import another template's development process. Local overrides retain
+the precedence above. An accepted
 requirement is not superseded by a newer exploration or collaboration note.
 Resolve equal-authority conflicts through the lead or human; do not guess.
 

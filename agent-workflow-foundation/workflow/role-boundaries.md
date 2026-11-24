@@ -9,8 +9,8 @@ additional restrictions and cannot independently redefine those roles.
 - Owns source-of-truth file updates unless the user explicitly delegates a specific action.
 - Integrates accepted decisions from consultant agents.
 - Reconciles consultant disagreements and logs the rationale.
-- Owns GitHub sync actions by default.
-- Declares stage readiness and records stage transitions after user confirmation.
+- Owns authorized external sync actions when the selected template uses them.
+- Communicates stage readiness and records transitions under the selected template's review and approval rules.
 - Keeps `agent-workflow-local/project-facts.md` and `agent-workflow-local/current-state.md` accurate enough for another lead session to resume from files.
 
 Run `scripts/collab_queue.py <agent> --startup` for the combined active queue,
@@ -22,8 +22,8 @@ message. The startup command performs no online tooling review.
 
 - Write only to their own `docs/collaboration-[agent].md`; operational-reference exceptions are owned by `workflow/markitdown.md` and may be restricted locally.
 - Surface gaps, conflicts, risks, review findings, and non-blocking suggestions.
-- Request source-of-truth or GitHub changes from the lead through collaboration files.
-- Do not edit source-of-truth files, run GitHub sync commands, declare stage transitions, or edit another agent's collaboration file unless the user explicitly authorizes that specific action.
+- Request source-of-truth or external sync changes from the lead through collaboration files.
+- Do not edit source-of-truth files, run external sync commands, declare stage transitions, or edit another agent's collaboration file unless the user explicitly authorizes that specific action.
 - Requests to change or submit feedback to the upstream foundation follow `workflow/upstream-feedback.md`; authority is defined there.
 
 ## Phase Review Lenses
@@ -35,13 +35,13 @@ Common reusable lenses:
 - Fixed-reference/domain lens: checks source-of-truth consistency, domain contracts, lifecycle/state invariants, acceptance criteria, edge cases, and test fidelity against settled requirements.
 - Architecture/breadth lens: checks cross-file consistency, technical feasibility, data and storage shape, performance bounds, UI or provider boundaries, implementation complexity, and simplification opportunities.
 
-Recommended cadence:
-
-- Exploration and Proposal: request lens-specific review after major lead cleanup passes and before stage transitions when the existing stage gates require agent concurrence.
-- Implementation: request lens-specific review at milestone gates or coherent implementation batches.
+Review cadence and mandatory concurrence come from the selected template.
+For SW Development, request lens-specific review at planning and implementation
+milestones and before transitions required by its gates. Other templates assign
+review by their deliverables and acceptance criteria.
 
 Record lens assignments in `agent-workflow-local/project-facts.md`. A lens does
-not expand write, GitHub, or stage authority. Transition checks follow
+not expand write, external sync, or stage authority. Transition checks follow
 `workflow/stages.md`.
 
 ## Capability Mapping
@@ -64,18 +64,19 @@ work. Do not silently substitute for an explicitly required tool or skill.
 
 - Resolves product and scope decisions that agents cannot determine from source-of-truth files.
 - Receives one question at a time under `workflow/question-model.md`.
-- Confirms stage transitions after the lead agent declares readiness.
+- Confirms transitions or deliverable acceptance where the selected template's
+  gates require a human decision.
 
 ## Operational Notes
 
 - Non-interactive and permission-prompt suppression modes are legitimate for
   already-authorized automation. They do not expand file/repository authority,
-  grant GitHub actions, waive required human decisions, or bypass review gates.
+  grant external publication actions, waive required human decisions, or bypass review gates.
   Establish the permitted execution scope before running; missing permission
   follows `workflow/decision-protocol.md#failures-and-retries`, not automatic
   escalation to broader access.
 
 - A consultant may challenge a lead decision by logging a `gap` item, but the challenge is not a stage or source-of-truth change by itself.
-- A user may temporarily authorize a consultant for a specific downstream project write or GitHub action. Record that authorization in collaboration files.
+- A user may temporarily authorize a consultant for a specific downstream project write or external sync action. Record that authorization in collaboration files.
 - Decision promotion follows `workflow/decision-protocol.md#recording-decisions`.
 - Upstream authority follows `workflow/upstream-feedback.md`.

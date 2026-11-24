@@ -1,8 +1,9 @@
 # Grill Me Integration
 
-Grill Me is the foundation's supported upstream skill for an explicitly
-requested assumption-challenging interview. Recommend it during project setup
-when interactive planning is wanted. Its origin and dependencies are recorded
+Grill Me is a core capability for communication and clarification between agents
+and the user across every project type and template. Use the upstream skill for
+an explicitly requested assumption-challenging interview; inclusion in the core
+does not require an interview for every task. Its origin and dependencies are recorded
 in `third-party/origins.json`; install upstream files in the consuming project,
 never inside the foundation product. Catalog inclusion is not installation.
 

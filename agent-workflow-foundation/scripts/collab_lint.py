@@ -195,6 +195,21 @@ def main() -> int:
                     errors.append(f"{state_path.relative_to(root)}: invalid updated date")
         stage = state.get("current_stage", "")
         allowed_stages = DEFAULT_STAGES | set(args.allowed_stage)
+        profile_path = root / "agent-workflow-local/project-template.json"
+        if profile_path.exists():
+            try:
+                profile = json.loads(profile_path.read_text())
+                if not isinstance(profile, dict):
+                    raise ValueError("expected an object")
+                stages = profile["stages"]
+                if profile.get("schema_version") != 1 or not isinstance(stages, list) or not stages or any(not isinstance(value, str) or not value.strip() for value in stages):
+                    raise ValueError("expected schema_version 1 and nonempty stage names")
+                if profile.get("status") not in {"selected", "legacy-unselected"}:
+                    raise ValueError("expected selected or legacy-unselected status")
+                # A selected process must not accidentally accept SW-only stages.
+                allowed_stages = {"Setup", "Complete"} | set(stages) | set(args.allowed_stage)
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                errors.append(f"{profile_path.relative_to(root)}: invalid project template ({exc})")
         if stage and stage not in allowed_stages:
             errors.append(
                 f"{state_path.relative_to(root)}: current_stage '{stage}' is not allowed"

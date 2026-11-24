@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "core_tools": ["grill-me"],
+  "project_types": {
+    "sw-development": {
+      "name": "SW Development",
+      "templates": {
+        "openspec-github": {
+          "name": "OpenSpec and GitHub",
+          "source_root": "openspec",
+          "workflow": "templates/project-types/sw-development/openspec-github.md",
+          "stages": ["Exploration", "Proposal", "Implementation"],
+          "required_tools": ["openspec", "github"],
+          "manual_requirements": [],
+          "handoff": "collaboration-files",
+          "stage_tooling_review": true
+        }
+      }
+    },
+    "proposal-pt-making": {
+      "name": "Proposal PT Making",
+      "templates": {
+        "chatgpt-claude-manual": {
+          "name": "ChatGPT planning and Claude slides (manual handoff)",
+          "source_root": "proposal",
+          "workflow": "templates/project-types/proposal-pt-making/chatgpt-claude-manual.md",
+          "stages": ["RFP Analysis", "TOC Planning", "Slide Creation", "Final Review"],
+          "required_tools": ["markitdown"],
+          "manual_requirements": [
+            {"id": "chatgpt", "purpose": "RFP analysis and TOC/per-slide planning", "verification": "Confirm the user's available ChatGPT workflow."},
+            {"id": "claude-powerpoint-plugin", "purpose": "PowerPoint slide production in Claude", "verification": "Identify the user's exact plugin and verify it in its host before slide production; identity and origin are not yet established."}
+          ],
+          "handoff": "manual-chatgpt-claude",
+          "stage_tooling_review": false
+        }
+      }
+    }
+  }
+}

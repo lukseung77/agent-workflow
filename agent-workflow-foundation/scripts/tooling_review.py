@@ -40,6 +40,10 @@ def plan(root: Path, origin: Path, event: str, stage: str | None = None,
     if event == "stage-change" and not transition_id:
         raise ValueError("Stage changes need the transition collaboration ID")
     current = context(root, stage)
+    profile_path = root / "agent-workflow-local/project-template.json"
+    profile = json.loads(profile_path.read_text()) if profile_path.exists() else None
+    if profile and event == "stage-change" and not profile["stage_tooling_review"]:
+        raise ValueError("The selected template uses manual tooling reviews only; use --event manual for an explicit request")
     data = load_record(root)
     latest = data["reviews"][-1] if data["reviews"] else None
     same = bool(event == "stage-change" and latest and latest.get("context") == current)
@@ -50,6 +54,8 @@ def plan(root: Path, origin: Path, event: str, stage: str | None = None,
     inventory = json.loads(inventory_path.read_text()).get("tools", {}) if inventory_path.exists() else {}
     selected = set(tools) | {key for key, value in inventory.items()
                              if value.get("selected") or value.get("installed") or value.get("available")}
+    if profile:
+        selected.update(profile["required_tools"])
     # Retain the last review's explicit selections when an installed tool has
     # not yet been added to the separate actual-installation inventory.
     if latest:

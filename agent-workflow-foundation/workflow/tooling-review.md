@@ -1,15 +1,17 @@
 # Tooling Freshness Review
 
-This procedure has exactly two triggers: a confirmed OpenSpec/workflow stage
-transition, and an explicit human request. Setup, migration, startup, and resume
+This procedure has two supported triggers: a confirmed stage transition when
+the selected template enables `stage_tooling_review`, and an explicit human
+request. The initial SW template enables stage reviews; the Proposal PT template
+uses explicit requests only. Existing unselected consumers retain their prior
+stage-change trigger. Setup, migration, startup, and resume
 do not independently trigger online checks. Setup may select candidates and
 follow normal installation guidance without running this review.
 
 The active lead runs the review before substantive work in a confirmed destination
 stage. Transitions include regressions and a new change entering the same stage
-name, identified by its unique collaboration ID. This follows the foundation's
-Exploration/Proposal/Implementation model; changing an artifact alone is not a
-stage transition. A stopped agent cannot be launched by a file change; pending
+name, identified by its unique collaboration ID. Stage names and gates come from the selected template; changing an artifact
+alone is not a stage transition. A stopped agent cannot be launched by a file change; pending
 transition work is resumed from its collaboration status. No watcher is installed.
 
 ## Invoke
@@ -65,7 +67,7 @@ network tools for the checks below. Installation lifecycle is in
    limitation and fallback. Do not claim the latest version was verified.
    Optional-tool outages do not block stage work unless a required capability
    or material compatibility/security decision remains unresolved; use ordinary
-   blocker handling for those cases. Preserve the existing concurrence/user
+   blocker handling for those cases. Preserve the selected template's concurrence/user
    confirmation requirements for the stage transition.
 
 ## Record Evidence

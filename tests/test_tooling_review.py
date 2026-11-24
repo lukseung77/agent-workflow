@@ -104,6 +104,21 @@ class ToolingReviewTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.plan(event)
 
+    def test_template_requirements_are_reviewed_and_stage_trigger_is_template_owned(self):
+        profile_path = self.local / "project-template.json"
+        profile_path.write_text(json.dumps({"stage_tooling_review": False,
+                                             "required_tools": ["grill-me", "markitdown"]}))
+        self.state("TOC Planning", "None")
+        with self.assertRaisesRegex(ValueError, "manual tooling reviews only"):
+            self.plan()
+        request = self.plan("manual", None)
+        self.assertEqual(set(request["tools"]), {"grill-me", "markitdown"})
+        self.assertEqual(request["context"]["stage"], "TOC Planning")
+        self.assertFalse((self.root / review.RECORD).exists())
+        profile_path.write_text(json.dumps({"stage_tooling_review": True,
+                                             "required_tools": ["grill-me", "openspec", "github"]}))
+        self.assertEqual(set(self.plan()["tools"]), {"grill-me", "openspec", "github"})
+
 
 if __name__ == "__main__":
     unittest.main()
